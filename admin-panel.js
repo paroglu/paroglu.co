@@ -1,51 +1,84 @@
-(function(){
-  let token='';
-  const cfg=()=>window.PM_BACKEND||{};
-  const headers=()=>({apikey:cfg().supabaseAnonKey,Authorization:`Bearer ${token}`,'Content-Type':'application/json'});
-  async function req(path,options={}){
-    const res=await fetch(cfg().supabaseUrl.replace(/\/$/,'')+path,{...options,headers:{...headers(),...(options.headers||{})}});
-    if(!res.ok){let d={};try{d=await res.json()}catch{}throw new Error(d.message||'İşlem başarısız')}
-    const t=await res.text();return t?JSON.parse(t):null;
+(() => {
+  let cache = { projects: [], brands: [], briefs: [] };
+
+  const esc = (s='') => String(s).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  const client = () => window.PMSupabase;
+
+  function navInit() {
+    document.querySelectorAll('.admin-nav button').forEach(btn => btn.addEventListener('click', () => {
+      document.querySelectorAll('.admin-nav button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.admin-view').forEach(v => v.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.target)?.classList.add('active');
+    }));
   }
-  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
-  let projects=[],brands=[],briefs=[];
-  async function load(){
-    [projects,brands,briefs]=await Promise.all([
-      req('/rest/v1/projects?select=*&order=created_at.desc'),
-      req('/rest/v1/brands?select=*&order=sort_order.asc,created_at.desc'),
-      req('/rest/v1/briefs?select=*&order=created_at.desc')
-    ]);render();
+
+  function metrics() {
+    const p = document.getElementById('metricProjects'); if (p) p.textContent = cache.projects.length;
+    const b = document.getElementById('metricBrands'); if (b) b.textContent = cache.brands.length;
+    const br = document.getElementById('metricBriefs'); if (br) br.textContent = cache.briefs.length;
+    const n = document.getElementById('metricNew'); if (n) n.textContent = cache.briefs.filter(x => x.status === 'Yeni').length;
   }
-  function render(){
-    const map={metricProjects:projects.length,metricBrands:brands.length,metricBriefs:briefs.length,metricNew:briefs.filter(x=>x.status==='Yeni').length};
-    Object.entries(map).forEach(([id,v])=>{const e=document.getElementById(id);if(e)e.textContent=v});
-    const pt=document.getElementById('projectRows');if(pt)pt.innerHTML=projects.map(p=>`<tr><td>${esc(p.title)}</td><td>${esc(p.client||'-')}</td><td>${esc(p.tags||'-')}</td><td><span class="status">${p.published?'Yayında':'Taslak'}</span></td><td class="table-actions"><button class="btn" data-edit-project="${p.id}">Düzenle</button><button class="btn danger" data-delete-project="${p.id}">Sil</button></td></tr>`).join('')||'<tr><td colspan="5">Henüz proje yok.</td></tr>';
-    const bt=document.getElementById('brandRows');if(bt)bt.innerHTML=brands.map(b=>`<tr><td>${esc(b.name)}</td><td>${esc(b.sector||'-')}</td><td>${esc(b.url||'-')}</td><td class="table-actions"><button class="btn" data-edit-brand="${b.id}">Düzenle</button><button class="btn danger" data-delete-brand="${b.id}">Sil</button></td></tr>`).join('')||'<tr><td colspan="4">Henüz marka yok.</td></tr>';
-    const br=document.getElementById('briefRows');if(br)br.innerHTML=briefs.map(b=>`<tr><td>${esc(b.company||b.name||'-')}</td><td>${esc(b.service||'-')}</td><td>${esc(b.budget||'-')}</td><td><select data-brief-status="${b.id}"><option ${b.status==='Yeni'?'selected':''}>Yeni</option><option ${b.status==='Görüşüldü'?'selected':''}>Görüşüldü</option><option ${b.status==='Teklif Verildi'?'selected':''}>Teklif Verildi</option><option ${b.status==='Onaylandı'?'selected':''}>Onaylandı</option><option ${b.status==='Kapandı'?'selected':''}>Kapandı</option></select></td><td><button class="btn" data-brief-view="${b.id}">Detay</button></td></tr>`).join('')||'<tr><td colspan="5">Henüz brief yok.</td></tr>';
-    bindRows();
+
+  function renderProjects() {
+    const body = document.getElementById('projectRows'); if (!body) return;
+    body.innerHTML = cache.projects.map(x => `<tr><td>${esc(x.title)}</td><td>${esc(x.client||'—')}</td><td>${esc(x.tags||'—')}</td><td>${x.published?'Yayında':'Taslak'}</td><td><button data-edit-project="${x.id}">Düzenle</button> <button data-del-project="${x.id}">Sil</button></td></tr>`).join('');
   }
-  function bindRows(){
-    document.querySelectorAll('[data-delete-project]').forEach(b=>b.onclick=()=>del('projects',b.dataset.deleteProject));
-    document.querySelectorAll('[data-delete-brand]').forEach(b=>b.onclick=()=>del('brands',b.dataset.deleteBrand));
-    document.querySelectorAll('[data-edit-project]').forEach(b=>b.onclick=()=>fillProject(b.dataset.editProject));
-    document.querySelectorAll('[data-edit-brand]').forEach(b=>b.onclick=()=>fillBrand(b.dataset.editBrand));
-    document.querySelectorAll('[data-brief-status]').forEach(s=>s.onchange=()=>updateBrief(s.dataset.briefStatus,s.value));
-    document.querySelectorAll('[data-brief-view]').forEach(b=>b.onclick=()=>viewBrief(b.dataset.briefView));
+
+  function renderBrands() {
+    const body = document.getElementById('brandRows'); if (!body) return;
+    body.innerHTML = cache.brands.map(x => `<tr><td>${esc(x.name)}</td><td>${esc(x.sector||'—')}</td><td>${x.url?`<a href="${esc(x.url)}" target="_blank" rel="noreferrer">Aç</a>`:'—'}</td><td><button data-edit-brand="${x.id}">Düzenle</button> <button data-del-brand="${x.id}">Sil</button></td></tr>`).join('');
   }
-  async function del(table,id){if(!confirm('Bu kaydı silmek istediğine emin misin?'))return;await req(`/rest/v1/${table}?id=eq.${encodeURIComponent(id)}`,{method:'DELETE'});await load()}
-  function fillProject(id){const p=projects.find(x=>String(x.id)===String(id));if(!p)return;const f=document.getElementById('projectForm');Object.entries(p).forEach(([k,v])=>{if(f.elements[k])f.elements[k].value=v??''});f.elements.id.value=p.id;document.getElementById('projectSubmit').textContent='Değişiklikleri Kaydet';f.scrollIntoView({behavior:'smooth'})}
-  function fillBrand(id){const b=brands.find(x=>String(x.id)===String(id));if(!b)return;const f=document.getElementById('brandForm');Object.entries(b).forEach(([k,v])=>{if(f.elements[k])f.elements[k].value=v??''});f.elements.id.value=b.id;document.getElementById('brandSubmit').textContent='Değişiklikleri Kaydet';f.scrollIntoView({behavior:'smooth'})}
-  function viewBrief(id){const b=briefs.find(x=>String(x.id)===String(id));if(!b)return;document.getElementById('briefDetail').innerHTML=Object.entries(b).filter(([,v])=>v!==null&&v!=='').map(([k,v])=>`<div class="summary-row"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('');document.getElementById('briefDetailCard').hidden=false;document.getElementById('briefDetailCard').scrollIntoView({behavior:'smooth'})}
-  async function updateBrief(id,status){await req(`/rest/v1/briefs?id=eq.${encodeURIComponent(id)}`,{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify({status})});await load()}
-  async function saveForm(table,form){
-    const fd=new FormData(form);const obj=Object.fromEntries(fd.entries());const id=obj.id;delete obj.id;
-    if('published' in obj)obj.published=obj.published==='true';if('sort_order' in obj)obj.sort_order=Number(obj.sort_order||0);if('visible' in obj)obj.visible=obj.visible==='true';
-    if(id)await req(`/rest/v1/${table}?id=eq.${encodeURIComponent(id)}`,{method:'PATCH',headers:{Prefer:'return=minimal'},body:JSON.stringify(obj)});
-    else await req(`/rest/v1/${table}`,{method:'POST',headers:{Prefer:'return=minimal'},body:JSON.stringify(obj)});
-    form.reset();if(form.elements.id)form.elements.id.value='';document.getElementById(table==='projects'?'projectSubmit':'brandSubmit').textContent=table==='projects'?'Projeyi Ekle':'Markayı Ekle';await load();
+
+  function renderBriefs() {
+    const body = document.getElementById('briefRows'); if (!body) return;
+    body.innerHTML = cache.briefs.map(x => `<tr><td>${esc(x.company||x.name||'İsimsiz')}</td><td>${esc(x.service||'—')}</td><td>${esc(x.budget||'—')}</td><td><select data-brief-status="${x.id}"><option ${x.status==='Yeni'?'selected':''}>Yeni</option><option ${x.status==='Görüşüldü'?'selected':''}>Görüşüldü</option><option ${x.status==='Teklif Verildi'?'selected':''}>Teklif Verildi</option><option ${x.status==='Onaylandı'?'selected':''}>Onaylandı</option><option ${x.status==='Arşiv'?'selected':''}>Arşiv</option></select></td><td><button data-view-brief="${x.id}">Detay</button></td></tr>`).join('');
   }
-  document.getElementById('projectForm')?.addEventListener('submit',e=>{e.preventDefault();saveForm('projects',e.currentTarget).catch(err=>alert(err.message))});
-  document.getElementById('brandForm')?.addEventListener('submit',e=>{e.preventDefault();saveForm('brands',e.currentTarget).catch(err=>alert(err.message))});
-  document.querySelectorAll('.admin-nav button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.admin-nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.querySelectorAll('.admin-view').forEach(v=>v.classList.remove('active'));document.getElementById(btn.dataset.target)?.classList.add('active')}));
-  window.PMAdmin={init(t){token=t;load().catch(err=>{alert('Panel verileri yüklenemedi: '+err.message)})}};
+
+  async function loadAll() {
+    const sb = client(); if (!sb) return;
+    const [p,b,br] = await Promise.all([
+      sb.from('projects').select('*').order('created_at',{ascending:false}),
+      sb.from('brands').select('*').order('sort_order',{ascending:true}),
+      sb.from('briefs').select('*').order('created_at',{ascending:false})
+    ]);
+    if (p.error || b.error || br.error) { console.error(p.error||b.error||br.error); return; }
+    cache = { projects:p.data||[], brands:b.data||[], briefs:br.data||[] };
+    metrics(); renderProjects(); renderBrands(); renderBriefs();
+  }
+
+  function formToObj(form) { return Object.fromEntries(new FormData(form).entries()); }
+
+  document.addEventListener('submit', async e => {
+    const sb = client(); if (!sb) return;
+    if (e.target.id === 'projectForm') {
+      e.preventDefault(); const f = e.target; const v=formToObj(f); const id=v.id; delete v.id;
+      v.year = Number(v.year)||2026; v.published = v.published === 'true';
+      const q = id ? sb.from('projects').update(v).eq('id',id) : sb.from('projects').insert(v);
+      const {error}=await q; if(error) return alert(error.message); f.reset(); f.year.value='2026'; await loadAll();
+    }
+    if (e.target.id === 'brandForm') {
+      e.preventDefault(); const f=e.target; const v=formToObj(f); const id=v.id; delete v.id;
+      v.sort_order=Number(v.sort_order)||0; v.visible=v.visible==='true';
+      const q=id?sb.from('brands').update(v).eq('id',id):sb.from('brands').insert(v);
+      const {error}=await q; if(error) return alert(error.message); f.reset(); f.sort_order.value='0'; await loadAll();
+    }
+  });
+
+  document.addEventListener('click', async e => {
+    const sb = client(); if(!sb) return;
+    let id=e.target.dataset.editProject;
+    if(id){ const x=cache.projects.find(v=>v.id===id),f=document.getElementById('projectForm'); if(!x||!f)return; Object.keys(x).forEach(k=>{if(f.elements[k]) f.elements[k].value=String(x[k]??'')}); f.elements.id.value=id; return; }
+    id=e.target.dataset.delProject; if(id&&confirm('Projeyi silmek istiyor musun?')){ const {error}=await sb.from('projects').delete().eq('id',id); if(error)alert(error.message); else await loadAll(); return; }
+    id=e.target.dataset.editBrand; if(id){ const x=cache.brands.find(v=>v.id===id),f=document.getElementById('brandForm'); if(!x||!f)return; Object.keys(x).forEach(k=>{if(f.elements[k]) f.elements[k].value=String(x[k]??'')}); f.elements.id.value=id; return; }
+    id=e.target.dataset.delBrand; if(id&&confirm('Markayı silmek istiyor musun?')){ const {error}=await sb.from('brands').delete().eq('id',id); if(error)alert(error.message); else await loadAll(); return; }
+    id=e.target.dataset.viewBrief; if(id){ const x=cache.briefs.find(v=>v.id===id); const card=document.getElementById('briefDetailCard'),box=document.getElementById('briefDetail'); if(!x||!card||!box)return; box.innerHTML=`<p><strong>${esc(x.company||x.name||'İsimsiz')}</strong></p><p>${esc(x.service||'')} ${x.project_type?'· '+esc(x.project_type):''}</p><p>${esc(x.city||'')} ${x.deadline?'· '+esc(x.deadline):''}</p><p>${esc(x.budget||'')}</p><p>${esc(x.email||'')} ${x.phone?'· '+esc(x.phone):''}</p><p>${esc(x.notes||'')}</p>`; card.hidden=false; card.scrollIntoView({behavior:'smooth'}); }
+  });
+
+  document.addEventListener('change', async e => {
+    const id=e.target.dataset.briefStatus; if(!id)return; const sb=client(); const {error}=await sb.from('briefs').update({status:e.target.value}).eq('id',id); if(error) alert(error.message); else await loadAll();
+  });
+
+  navInit();
+  window.PMAdminPanel = { loadAll };
 })();

@@ -1,5 +1,5 @@
--- Paroglu Media CMS / CRM schema
--- Run in Supabase SQL Editor. Change the admin email below if needed.
+-- Paroglu Media / Supabase setup
+-- Run once in Supabase > SQL Editor.
 
 create extension if not exists pgcrypto;
 
@@ -8,12 +8,13 @@ create table if not exists public.projects (
   title text not null,
   client text,
   tags text,
-  year text,
+  year integer default 2026,
   description text,
   cover_url text,
   project_url text,
   published boolean not null default true,
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table if not exists public.brands (
@@ -24,46 +25,128 @@ create table if not exists public.brands (
   logo_url text,
   sort_order integer not null default 0,
   visible boolean not null default true,
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
 
 create table if not exists public.briefs (
   id uuid primary key default gen_random_uuid(),
-  service text,
-  need_type text,
-  budget text,
-  timeline text,
-  company text,
   name text,
-  phone text,
+  company text,
   email text,
-  goal text,
-  message text,
-  sector text,
-  website text,
-  colors text,
-  channel text,
+  phone text,
+  service text,
+  project_type text,
+  budget text,
+  deadline text,
+  city text,
+  notes text,
   status text not null default 'Yeni',
-  created_at timestamptz not null default now()
+  source text not null default 'website',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
 );
+
+create or replace function public.set_updated_at()
+returns trigger
+language plpgsql
+as $$
+begin
+  new.updated_at = now();
+  return new;
+end;
+$$;
+
+drop trigger if exists projects_updated_at on public.projects;
+create trigger projects_updated_at before update on public.projects
+for each row execute function public.set_updated_at();
+
+drop trigger if exists brands_updated_at on public.brands;
+create trigger brands_updated_at before update on public.brands
+for each row execute function public.set_updated_at();
+
+drop trigger if exists briefs_updated_at on public.briefs;
+create trigger briefs_updated_at before update on public.briefs
+for each row execute function public.set_updated_at();
 
 alter table public.projects enable row level security;
 alter table public.brands enable row level security;
 alter table public.briefs enable row level security;
 
--- Public portfolio reads
-create policy "public read published projects" on public.projects for select to anon using (published = true);
-create policy "public read visible brands" on public.brands for select to anon using (visible = true);
--- Public can create a brief, but cannot read other briefs.
-create policy "public submit brief" on public.briefs for insert to anon with check (true);
+-- Cleanly recreate policies if script is run again.
+drop policy if exists "projects_public_read" on public.projects;
+drop policy if exists "projects_admin_insert" on public.projects;
+drop policy if exists "projects_admin_update" on public.projects;
+drop policy if exists "projects_admin_delete" on public.projects;
+drop policy if exists "brands_public_read" on public.brands;
+drop policy if exists "brands_admin_insert" on public.brands;
+drop policy if exists "brands_admin_update" on public.brands;
+drop policy if exists "brands_admin_delete" on public.brands;
+drop policy if exists "briefs_public_insert" on public.briefs;
+drop policy if exists "briefs_admin_read" on public.briefs;
+drop policy if exists "briefs_admin_update" on public.briefs;
+drop policy if exists "briefs_admin_delete" on public.briefs;
 
--- Only Umut's authenticated account can manage CMS/CRM data.
-create policy "admin projects" on public.projects for all to authenticated
+create policy "projects_public_read"
+on public.projects for select
+to anon, authenticated
+using (published = true or (auth.jwt() ->> 'email') = 'umutparoglu87@gmail.com');
+
+create policy "projects_admin_insert"
+on public.projects for insert
+to authenticated
+with check ((auth.jwt() ->> 'email') = 'umutparoglu87@gmail.com');
+
+create policy "projects_admin_update"
+on public.projects for update
+to authenticated
 using ((auth.jwt() ->> 'email') = 'umutparoglu87@gmail.com')
 with check ((auth.jwt() ->> 'email') = 'umutparoglu87@gmail.com');
-create policy "admin brands" on public.brands for all to authenticated
+
+create policy "projects_admin_delete"
+on public.projects for delete
+to authenticated
+using ((auth.jwt() ->> 'email') = 'umutparoglu87@gmail.com');
+
+create policy "brands_public_read"
+on public.brands for select
+to anon, authenticated
+using (visible = true or (auth.jwt() ->> 'email') = 'umutparoglu87@gmail.com');
+
+create policy "brands_admin_insert"
+on public.brands for insert
+to authenticated
+with check ((auth.jwt() ->> 'email') = 'umutparoglu87@gmail.com');
+
+create policy "brands_admin_update"
+on public.brands for update
+to authenticated
 using ((auth.jwt() ->> 'email') = 'umutparoglu87@gmail.com')
 with check ((auth.jwt() ->> 'email') = 'umutparoglu87@gmail.com');
-create policy "admin briefs" on public.briefs for all to authenticated
+
+create policy "brands_admin_delete"
+on public.brands for delete
+to authenticated
+using ((auth.jwt() ->> 'email') = 'umutparoglu87@gmail.com');
+
+-- Website visitors may submit a brief but cannot read existing briefs.
+create policy "briefs_public_insert"
+on public.briefs for insert
+to anon, authenticated
+with check (true);
+
+create policy "briefs_admin_read"
+on public.briefs for select
+to authenticated
+using ((auth.jwt() ->> 'email') = 'umutparoglu87@gmail.com');
+
+create policy "briefs_admin_update"
+on public.briefs for update
+to authenticated
 using ((auth.jwt() ->> 'email') = 'umutparoglu87@gmail.com')
 with check ((auth.jwt() ->> 'email') = 'umutparoglu87@gmail.com');
+
+create policy "briefs_admin_delete"
+on public.briefs for delete
+to authenticated
+using ((auth.jwt() ->> 'email') = 'umutparoglu87@gmail.com');

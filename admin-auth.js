@@ -1,53 +1,69 @@
-(function(){
-  const cfg=window.PM_BACKEND||{};
-  const gate=document.getElementById('adminGate');
-  const app=document.getElementById('adminApp');
-  const form=document.getElementById('adminLoginForm');
-  const status=document.getElementById('adminLoginStatus');
-  const setup=document.getElementById('adminSetupNotice');
-  const configured=Boolean(cfg.supabaseUrl&&cfg.supabaseAnonKey&&cfg.adminEmail);
-  const key='pm_admin_session';
+(() => {
+  const gate = document.getElementById('adminGate');
+  const app = document.getElementById('adminApp');
+  const form = document.getElementById('adminLoginForm');
+  const status = document.getElementById('adminLoginStatus');
+  const notice = document.getElementById('adminSetupNotice');
+  const logoutBtn = document.getElementById('adminLogout');
+  const cfg = window.PM_BACKEND || {};
 
-  function setStatus(text,error=false){if(status){status.textContent=text;status.classList.toggle('error',error)}}
-  async function api(path,options={}){
-    const res=await fetch(cfg.supabaseUrl.replace(/\/$/,'')+path,{...options,headers:{apikey:cfg.supabaseAnonKey,'Content-Type':'application/json',...(options.headers||{})}});
-    let data={};try{data=await res.json()}catch{}
-    if(!res.ok)throw new Error(data.msg||data.message||data.error_description||'Giriş başarısız');
-    return data;
+  const configured = cfg.supabaseUrl && cfg.supabaseAnonKey &&
+    !cfg.supabaseUrl.includes('BURAYA_') && !cfg.supabaseAnonKey.includes('BURAYA_');
+
+  if (!configured || !window.supabase) {
+    if (notice) notice.hidden = false;
+    if (form) form.querySelector('button[type="submit"]').disabled = true;
+    return;
   }
-  async function verify(session){
-    if(!session?.access_token)return false;
-    try{
-      const user=await api('/auth/v1/user',{headers:{Authorization:`Bearer ${session.access_token}`}});
-      return user?.email?.toLowerCase()===cfg.adminEmail.toLowerCase();
-    }catch{return false}
+
+  const client = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, {
+    auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+  });
+  window.PMSupabase = client;
+
+  const isAdmin = (user) => user?.email?.toLowerCase() === cfg.adminEmail.toLowerCase();
+  const showGate = () => { gate.hidden = false; app.hidden = true; };
+  const showApp = async () => {
+    gate.hidden = true;
+    app.hidden = false;
+    if (window.PMAdminPanel?.loadAll) await window.PMAdminPanel.loadAll();
+  };
+
+  async function applySession(session) {
+    if (session?.user && isAdmin(session.user)) return showApp();
+    if (session?.user && !isAdmin(session.user)) await client.auth.signOut();
+    showGate();
   }
-  function unlock(session){
-    sessionStorage.setItem(key,JSON.stringify(session));
-    gate.hidden=true;app.hidden=false;
-    window.PMAdmin?.init(session.access_token);
-  }
-  async function init(){
-    if(!configured){
-      if(setup)setup.hidden=false;
-      form?.querySelectorAll('input,button').forEach(el=>el.disabled=true);
-      setStatus('Panel güvenli kimlik doğrulama kurulana kadar kilitli.',true);
+
+  client.auth.getSession().then(({ data }) => applySession(data.session));
+  client.auth.onAuthStateChange((_event, session) => applySession(session));
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    status.textContent = 'Giriş kontrol ediliyor…';
+    const fd = new FormData(form);
+    const email = String(fd.get('email') || '').trim().toLowerCase();
+    const password = String(fd.get('password') || '');
+    if (email !== cfg.adminEmail.toLowerCase()) {
+      status.textContent = 'Bu hesap yönetici olarak yetkili değil.';
       return;
     }
-    const saved=JSON.parse(sessionStorage.getItem(key)||'null');
-    if(await verify(saved)){unlock(saved);return}
-    sessionStorage.removeItem(key);
-  }
-  form?.addEventListener('submit',async e=>{
-    e.preventDefault();setStatus('Giriş kontrol ediliyor…');
-    const fd=new FormData(form);const email=String(fd.get('email')||'').trim().toLowerCase();const password=String(fd.get('password')||'');
-    if(email!==cfg.adminEmail.toLowerCase()){setStatus('Bu hesap yönetici olarak yetkili değil.',true);return}
-    try{
-      const session=await api('/auth/v1/token?grant_type=password',{method:'POST',body:JSON.stringify({email,password})});
-      if(!(await verify(session)))throw new Error('Yönetici doğrulanamadı');
-      unlock(session);
-    }catch(err){setStatus(err.message||'Giriş başarısız',true)}
+    const { data, error } = await client.auth.signInWithPassword({ email, password });
+    if (error) {
+      status.textContent = 'Giriş başarısız: e-posta veya şifre hatalı.';
+      return;
+    }
+    if (!isAdmin(data.user)) {
+      await client.auth.signOut();
+      status.textContent = 'Bu hesap yönetici olarak yetkili değil.';
+      return;
+    }
+    status.textContent = '';
+    await showApp();
   });
-  document.getElementById('adminLogout')?.addEventListener('click',()=>{sessionStorage.removeItem(key);location.reload()});
-  init();
+
+  logoutBtn?.addEventListener('click', async () => {
+    await client.auth.signOut();
+    showGate();
+  });
 })();
