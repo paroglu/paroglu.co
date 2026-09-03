@@ -12,9 +12,13 @@
     });
     return clientPromise;
   }
+  async function q(table, query){ const c=await getClient(); if(!c) return {data:[],error:null}; return query(c.from(table)); }
   window.PMData = {
-    async projects(){ const c=await getClient(); if(!c)return []; const {data}=await c.from('projects').select('*').eq('published',true).order('created_at',{ascending:false}); return data||[]; },
+    getClient,
+    async projects(){ const c=await getClient(); if(!c)return []; const {data}=await c.from('projects').select('*').eq('published',true).order('sort_order',{ascending:true}).order('created_at',{ascending:false}); return data||[]; },
     async brands(){ const c=await getClient(); if(!c)return []; const {data}=await c.from('brands').select('*').eq('visible',true).order('sort_order',{ascending:true}); return data||[]; },
+    async content(){ const c=await getClient(); if(!c)return []; const {data}=await c.from('site_content').select('*'); return data||[]; },
+    async media(){ const c=await getClient(); if(!c)return []; const {data}=await c.from('media_library').select('*').order('created_at',{ascending:false}); return data||[]; },
     async submitBrief(payload){ const c=await getClient(); if(!c) throw new Error('Backend henüz bağlı değil.'); const {error}=await c.from('briefs').insert(payload); if(error) throw error; return true; }
   };
 })();
