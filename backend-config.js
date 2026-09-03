@@ -1,5 +1,5 @@
 window.PM_BACKEND = {
-  supabaseUrl: 'BURAYA_SUPABASE_PROJECT_URL',
-  supabaseAnonKey: 'BURAYA_SUPABASE_ANON_KEY',
+  supabaseUrl: 'https://cmrrloogljskrktapghz.supabase.co',
+  supabaseAnonKey: 'sb_publishable_KJcklF-UZDo6sU3_7h5RPg_ltKpJDUe',
   adminEmail: 'umutparoglu87@gmail.com'
 };
