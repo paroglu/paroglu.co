@@ -1,16 +1,15 @@
-Bu paket Karabük İdman Yurdu bölümünü siteye eklemek/güncellemek için hazırlandı.
+PAROGLU MEDIA — KONSER VIDEO UPDATE
 
-İçindekiler:
-- karabuk-idman-yurdu.html  -> Karabük İdman Yurdu proje sayfası
-- isler.html                -> İşler sayfasında Karabük kartı güncellendi
-- karabuk-idman-yurdu-01.png ... karabuk-idman-yurdu-10.png -> Galeri görselleri
-- corluspor.html ve corluspor-1947-01..10.jpg -> Önceki Çorluspor düzeltmeleri de dahil edildi
+Bu paket 4 konser videosunu siteye ekler:
+- Sefo — 1:20
+- Hakan Peker — 0:47
+- Dedublüman — 1:28
+- Poizi — 1:03
 
-Kurulum:
-1) ZIP içindeki dosyaları mevcut site dosyalarının üzerine yükleyin.
-2) Özellikle isler.html ve karabuk-idman-yurdu.html dosyalarının güncellendiğinden emin olun.
-3) 10 adet karabuk-idman-yurdu görselini de aynı kök dizine yükleyin.
+GitHub'a paketin içindeki dosyaların tamamını repo köküne yükleyin.
+Aynı isimli index.html, isler.html ve sefo.html dosyalarının üstüne yazın.
+Yeni konser.html dosyasını ve concert-*.mp4 / concert-*-poster.jpg dosyalarını ekleyin.
 
-Not:
-- backend-config.js, data-store.js, app.js ve styles.css dosyalarına dokunmayın.
-- Kapak görseli olarak karabuk-idman-yurdu-01.png kullanılır.
+Videolar GitHub web yükleme sınırına uygun olması için web için optimize edilmiştir; çözünürlük korunmuş, dosya boyutları düşürülmüştür.
+Supabase SQL çalıştırmanız gerekmiyor.
+backend-config.js dosyasına dokunmayın.
