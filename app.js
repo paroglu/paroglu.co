@@ -265,6 +265,24 @@
   $$('[data-prev]').forEach(b=>b.addEventListener('click',()=>showStep(step-1)));
   $('[data-submit-brief]')?.addEventListener('click',async e=>{const btn=e.currentTarget;btn.disabled=true;btn.textContent='Gönderiliyor…';try{await PMData.submitBrief({name:brief.name||'',company:brief.company||'',email:brief.email||'',phone:brief.phone||'',service:brief.service||'',project_type:brief.project_type||'',budget:brief.budget||'',deadline:brief.deadline||'',city:brief.city||'',notes:[brief.notes,brief.website&&`Web/IG: ${brief.website}`,brief.colors&&`Renkler: ${brief.colors}`,brief.sector&&`Sektör: ${brief.sector}`,brief.channel&&`İletişim: ${brief.channel}`].filter(Boolean).join('\n'),source:'website'});btn.textContent='Brief alındı ✓';sessionStorage.removeItem('pmAssistantLead')}catch(err){btn.disabled=false;btn.textContent='Tekrar Dene';alert('Brief gönderilemedi: '+err.message)}});
 
+  /* ---------------------------------------------------------
+     CASE STUDY LIGHTBOX
+  --------------------------------------------------------- */
+  (()=>{
+    const shots=$$('[data-lightbox-gallery] [data-full]');
+    if(!shots.length)return;
+    const items=shots.map(x=>x.dataset.full).filter(Boolean); let idx=0;
+    const lb=document.createElement('div');lb.className='pm-lightbox';lb.innerHTML=`<button class="lb-close" aria-label="Kapat">×</button><button class="lb-prev" aria-label="Önceki">‹</button><img alt="Proje görseli"><button class="lb-next" aria-label="Sonraki">›</button><div class="lb-count"></div>`;document.body.appendChild(lb);
+    const img=$('img',lb),count=$('.lb-count',lb);
+    const show=(n)=>{idx=(n+items.length)%items.length;img.classList.remove('swap');void img.offsetWidth;img.src=items[idx];img.classList.add('swap');count.textContent=`${idx+1} / ${items.length}`};
+    const open=(n)=>{show(n);lb.classList.add('open');document.documentElement.style.overflow='hidden'};
+    const closeLb=()=>{lb.classList.remove('open');document.documentElement.style.overflow=''};
+    shots.forEach((b,i)=>b.addEventListener('click',()=>open(i)));
+    $('.lb-close',lb).addEventListener('click',closeLb);$('.lb-prev',lb).addEventListener('click',()=>show(idx-1));$('.lb-next',lb).addEventListener('click',()=>show(idx+1));
+    lb.addEventListener('click',e=>{if(e.target===lb)closeLb()});
+    addEventListener('keydown',e=>{if(!lb.classList.contains('open'))return;if(e.key==='Escape')closeLb();if(e.key==='ArrowLeft')show(idx-1);if(e.key==='ArrowRight')show(idx+1)});
+  })();
+
   /* BOOT */
   Promise.resolve(loadContent()).then(()=>loadBrands());
   loadProjects();loadFeatured();loadAssistantKnowledge();
