@@ -1,33 +1,27 @@
-# Paroglu Media V3
+# Paroglu Media V4
 
-GitHub Pages için statik frontend + Supabase tabanlı güvenli admin/CMS/CRM.
+Bu paket V3 üzerine güncelleme olarak hazırlanmıştır. Mevcut Supabase projesi, admin kullanıcısı ve veriler korunur.
 
-## V3 değişiklikleri
-- Hero videosu kaldırıldı; animasyonlu tipografik slogan kullanılıyor.
-- Menü: Hakkımda → Hizmetler → İşler → Teklif Al → İletişim.
-- Teklif Al butonu mor vurgu rengine sahip.
-- İşler sayfası mobil/tablet/desktop için yeniden düzenlendi; 9:16, 16:9, 4:5, 1:1 kart oranlarını destekliyor.
-- İş kartlarında kategori / içerik türü öncelikli, firma bilgisi ikincil.
-- Hizmetler ve ana sayfadaki “Ne Üretiyorum?” satırları açılır detaylara sahip.
-- Hakkımda bölümü profesyonelleştirildi: 4+ yıl, 1000+ üretim vb. içerikler panelden düzenlenebilir.
-- Telefon: +90 541 662 98 62.
-- Yüksek çözünürlüklü şeffaf Paroglu Media logosu eklendi.
-- Admin panel: Site Yazıları, Projeler, Medya Kütüphanesi, Marka Logoları, Talepler.
-- Medya yükleme orijinal dosyayı sıkıştırmadan Supabase Storage'a yollar; 9:16 / 16:9 / 4:5 / 1:1 / original oran metadatası desteklenir.
-- Logo carousel satırı, sırası, görünürlüğü, maksimum logo adedi ve hız panelden yönetilebilir.
+## V4'te gelenler
+- Logo odaklı açılış / yükleme animasyonu (ana sayfada daha uzun, iç sayfalarda daha kısa)
+- Sayfalar arası mor Paroglu Media geçiş animasyonu
+- Ana hero'da videosuz, hareketli tipografik/ambient kompozisyon
+- Hakkımda / Hizmetler / İşler / İletişim sayfalarında giriş ve başlık animasyonları
+- İşler kartlarında fotoğraf-video crossfade ve daha yumuşak filtre reflow animasyonu
+- Menüde İşler hover alanında panelden `featured` seçilen favori işler
+- Marka/logolar için çalışan marquee animasyonu (V3'te keyframe eksikti)
+- Admin girişinde başarılı oturum geçişi; giriş ekranı artık panelin üstünde kalmaz
+- Admin panelinde toplu orijinal-kalite medya yükleme
+- Admin panelinden proje, featured iş, marka logosu, site metni ve logo akış hızı yönetimi
+- AI Asistan bilgi bankası: panelden soru / cevap / anahtar kelime ekleme-düzenleme-silme
+- Reels, sosyal medya, fotoğraf, tasarım, drone, web, spor, konser, fiyat, teslim ve revizyon için hazır bot cevapları
+- Proje niyeti algılandığında firma → hizmet → hedef → zaman → bütçe → iletişim akışı
 
-## Bir kerelik Supabase V3 kurulumu
-Mevcut Supabase projesinde:
-1. SQL Editor → New query.
-2. `supabase-v3-migration.sql` dosyasının tamamını yapıştır.
-3. Run.
+## Kurulum / Güncelleme
+1. V4 dosyalarını mevcut GitHub repo köküne yükle ve aynı isimli dosyaların üzerine yaz.
+2. `backend-config.js` gerçek Supabase URL ve publishable key içeriyor olmalı.
+3. Supabase > SQL Editor > New query içinde `supabase-v4-migration.sql` dosyasını bir kez çalıştır.
+4. GitHub Pages deploy tamamlandıktan sonra siteyi ve `panel.html` admin girişini test et.
 
-Bu migration mevcut V2 tablolarını silmez. Yeni alanları, Site Yazıları tablosunu, Medya Kütüphanesini ve `media` Storage bucket/policy'lerini ekler.
-
-## GitHub Pages
-Bu klasörün içindeki dosyaları repo köküne yükle / mevcut V2 dosyalarının üzerine yaz. `backend-config.js` mevcut Supabase public bağlantı bilgileriyle hazırlanmıştır.
-
-## Admin
-`panel.html`
-
-Giriş yalnızca `backend-config.js` içindeki admin e-posta adresi ve Supabase Authentication hesabı ile açılır. Veritabanı/Storage write işlemleri RLS ile aynı admin e-postasına sınırlandırılmıştır.
+## Not
+`supabase-v4-migration.sql` additive'dir: V3 tablolarını ve mevcut proje/marka/brief/medya verilerini silmez. Yeni AI bilgi bankasını ve V4 CMS ayarlarını ekler.
