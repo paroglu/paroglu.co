@@ -1,19 +1,16 @@
-PAROGLU MEDIA — ÇORLUSPOR 1947 DÜZELTME
+Bu paket Karabük İdman Yurdu bölümünü siteye eklemek/güncellemek için hazırlandı.
 
-Bu paket yalnızca Çorluspor 1947 hatasını düzeltir.
+İçindekiler:
+- karabuk-idman-yurdu.html  -> Karabük İdman Yurdu proje sayfası
+- isler.html                -> İşler sayfasında Karabük kartı güncellendi
+- karabuk-idman-yurdu-01.png ... karabuk-idman-yurdu-10.png -> Galeri görselleri
+- corluspor.html ve corluspor-1947-01..10.jpg -> Önceki Çorluspor düzeltmeleri de dahil edildi
 
-1) ZIP'i aç.
-2) İçindeki 12 site dosyasını mevcut GitHub repo köküne yükle:
-   - isler.html
-   - corluspor.html
-   - corluspor-1947-01.jpg ... corluspor-1947-10.jpg
-3) Aynı isimli dosyalar için üzerine yaz / replace yap.
-4) Eski corluspor-1947-11.jpg ... corluspor-1947-20.jpg dosyaları varsa silebilirsin; yeni sayfa bunları kullanmıyor.
-5) backend-config.js dosyasına dokunma.
-6) Supabase > SQL Editor'da supabase-corluspor-fix.sql dosyasını bir kere Run et.
+Kurulum:
+1) ZIP içindeki dosyaları mevcut site dosyalarının üzerine yükleyin.
+2) Özellikle isler.html ve karabuk-idman-yurdu.html dosyalarının güncellendiğinden emin olun.
+3) 10 adet karabuk-idman-yurdu görselini de aynı kök dizine yükleyin.
 
-Sonuç:
-- Çorluspor 1947 kartında kapak görünür.
-- Proje adı "Çorluspor 1947" görünür.
-- Proje detayında tam 10 görsel bulunur.
-- Galeride görsellerin içerik isimleri de görünür.
+Not:
+- backend-config.js, data-store.js, app.js ve styles.css dosyalarına dokunmayın.
+- Kapak görseli olarak karabuk-idman-yurdu-01.png kullanılır.
