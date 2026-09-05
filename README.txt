@@ -1,15 +1,19 @@
-PAROGLU MEDIA — KONSER VIDEO UPDATE
+PAROGLU MEDIA — TASARIM BÖLÜMÜ GÜNCELLEMESİ
 
-Bu paket 4 konser videosunu siteye ekler:
-- Sefo — 1:20
-- Hakan Peker — 0:47
-- Dedublüman — 1:28
-- Poizi — 1:03
+Bu paket sadece Tasarım bölümünü günceller.
 
-GitHub'a paketin içindeki dosyaların tamamını repo köküne yükleyin.
-Aynı isimli index.html, isler.html ve sefo.html dosyalarının üstüne yazın.
-Yeni konser.html dosyasını ve concert-*.mp4 / concert-*-poster.jpg dosyalarını ekleyin.
+Yüklenecek dosyalar:
+- isler.html
+- tasarim.html
+- design-yilmaz-gucumuz-ekibimiz.jpg
+- design-urun-canta.jpg
+- design-gokhan-turkmen-billboard.jpg
+- design-gokhan-turkmen-konser.jpg
+- design-yilmaz-noktadayiz.jpg
+- design-safranbolu-unesco-31.jpg
+- design-yilmaz-arac-filomuz.jpg
 
-Videolar GitHub web yükleme sınırına uygun olması için web için optimize edilmiştir; çözünürlük korunmuş, dosya boyutları düşürülmüştür.
-Supabase SQL çalıştırmanız gerekmiyor.
-backend-config.js dosyasına dokunmayın.
+NOT:
+- backend-config.js dosyasına dokunma.
+- Supabase SQL çalıştırmaya gerek yok.
+- Tasarım sayfasındaki kapak alanı bilerek geçici bırakıldı. Bir sonraki adımda özel kapak görseli hazırlanacak.
