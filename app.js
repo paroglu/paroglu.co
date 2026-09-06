@@ -189,17 +189,66 @@
       return rows;
     }catch(err){console.warn('Projects unavailable',err);return []}
   }
+  function slideMedia(p){
+    const src=p.cover_url||p.media_url||'';
+    const isVideo=/\.(mp4|webm|mov)(\?|$)/i.test(src);
+    if(!src)return '<div class="portfolio-slide-fallback"></div>';
+    return isVideo
+      ? `<video src="${esc(src)}" muted loop playsinline preload="metadata"></video>`
+      : `<img src="${esc(src)}" alt="${esc(p.title||'Proje')}" loading="lazy" decoding="async">`;
+  }
+  function renderFeaturedShowcase(rows=[]){
+    const host=$('[data-featured-grid]');if(!host||!rows.length)return;
+    const picks=rows.slice(0,6);
+    const slide=p=>{
+      const cats=[p.category,p.content_type].filter(Boolean).join(' · ').replace(/\bDigital\b/g,'Dijital')||'KREATİF İŞ';
+      const tags=(p.tags||'').split(',').map(x=>x.trim()).filter(Boolean).slice(0,4).join(' · ');
+      return `<a class="portfolio-slide" href="${esc(p.project_url||'isler.html')}">${slideMedia(p)}<div class="portfolio-slide-shade"></div><div class="portfolio-slide-content"><div class="portfolio-slide-eyebrow">${esc(cats)}${p.year?' · '+esc(p.year):''}</div><h3>${esc(p.title||'Proje')}</h3>${tags?`<p>${esc(tags)}</p>`:''}<span>Projeyi İncele ↗</span></div></a>`;
+    };
+    const mini=p=>`<a class="portfolio-mini" href="${esc(p.project_url||'isler.html')}">${slideMedia(p)}<div><small>${esc([p.category,p.content_type].filter(Boolean).join(' · ')||'KREATİF İŞ')}</small><strong>${esc(p.title||'Proje')}</strong></div><i>↗</i></a>`;
+    host.innerHTML=`<div class="portfolio-stage" aria-label="Seçili portfolyo işleri"><div class="portfolio-slides">${picks.map(slide).join('')}</div><div class="portfolio-stage-ui"><div class="portfolio-count"><strong data-portfolio-current>01</strong><span>/</span><span data-portfolio-total>${String(picks.length).padStart(2,'0')}</span></div><div class="portfolio-progress"><i></i></div><div class="portfolio-arrows"><button type="button" data-portfolio-prev aria-label="Önceki proje">←</button><button type="button" data-portfolio-next aria-label="Sonraki proje">→</button></div></div></div><div class="portfolio-mini-grid">${picks.slice(0,4).map(mini).join('')}</div>`;
+    initPortfolioSlider(host);
+  }
+  function initPortfolioSlider(root=$('[data-portfolio-slider]')){
+    if(!root||root.dataset.sliderReady==='1')return;
+    const slides=$$('.portfolio-slide',root);if(!slides.length)return;
+    root.dataset.sliderReady='1';
+    let index=Math.max(0,slides.findIndex(x=>x.classList.contains('is-active')));if(index<0)index=0;
+    slides.forEach((s,i)=>s.classList.toggle('is-active',i===index));
+    const current=$('[data-portfolio-current]',root), total=$('[data-portfolio-total]',root), progress=$('.portfolio-progress i',root), stage=$('.portfolio-stage',root);
+    if(total)total.textContent=String(slides.length).padStart(2,'0');
+    let timer=null,startX=null;
+    const resetProgress=()=>{if(!progress||reduceMotion)return;progress.style.animation='none';void progress.offsetWidth;progress.style.animation='portfolioProgress 4.8s linear forwards'};
+    const playVideo=i=>{slides.forEach((s,n)=>{const v=$('video',s);if(!v)return;if(n===i)v.play().catch(()=>{});else{v.pause();v.currentTime=0}})};
+    const go=(next,dir=1)=>{
+      if(slides.length<2)return;
+      next=(next+slides.length)%slides.length;if(next===index)return;
+      root.classList.toggle('dir-prev',dir<0);
+      const prev=index;slides[prev].classList.remove('is-active');slides[prev].classList.add('is-exiting');
+      slides[next].classList.remove('is-exiting');void slides[next].offsetWidth;slides[next].classList.add('is-active');
+      setTimeout(()=>slides[prev]?.classList.remove('is-exiting'),760);
+      index=next;if(current)current.textContent=String(index+1).padStart(2,'0');playVideo(index);resetProgress();
+    };
+    const start=()=>{if(reduceMotion||slides.length<2)return;clearInterval(timer);timer=setInterval(()=>go(index+1,1),4800);resetProgress()};
+    const pause=()=>{clearInterval(timer);timer=null;if(progress)progress.style.animationPlayState='paused'};
+    const resume=()=>{if(progress)progress.style.animationPlayState='running';start()};
+    $('[data-portfolio-next]',root)?.addEventListener('click',()=>{go(index+1,1);start()});
+    $('[data-portfolio-prev]',root)?.addEventListener('click',()=>{go(index-1,-1);start()});
+    stage?.addEventListener('mouseenter',pause);stage?.addEventListener('mouseleave',resume);
+    stage?.addEventListener('focusin',pause);stage?.addEventListener('focusout',resume);
+    stage?.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')return;startX=e.clientX},{passive:true});
+    stage?.addEventListener('pointerup',e=>{if(startX==null)return;const dx=e.clientX-startX;startX=null;if(Math.abs(dx)>42){go(index+(dx<0?1:-1),dx<0?1:-1);start()}},{passive:true});
+    playVideo(index);start();
+  }
   async function loadFeatured(){
-    const host=$('[data-featured-grid]'); if(!host||!window.PMData) return;
+    const host=$('[data-featured-grid]'); if(!host) return;
+    initPortfolioSlider(host);
+    if(!window.PMData) return;
     try{
       const rows=(await PMData.projects()).map(normalizeProject).filter(Boolean).filter(x=>x.featured).slice(0,6);
-      // Keep the curated static home grid if the CMS does not yet contain enough complete featured projects.
-      if(rows.length<3){buildWorkMega(rows);return}
-      host.innerHTML=rows.map((p,i)=>{
-        const tags=(p.tags||'').split(',').map(x=>x.trim()).filter(Boolean).join(' · ');
-        const cats=[p.category,p.content_type].filter(Boolean).join(' · ').replace(/\bDigital\b/g,'Dijital')||'Kreatif İş';
-        return `<a class="project-card ${i%3===1?'small':''} reveal visible" href="${esc(p.project_url||'isler.html')}">${mediaMarkup(p)}<div class="project-meta"><div><div class="eyebrow">${esc(cats)}${p.year?' · '+esc(p.year):''}</div><h3>${esc(p.title||'Proje')}</h3>${tags?`<div class="project-tags">${esc(tags)}</div>`:''}${p.client?`<div class="project-client">${esc(p.client)}</div>`:''}</div><div class="view-chip">↗</div></div></a>`
-      }).join('');enhanceCards(host);buildWorkMega(rows);
+      // CMS edits can replace the curated fallback, but only when there is a real portfolio set.
+      if(rows.length>=3)renderFeaturedShowcase(rows);
+      buildWorkMega(rows);
     }catch(err){console.warn('Featured unavailable',err)}
   }
 
@@ -228,14 +277,9 @@
     try{
       let rows=await PMData.brands(); if(!rows.length)return;
       const limit=parseInt(window.PMContentMap?.['brands.carousel_limit']||'14',10)||14; rows=rows.slice(0,limit);
-      const row1=rows.filter(x=>Number(x.row_no||1)===1); const row2=rows.filter(x=>Number(x.row_no||1)===2);
-      const make=(arr,reverse=false)=>{
-        if(!arr.length)return'';
-        const item=b=>`<a class="brand-pill" ${b.url?`href="${esc(b.url)}" target="_blank" rel="noreferrer"`:''}>${b.logo_url?`<img src="${esc(b.logo_url)}" alt="${esc(b.name)}"/>`:`<span>${esc(b.name)}</span>`}</a>`;
-        const group=arr.map(item).join('');
-        return `<div class="marquee-row"><div class="marquee ${reverse?'reverse':''}"><div class="marquee-group">${group}</div><div class="marquee-group" aria-hidden="true">${group}</div></div></div>`;
-      };
-      wrap.innerHTML=make(row1.length?row1:rows.filter((_,i)=>i%2===0),false)+make(row2.length?row2:rows.filter((_,i)=>i%2===1),true);
+      const item=b=>`<a class="brand-pill" ${b.url?`href="${esc(b.url)}" target="_blank" rel="noreferrer"`:''}>${b.logo_url?`<img src="${esc(b.logo_url)}" alt="${esc(b.name)}"/>`:`<span>${esc(b.name)}</span>`}</a>`;
+      const group=rows.map(item).join('');
+      wrap.innerHTML=`<div class="marquee-row"><div class="marquee brand-flow-track"><div class="marquee-group brand-flow-group">${group}</div><div class="marquee-group brand-flow-group" aria-hidden="true">${group}</div></div></div>`;
     }catch(err){console.warn('Brands unavailable',err)}
   }
 

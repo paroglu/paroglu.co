@@ -136,3 +136,83 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
   .project-meta h3{font-size:clamp(25px,9vw,36px)}
   .brand-pill{min-width:142px}
 }
+
+/* =========================================================
+   V5.2 — PORTFOLIO SHOWCASE + CLEAN BRAND FLOW
+   ========================================================= */
+.portfolio-showcase-section{position:relative;overflow:hidden}
+.portfolio-showcase-section::before{content:"";position:absolute;width:720px;height:720px;left:-260px;top:90px;border-radius:50%;background:radial-gradient(circle,rgba(125,69,245,.10),transparent 67%);filter:blur(8px);pointer-events:none}
+.portfolio-showcase{position:relative;z-index:1}
+.portfolio-stage{position:relative;height:clamp(500px,58vw,730px);border:1px solid rgba(255,255,255,.10);border-radius:30px;overflow:hidden;background:linear-gradient(135deg,#0a0910,#11101a 48%,#09080e);box-shadow:0 32px 100px rgba(0,0,0,.34)}
+.portfolio-slides{position:absolute;inset:0}
+.portfolio-slide{position:absolute;inset:0;display:block;color:#fff;opacity:0;visibility:hidden;clip-path:inset(0 0 0 18%);transform:translate3d(5%,0,0) scale(1.025);transition:clip-path .78s cubic-bezier(.2,.78,.2,1),transform .78s cubic-bezier(.2,.78,.2,1),opacity .48s ease,visibility 0s linear .78s;background:linear-gradient(135deg,#0d0b14,#171022)}
+.portfolio-slide::before{content:"";position:absolute;inset:0;z-index:0;background:radial-gradient(circle at 72% 24%,rgba(138,84,255,.22),transparent 32%),radial-gradient(circle at 86% 74%,rgba(255,59,112,.13),transparent 30%),linear-gradient(105deg,#08070c 0%,#0a0910 43%,#120d1b 100%)}
+.portfolio-slide.is-active{opacity:1;visibility:visible;clip-path:inset(0);transform:none;z-index:2;transition-delay:0s}
+.portfolio-slide.is-exiting{opacity:0;visibility:visible;clip-path:inset(0 18% 0 0);transform:translate3d(-4%,0,0) scale(1.015);z-index:1;transition-delay:0s}
+.portfolio-showcase.dir-prev .portfolio-slide:not(.is-active):not(.is-exiting){clip-path:inset(0 18% 0 0);transform:translate3d(-5%,0,0) scale(1.025)}
+.portfolio-showcase.dir-prev .portfolio-slide.is-exiting{clip-path:inset(0 0 0 18%);transform:translate3d(4%,0,0) scale(1.015)}
+.portfolio-slide>img,.portfolio-slide>video{position:absolute;z-index:1;right:0;top:0;width:68%;height:100%;display:block;object-fit:cover;object-position:center 24%;filter:saturate(.92) contrast(1.04);transform:scale(1.025);transition:transform 6s cubic-bezier(.2,.65,.2,1),filter .5s ease}
+.portfolio-slide.is-active>img,.portfolio-slide.is-active>video{transform:scale(1.075)}
+.portfolio-slide-fallback{position:absolute;z-index:1;right:0;top:0;width:68%;height:100%;background:radial-gradient(circle at 60% 35%,rgba(158,104,255,.5),transparent 31%),linear-gradient(135deg,#211632,#0a0910)}
+.portfolio-slide-shade{position:absolute;inset:0;z-index:2;background:linear-gradient(90deg,rgba(7,7,11,.99) 0%,rgba(7,7,11,.94) 25%,rgba(7,7,11,.66) 47%,rgba(7,7,11,.08) 78%),linear-gradient(0deg,rgba(7,7,11,.66),transparent 44%);pointer-events:none}
+.portfolio-slide-content{position:absolute;z-index:3;left:clamp(28px,4vw,58px);bottom:clamp(92px,9vw,118px);width:min(520px,44%)}
+.portfolio-slide-eyebrow{font-size:10px;font-weight:800;letter-spacing:.16em;color:#bfa5ff;text-transform:uppercase;margin-bottom:14px}
+.portfolio-slide-content h3{font-size:clamp(48px,6.3vw,92px);line-height:.9;letter-spacing:-.066em;margin:0 0 18px;max-width:620px;text-wrap:balance}
+.portfolio-slide-content p{font-size:14px;line-height:1.55;color:#b9b2c1;margin:0 0 25px;max-width:480px}
+.portfolio-slide-content>span{display:inline-flex;align-items:center;gap:9px;font-size:12px;font-weight:750;letter-spacing:.06em;padding:11px 15px;border:1px solid rgba(255,255,255,.15);border-radius:999px;background:rgba(255,255,255,.035);backdrop-filter:blur(12px)}
+.portfolio-stage-ui{position:absolute;left:clamp(28px,4vw,58px);right:clamp(24px,3vw,42px);bottom:28px;z-index:8;display:grid;grid-template-columns:auto minmax(100px,1fr) auto;gap:20px;align-items:center}
+.portfolio-count{display:flex;align-items:baseline;gap:7px;color:#7e7689;font-size:11px;letter-spacing:.12em}.portfolio-count strong{font-size:18px;color:#fff}.portfolio-count span:first-of-type{opacity:.45}
+.portfolio-progress{height:1px;background:rgba(255,255,255,.16);overflow:hidden}.portfolio-progress i{display:block;width:100%;height:100%;transform-origin:left center;background:linear-gradient(90deg,#9a6cff,#fff);animation:portfolioProgress 4.8s linear forwards}
+@keyframes portfolioProgress{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.portfolio-arrows{display:flex;gap:8px}.portfolio-arrows button{width:43px;height:43px;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:rgba(8,7,13,.54);color:#fff;display:grid;place-items:center;font-size:17px;cursor:pointer;backdrop-filter:blur(12px);transition:.25s ease}.portfolio-arrows button:hover{background:#fff;color:#0b0910;transform:translateY(-2px)}
+.portfolio-mini-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px}
+.portfolio-mini{position:relative;min-height:150px;border:1px solid rgba(255,255,255,.08);border-radius:20px;overflow:hidden;background:#0d0b12;color:#fff;display:flex;align-items:flex-end;padding:18px;isolation:isolate;transition:transform .3s ease,border-color .3s ease}
+.portfolio-mini>img,.portfolio-mini>video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 24%;z-index:-2;filter:saturate(.78) brightness(.58);transition:transform .6s cubic-bezier(.2,.7,.2,1),filter .35s ease}
+.portfolio-mini::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(7,7,11,.94),rgba(7,7,11,.12) 72%)}
+.portfolio-mini div{min-width:0}.portfolio-mini small{display:block;font-size:8px;letter-spacing:.13em;color:#bca9e9;margin-bottom:5px}.portfolio-mini strong{display:block;font-size:17px;line-height:1.05;letter-spacing:-.025em}.portfolio-mini i{margin-left:auto;align-self:flex-start;width:30px;height:30px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.14);border-radius:50%;font-style:normal;font-size:12px;background:rgba(0,0,0,.18)}
+.portfolio-mini:hover{transform:translateY(-3px);border-color:rgba(167,123,255,.34)}.portfolio-mini:hover>img,.portfolio-mini:hover>video{transform:scale(1.06);filter:saturate(1) brightness(.68)}
+
+/* Brands return to a simple, continuous moving ribbon — no boxed cards. */
+.brands-clean{padding-bottom:108px}
+.brand-flow-shell{position:relative;overflow:hidden;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);padding:26px 0;background:linear-gradient(90deg,rgba(125,69,245,.025),rgba(255,255,255,.018),rgba(125,69,245,.025))}
+.brand-flow-shell .marquee-row{overflow:hidden;mask-image:linear-gradient(90deg,transparent,black 5%,black 95%,transparent);-webkit-mask-image:linear-gradient(90deg,transparent,black 5%,black 95%,transparent)}
+.brand-flow-track{display:flex!important;width:max-content!important;gap:0!important;animation:brandFlow var(--marquee-speed,34s) linear infinite!important;will-change:transform}
+.brand-flow-group{display:flex;align-items:center;flex:0 0 auto;gap:0!important;padding:0!important}
+.brand-flow-shell .brand-pill{position:relative;display:flex!important;align-items:center;justify-content:center;height:auto!important;min-width:auto!important;max-width:none!important;border:0!important;border-radius:0!important;background:transparent!important;padding:0 38px!important;color:#aaa3b3;transform:none!important;white-space:nowrap}
+.brand-flow-shell .brand-pill::after{content:"";position:absolute;right:-2px;top:50%;width:4px;height:4px;border-radius:50%;background:#7545e8;transform:translateY(-50%);opacity:.72}
+.brand-flow-shell .brand-pill span{font-size:clamp(19px,2vw,28px);font-weight:580;letter-spacing:-.035em;color:#9d96a8!important;transition:color .25s ease}
+.brand-flow-shell .brand-pill img{width:auto!important;max-width:150px!important;max-height:42px!important;filter:grayscale(1) brightness(1.55)!important;opacity:.62!important;transition:filter .25s ease,opacity .25s ease,transform .25s ease}
+.brand-flow-shell .brand-pill:hover span{color:#fff!important}.brand-flow-shell .brand-pill:hover img{filter:none!important;opacity:1!important;transform:scale(1.035)}
+.brand-flow-shell .marquee-row:hover .brand-flow-track{animation-play-state:running!important}
+@keyframes brandFlow{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+
+@media(max-width:980px){
+  .portfolio-stage{height:620px}
+  .portfolio-slide>img,.portfolio-slide>video,.portfolio-slide-fallback{width:72%}
+  .portfolio-slide-content{width:48%}
+  .portfolio-mini-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:640px){
+  .portfolio-showcase-section{padding-top:76px}
+  .portfolio-stage{height:620px;border-radius:24px}
+  .portfolio-slide>img,.portfolio-slide>video,.portfolio-slide-fallback{width:100%;height:66%;right:0;top:0;object-position:center 20%}
+  .portfolio-slide-shade{background:linear-gradient(0deg,rgba(7,7,11,.99) 0%,rgba(7,7,11,.96) 30%,rgba(7,7,11,.58) 56%,rgba(7,7,11,.07) 82%)}
+  .portfolio-slide-content{left:22px;right:22px;bottom:92px;width:auto}
+  .portfolio-slide-eyebrow{font-size:8px;margin-bottom:8px}
+  .portfolio-slide-content h3{font-size:clamp(38px,12vw,56px);line-height:.93;margin-bottom:10px;letter-spacing:-.05em}
+  .portfolio-slide-content p{font-size:12px;margin-bottom:14px}
+  .portfolio-slide-content>span{font-size:10px;padding:9px 12px}
+  .portfolio-stage-ui{left:22px;right:18px;bottom:22px;grid-template-columns:auto 1fr auto;gap:12px}
+  .portfolio-arrows button{width:38px;height:38px}
+  .portfolio-mini-grid{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;padding-bottom:3px;scrollbar-width:none}.portfolio-mini-grid::-webkit-scrollbar{display:none}
+  .portfolio-mini{flex:0 0 74vw;min-height:135px;scroll-snap-align:start}
+  .brand-flow-shell{padding:21px 0}
+  .brand-flow-shell .brand-pill{padding:0 27px!important}
+  .brand-flow-shell .brand-pill span{font-size:20px}
+  .brand-flow-shell .brand-pill img{max-width:125px!important;max-height:36px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .portfolio-slide,.portfolio-slide>img,.portfolio-slide>video,.portfolio-mini,.portfolio-mini>img,.portfolio-mini>video{transition:none!important}
+  .portfolio-progress i,.brand-flow-track{animation:none!important}
+  .brand-flow-track{transform:none!important}
+}

@@ -1,0 +1,19 @@
+PAROGLU MEDIA — V5.2 HOME / PORTFOLYO REVİZYONU
+
+Bu paket sadece 3 ana dosyayı günceller:
+- index.html
+- styles.css
+- app.js
+
+Yapılan değişiklikler:
+1. Ana sayfadaki Seçili İşler bölümü büyük, otomatik kayan bir Portfolyo sahnesine dönüştürüldü.
+2. Karabük İdman Yurdu, Çorluspor 1947, Konser, Kepezspor ve Tasarım işleri büyük slider içinde dönüşümlü görünür.
+3. Slider altında 4 daha küçük proje kartı bulunur.
+4. Slider otomatik akar; ileri/geri butonları, sayaç, progress çizgisi ve mobil swipe desteği vardır.
+5. Çalıştığım Markalar bölümü kutulu/kartlı görünümden çıkarıldı. Tek satır, sade ve sürekli sağdan sola kayan marka bandına döndürüldü.
+6. Admin panelindeki featured proje ve marka verileri ile çalışmaya devam eder. CMS'te 3+ featured proje varsa slider bu içeriklerle otomatik güncellenir.
+7. backend-config.js değiştirilmez.
+
+Kurulum:
+GitHub repo kökünde aynı isimli index.html, styles.css ve app.js dosyalarının üzerine bu pakettekileri yükle.
+Supabase tarafında SQL çalıştırman gerekmez.
