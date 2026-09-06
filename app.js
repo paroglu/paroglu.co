@@ -276,10 +276,14 @@
     const wrap=$('[data-brand-area]'); if(!wrap||!window.PMData) return;
     try{
       let rows=await PMData.brands(); if(!rows.length)return;
-      const limit=parseInt(window.PMContentMap?.['brands.carousel_limit']||'14',10)||14; rows=rows.slice(0,limit);
-      const item=b=>`<a class="brand-pill" ${b.url?`href="${esc(b.url)}" target="_blank" rel="noreferrer"`:''}>${b.logo_url?`<img src="${esc(b.logo_url)}" alt="${esc(b.name)}"/>`:`<span>${esc(b.name)}</span>`}</a>`;
-      const group=rows.map(item).join('');
-      wrap.innerHTML=`<div class="marquee-row"><div class="marquee brand-flow-track"><div class="marquee-group brand-flow-group">${group}</div><div class="marquee-group brand-flow-group" aria-hidden="true">${group}</div></div></div>`;
+      const limit=parseInt(window.PMContentMap?.['brands.carousel_limit']||'16',10)||16;
+      rows=rows.filter((b,i,a)=>b?.name && a.findIndex(x=>String(x.name).toLocaleLowerCase('tr-TR')===String(b.name).toLocaleLowerCase('tr-TR'))===i).slice(0,limit);
+      if(rows.length<2)return;
+      const item=b=>`<a class="brand-tile" ${b.url?`href="${esc(b.url)}" target="_blank" rel="noreferrer"`:''}>${b.logo_url?`<img src="${esc(b.logo_url)}" alt="${esc(b.name)}"/>`:`<span>${esc(b.name)}</span>`}</a>`;
+      const rowA=rows.filter((_,i)=>i%2===0), rowB=rows.filter((_,i)=>i%2===1);
+      const safeA=(rowA.length?rowA:rows).map(item).join('');
+      const safeB=(rowB.length?rowB:rows).map(item).join('');
+      wrap.innerHTML=`<div class="brand-marquee-row"><div class="brand-marquee-track"><div class="brand-marquee-group">${safeA}</div><div class="brand-marquee-group" aria-hidden="true">${safeA}</div></div></div><div class="brand-marquee-row reverse"><div class="brand-marquee-track"><div class="brand-marquee-group">${safeB}</div><div class="brand-marquee-group" aria-hidden="true">${safeB}</div></div></div>`;
     }catch(err){console.warn('Brands unavailable',err)}
   }
 
@@ -370,6 +374,67 @@
     $('.lb-close',lb).addEventListener('click',closeLb);$('.lb-prev',lb).addEventListener('click',()=>show(idx-1));$('.lb-next',lb).addEventListener('click',()=>show(idx+1));
     lb.addEventListener('click',e=>{if(e.target===lb)closeLb()});
     addEventListener('keydown',e=>{if(!lb.classList.contains('open'))return;if(e.key==='Escape')closeLb();if(e.key==='ArrowLeft')show(idx-1);if(e.key==='ArrowRight')show(idx+1)});
+  })();
+
+
+  /* ---------------------------------------------------------
+     V6 CURATED PORTFOLIO REEL + NAV POLISH
+  --------------------------------------------------------- */
+  (()=>{
+    const nav=$('.site-nav');
+    const onScroll=()=>nav?.classList.toggle('is-scrolled',scrollY>22);
+    onScroll();addEventListener('scroll',onScroll,{passive:true});
+
+    const root=$('[data-curated-reel]');if(!root)return;
+    const viewport=$('.curated-reel-viewport',root),track=$('.curated-reel-track',root),cards=$$('.curated-card',root);
+    if(!viewport||!track||!cards.length)return;
+    const current=$('[data-curated-current]',root),total=$('[data-curated-total]',root),progress=$('.curated-progress i',root);
+    let index=0,timer=null,startX=null,dragX=0;
+    if(total)total.textContent=String(cards.length).padStart(2,'0');
+
+    const cardStep=()=>{
+      if(cards.length<2)return cards[0]?.getBoundingClientRect().width||0;
+      return cards[1].offsetLeft-cards[0].offsetLeft;
+    };
+    const center=()=>{
+      const c=cards[index];if(!c)return;
+      const step=cardStep();
+      const target=(c.offsetLeft - ((viewport.clientWidth-c.getBoundingClientRect().width)/2));
+      track.style.transform=`translate3d(${-target}px,0,0)`;
+      cards.forEach((el,i)=>el.classList.toggle('is-active',i===index));
+      if(current)current.textContent=String(index+1).padStart(2,'0');
+      if(!reduceMotion&&progress){progress.style.animation='none';void progress.offsetWidth;progress.style.animation='curatedProgress 5.2s linear forwards'}
+      cards.forEach((el,i)=>{const v=$('video',el);if(!v)return;if(i===index)v.play().catch(()=>{});else{v.pause();v.currentTime=0}});
+    };
+    const go=n=>{index=(n+cards.length)%cards.length;center()};
+    const start=()=>{if(reduceMotion||cards.length<2)return;clearInterval(timer);timer=setInterval(()=>go(index+1),5200)};
+    const pause=()=>{clearInterval(timer);timer=null;if(progress)progress.style.animationPlayState='paused'};
+    const resume=()=>{if(progress)progress.style.animationPlayState='running';start()};
+    $('[data-curated-next]',root)?.addEventListener('click',()=>{go(index+1);start()});
+    $('[data-curated-prev]',root)?.addEventListener('click',()=>{go(index-1);start()});
+    viewport.addEventListener('mouseenter',pause);viewport.addEventListener('mouseleave',resume);
+    viewport.addEventListener('focusin',pause);viewport.addEventListener('focusout',resume);
+
+    viewport.addEventListener('pointerdown',e=>{
+      if(e.pointerType==='mouse'&&e.button!==0)return;
+      startX=e.clientX;dragX=0;pause();viewport.setPointerCapture?.(e.pointerId);
+    });
+    viewport.addEventListener('pointermove',e=>{
+      if(startX==null)return;
+      dragX=e.clientX-startX;
+      const c=cards[index],target=(c.offsetLeft-((viewport.clientWidth-c.getBoundingClientRect().width)/2));
+      track.style.transition='none';track.style.transform=`translate3d(${-(target-dragX)}px,0,0)`;
+    });
+    const endDrag=e=>{
+      if(startX==null)return;
+      const dx=e.clientX-startX;startX=null;track.style.transition='';
+      if(Math.abs(dx)>50)go(index+(dx<0?1:-1));else center();
+      start();
+    };
+    viewport.addEventListener('pointerup',endDrag);viewport.addEventListener('pointercancel',()=>{startX=null;track.style.transition='';center();start()});
+    cards.forEach(card=>card.addEventListener('pointermove',e=>{if(reduceMotion)return;const r=card.getBoundingClientRect();card.style.setProperty('--mx',`${((e.clientX-r.left)/r.width)*100}%`);card.style.setProperty('--my',`${((e.clientY-r.top)/r.height)*100}%`)}));
+    let resizeTimer;addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(center,120)},{passive:true});
+    requestAnimationFrame(()=>{center();start()});
   })();
 
   /* BOOT */
