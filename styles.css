@@ -67,3 +67,72 @@ body:not(.page-ready) .hero-kicker,body:not(.page-ready) .hero-title .word,body:
 .case-hero{padding:calc(var(--nav) + 72px) 0 72px;position:relative;overflow:hidden}.case-hero::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 15% 20%,rgba(126,72,241,.20),transparent 32%),radial-gradient(circle at 80% 55%,rgba(255,55,55,.08),transparent 28%);pointer-events:none}.case-hero-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(340px,.72fr);align-items:center;gap:72px;position:relative;z-index:1}.case-hero-copy h1{font-size:clamp(62px,8.5vw,132px);line-height:.84;letter-spacing:-.07em;margin:18px 0 26px}.case-hero-copy h1 em{font-style:normal;color:var(--purple2)}.case-hero-copy>p{max-width:640px;color:#a8a1b1;font-size:clamp(17px,1.6vw,21px);line-height:1.65;margin-bottom:24px}.case-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 26px}.case-chips span{border:1px solid var(--line);border-radius:999px;padding:8px 11px;color:#b9b2c3;font-size:12px}.case-cover{border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.38);transform:rotate(1.2deg)}.case-cover img{display:block;width:100%;aspect-ratio:4/5;object-fit:cover}.case-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.case-stat-row>div{padding:24px;border:1px solid var(--line);background:rgba(255,255,255,.025);border-radius:18px}.case-stat-row strong{display:block;font-size:clamp(34px,5vw,62px);letter-spacing:-.06em}.case-stat-row span{display:block;margin-top:7px;color:#8f8798;font-size:13px}.case-gallery{columns:3 300px;column-gap:18px}.case-shot{appearance:none;border:0;padding:0;margin:0 0 18px;width:100%;display:block;break-inside:avoid;background:transparent;border-radius:20px;overflow:hidden;cursor:zoom-in;position:relative}.case-shot::after{content:"BÜYÜT ↗";position:absolute;right:13px;bottom:13px;padding:7px 9px;border-radius:999px;background:rgba(9,8,14,.72);backdrop-filter:blur(10px);color:#fff;font-size:9px;font-weight:800;letter-spacing:.12em;opacity:0;transform:translateY(5px);transition:.25s ease}.case-shot:hover::after{opacity:1;transform:none}.case-shot img{display:block;width:100%;height:auto;transition:transform .6s cubic-bezier(.2,.7,.2,1),filter .35s ease}.case-shot:hover img{transform:scale(1.018);filter:saturate(1.04)}.next-project{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:28px;border:1px solid var(--line);border-radius:22px;background:rgba(255,255,255,.025)}.next-project h2{font-size:clamp(30px,5vw,60px);letter-spacing:-.05em;margin:7px 0 0}.pm-lightbox{position:fixed;inset:0;z-index:1200;background:rgba(5,4,8,.94);backdrop-filter:blur(14px);display:none;align-items:center;justify-content:center;padding:28px}.pm-lightbox.open{display:flex;animation:lbIn .25s ease}.pm-lightbox img{max-width:min(900px,86vw);max-height:88vh;object-fit:contain;border-radius:14px;box-shadow:0 30px 90px rgba(0,0,0,.5)}.pm-lightbox button{position:absolute;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.07);color:#fff;width:44px;height:44px;border-radius:50%;display:grid;place-items:center;cursor:pointer;font-size:20px;backdrop-filter:blur(12px)}.pm-lightbox .lb-close{top:22px;right:22px}.pm-lightbox .lb-prev{left:22px;top:50%;transform:translateY(-50%)}.pm-lightbox .lb-next{right:22px;top:50%;transform:translateY(-50%)}.pm-lightbox .lb-count{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);font-size:11px;letter-spacing:.12em;color:#a9a1b2}.pm-lightbox img.swap{animation:lbSwap .24s ease}@keyframes lbIn{from{opacity:0}to{opacity:1}}@keyframes lbSwap{from{opacity:.25;transform:scale(.985)}to{opacity:1;transform:none}}
 @media(max-width:980px){.case-hero-grid{grid-template-columns:1fr;gap:38px}.case-cover{max-width:620px;margin:0 auto;transform:none}.case-stat-row{grid-template-columns:1fr 1fr 1fr}}
 @media(max-width:640px){.case-hero{padding-top:120px}.case-hero-copy h1{font-size:clamp(56px,18vw,88px)}.case-hero-grid{gap:28px}.case-stat-row{grid-template-columns:1fr}.case-gallery{columns:1}.case-shot{margin-bottom:14px}.next-project{align-items:flex-start;flex-direction:column}.pm-lightbox{padding:14px}.pm-lightbox img{max-width:94vw;max-height:82vh}.pm-lightbox .lb-prev{left:10px}.pm-lightbox .lb-next{right:10px}.pm-lightbox .lb-close{top:10px;right:10px}}
+
+/* ---------------------------------------------------------
+   V5 FINAL POLISH — 2026-09
+   - faster branded opener
+   - cleaner navigation/logo scale
+   - improved hero typography on mobile
+   - seamless brand marquee
+   - stronger card spacing + accessibility
+--------------------------------------------------------- */
+:root{--nav:78px}
+.site-nav{background:linear-gradient(to bottom,rgba(7,7,11,.94),rgba(7,7,11,.62) 58%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+.nav-inner{height:var(--nav);width:min(1380px,calc(100% - 42px))}
+.brand-logo{width:140px;filter:drop-shadow(0 7px 24px rgba(0,0,0,.20))}
+.nav-links{gap:7px}.nav-links>a{padding:9px 11px}.nav-links .nav-cta{padding:10px 16px}
+.lang-switch{display:none!important}
+
+/* Loader starts moving immediately and exits more decisively. */
+.site-loader{transition:opacity .48s cubic-bezier(.2,.7,.2,1),visibility .48s;background:radial-gradient(circle at 50% 48%,#130d20 0,#08070c 54%,#060609 100%)}
+.site-loader::before,.site-loader::after{filter:blur(95px);opacity:.38}
+.loader-core{gap:18px}.loader-logo-wrap{width:min(284px,64vw);transform:translateY(18px) scale(.965)}
+.loader-track{width:min(220px,54vw);opacity:.88}.loader-caption{font-size:9px;letter-spacing:.24em}
+.site-loader.is-running .loader-logo-wrap{animation:loaderLogo .82s .02s cubic-bezier(.18,.8,.18,1) forwards}
+.site-loader.is-running .loader-track span{animation:loaderTrack 1.02s .18s cubic-bezier(.2,.7,.2,1) forwards}
+.site-loader.is-running .loader-caption{animation:fadeUp .46s .36s ease forwards}
+.site-loader.is-finished .loader-core{transform:scale(1.025);filter:blur(.25px);transition:transform .45s ease,filter .45s ease}
+.page-transition.active{animation-duration:.44s}.page-transition.active::before{animation-duration:.36s}
+
+/* Hero: keep the premium tightness, but avoid cramped lettering. */
+.hero{padding-top:calc(var(--nav) + 34px)}
+.hero-title{letter-spacing:-.058em;line-height:.9;max-width:1180px;margin:30px auto 26px}
+.hero-title .line{padding:.06em .08em .12em}
+.hero-copy{max-width:700px;line-height:1.58}
+.page-ready .hero-title .word{animation-duration:.88s}.page-ready .hero-copy{animation-delay:.54s}.page-ready .hero-actions{animation-delay:.66s}
+
+/* Cards: subtle border and spacing refinement. */
+.project-card{box-shadow:0 18px 50px rgba(0,0,0,.12)}
+.project-card:hover{box-shadow:0 28px 80px rgba(0,0,0,.25),0 0 0 1px rgba(167,123,255,.08)}
+.project-meta{padding:20px 22px 23px}.project-meta h3{line-height:1.02}.project-tags{line-height:1.6}
+
+/* Seamless marquee: two identical groups, no jump at loop point. */
+.marquee{display:flex;gap:0!important;width:max-content!important;animation:marqueeV5 var(--marquee-speed,34s) linear infinite!important}
+.marquee-group{display:flex;gap:12px;flex:0 0 auto;padding-right:12px}
+.marquee.reverse{animation-direction:reverse!important}
+@keyframes marqueeV5{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+.brand-pill{transition:border-color .25s ease,background .25s ease,transform .25s ease}
+.brand-pill:hover{transform:translateY(-2px);border-color:rgba(167,123,255,.28);background:rgba(125,69,245,.06)}
+
+/* Better focus states for keyboard users. */
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid var(--purple2);outline-offset:3px}
+
+@media(max-width:980px){
+  :root{--nav:70px}
+  .brand-logo{width:124px}
+  .nav-inner{width:calc(100% - 28px)}
+  .mobile-menu{top:68px}
+}
+@media(max-width:640px){
+  .hero{padding-top:90px;min-height:100svh}
+  .hero-typographic{width:calc(100% - 26px)}
+  .hero-title{font-size:clamp(48px,16.5vw,78px);line-height:.94;letter-spacing:-.044em;margin:22px auto 22px}
+  .hero-title .line{padding:.06em .05em .12em}
+  .hero-copy{max-width:94%;font-size:15px;line-height:1.58}
+  .hero-actions{margin-top:27px}
+  .hero-kicker{font-size:9px;letter-spacing:.15em;padding:7px 10px}
+  .section-title{letter-spacing:-.045em;line-height:.98}
+  .inner-hero h1,.case-hero-copy h1{letter-spacing:-.052em!important;line-height:.9!important}
+  .project-meta h3{font-size:clamp(25px,9vw,36px)}
+  .brand-pill{min-width:142px}
+}

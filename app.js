@@ -8,20 +8,31 @@
   --------------------------------------------------------- */
   const loader=$('.site-loader');
   const transition=$('.page-transition');
-  const firstHome=document.body.dataset.home==='true' && !sessionStorage.getItem('pmIntroSeen');
-  const cachedHome=parseInt(localStorage.getItem('pmMotionHome')||'1850',10); const cachedInner=parseInt(localStorage.getItem('pmMotionInner')||'820',10);
-  const introMs=reduceMotion?80:(firstHome?cachedHome:cachedInner);
+  const isHome=document.body.dataset.home==='true';
+  const storageGet=(store,key,fallback='')=>{try{return store.getItem(key)??fallback}catch{return fallback}};
+  const storageSet=(store,key,value)=>{try{store.setItem(key,value)}catch{}};
+  const firstHome=isHome && !storageGet(sessionStorage,'pmIntroSeenV5');
+  const clamp=(n,min,max)=>Math.min(max,Math.max(min,n));
+  const cachedHome=clamp(parseInt(storageGet(localStorage,'pmMotionHome','1350'),10)||1350,1050,1500);
   const finishIntro=()=>{
     if(!loader){document.body.classList.add('page-ready');return}
+    // Only the first home visit gets the full branded opener. Inner pages open immediately.
+    if(reduceMotion || !firstHome){
+      loader.classList.add('is-finished');
+      document.body.classList.add('page-ready');
+      setTimeout(()=>loader.remove(),420);
+      return;
+    }
     loader.classList.add('is-running');
     setTimeout(()=>{
       loader.classList.add('is-finished');
       document.body.classList.add('page-ready');
-      if(firstHome) sessionStorage.setItem('pmIntroSeen','1');
-      setTimeout(()=>loader.remove(),700);
-    },introMs);
+      storageSet(sessionStorage,'pmIntroSeenV5','1');
+      setTimeout(()=>loader.remove(),620);
+    },cachedHome);
   };
-  if(document.readyState==='complete') finishIntro(); else window.addEventListener('load',finishIntro,{once:true});
+  // Start as soon as the DOM script executes; never wait for every image/video to finish loading.
+  requestAnimationFrame(finishIntro);
 
   document.addEventListener('click',e=>{
     const a=e.target.closest('a[href]');
@@ -35,7 +46,7 @@
     if(reduceMotion){location.href=url.href;return}
     document.body.classList.add('page-leaving');
     transition?.classList.add('active');
-    setTimeout(()=>location.href=url.href,540);
+    setTimeout(()=>location.href=url.href,420);
   });
 
   /* ---------------------------------------------------------
@@ -60,8 +71,8 @@
     const favorites=(projects.length?projects.filter(x=>x.featured):[]).slice(0,3);
     const defaults=[
       {category:'SOSYAL MEDYA · SPOR',title:'Karabük İdman Yurdu',project_url:'karabuk-idman-yurdu.html'},
-      {category:'KONSER · REELS',title:'Konser İçerikleri',project_url:'sefo.html'},
-      {category:'DRONE · MİMARİ',title:'Mimari / İnşaat',project_url:'isler.html'}
+      {category:'KONSER · REELS',title:'Konser İçerikleri',project_url:'konser.html'},
+      {category:'SOSYAL MEDYA · SPOR',title:'Kepezspor Maç Günü',project_url:'kepezspor.html'}
     ];
     const rows=favorites.length?favorites:defaults;
     $('.work-mega-grid',mega).innerHTML=rows.map((p,i)=>`<a class="work-mega-item" href="${esc(p.project_url||'isler.html')}"><span>0${i+1}</span><div><small>${esc([p.category,p.content_type].filter(Boolean).join(' · ')||'KREATİF İŞ')}</small><strong>${esc(p.title||'Proje')}</strong></div><i>↗</i></a>`).join('');
@@ -101,13 +112,14 @@
     if(!window.PMData) return {};
     try{
       const rows=await PMData.content(); const map=Object.fromEntries(rows.map(r=>[r.key,r.value]));
-      $$('[data-cms]').forEach(el=>{const v=map[el.dataset.cms]; if(v!=null&&v!=='') el.textContent=v});
-      $$('[data-cms-html]').forEach(el=>{const v=map[el.dataset.cmsHtml]; if(v!=null&&v!=='') el.innerHTML=v});
+      const uiText=v=>String(v??'').replace(/Film \/ Reels/g,'Video / Reels').replace(/\bDigital\b/g,'Dijital');
+      $$('[data-cms]').forEach(el=>{const v=map[el.dataset.cms]; if(v!=null&&v!=='') el.textContent=uiText(v)});
+      $$('[data-cms-html]').forEach(el=>{const v=map[el.dataset.cmsHtml]; if(v!=null&&v!=='') el.innerHTML=uiText(v)});
       $$('[data-cms-href]').forEach(el=>{const v=map[el.dataset.cmsHref]; if(v) el.setAttribute('href',v)});
       document.documentElement.style.setProperty('--marquee-speed',(map['brands.speed_seconds']||'34')+'s');
       window.PMContentMap=map;
-      if(map['motion.intro_home_ms']) localStorage.setItem('pmMotionHome',map['motion.intro_home_ms']);
-      if(map['motion.intro_inner_ms']) localStorage.setItem('pmMotionInner',map['motion.intro_inner_ms']);
+      if(map['motion.intro_home_ms']) storageSet(localStorage,'pmMotionHome',String(clamp(parseInt(map['motion.intro_home_ms'],10)||1350,1050,1500)));
+      // Inner pages intentionally do not replay the full loader in V5.
       return map;
     }catch(err){console.warn('CMS content unavailable',err);return {}}
   }
@@ -125,6 +137,24 @@
   /* ---------------------------------------------------------
      PROJECT CARDS / MEDIA CROSSFADE
   --------------------------------------------------------- */
+  const knownProjectFallbacks=[
+    {re:/karab[uü]k.*idman|idman.*karab[uü]k/i,title:'Karabük İdman Yurdu',cover_url:'karabuk-idman-yurdu-01.png',project_url:'karabuk-idman-yurdu.html',category:'Sosyal Medya',content_type:'Spor',tags:'Maç Günü, Transfer, Taraftar, Tasarım',ratio:'4:5'},
+    {re:/kepez/i,title:'Maç Günü Tasarımları',client:'Kepezspor',cover_url:'kepezspor-matchday-01.jpg',project_url:'kepezspor.html',category:'Sosyal Medya',content_type:'Spor',tags:'Maç Günü, Tasarım, Spor İletişimi',ratio:'4:5'},
+    {re:/çorlu|corlu/i,title:'Çorluspor 1947',cover_url:'corluspor-1947-01.jpg',project_url:'corluspor.html',category:'Sosyal Medya',content_type:'Spor',tags:'Maç Günü, İlk 11, Maç Sonucu, Kupa',ratio:'4:5'},
+    {re:/konser|sefo|hakan peker|dedubl|poizi/i,title:'Konser İçerikleri',cover_url:'concert-sefo-poster.jpg',project_url:'konser.html',category:'Konser',content_type:'Reels',tags:'Sahne, Backstage, Dikey Video',ratio:'4:5'},
+    {re:/tasar[iı]m|grafik/i,title:'Tasarım Çalışmaları',cover_url:'design-yilmaz-gucumuz-ekibimiz.jpg',project_url:'tasarim.html',category:'Grafik Tasarım',content_type:'Sosyal Medya',tags:'Sosyal Medya, Outdoor, Kampanya, Kurumsal',ratio:'4:5'}
+  ];
+  function normalizeProject(p={}){
+    const q={...p};
+    const hay=[q.title,q.client,q.slug,q.category,q.content_type].filter(Boolean).join(' ');
+    const known=knownProjectFallbacks.find(x=>x.re.test(hay));
+    if(known){for(const [k,v] of Object.entries(known)){if(k!=='re' && (!q[k] || q[k]==='#'))q[k]=v}}
+    q.title=String(q.title||'').trim();
+    q.project_url=String(q.project_url||'').trim();
+    if(!q.title || !q.project_url || q.project_url==='#') return null;
+    return q;
+  }
+
   function mediaMarkup(p){
     const cover=p.cover_url||''; const media=p.media_url||'';
     if(!cover&&!media) return `<div class="project-visual ${p.visual_class||'visual-design'}"></div>`;
@@ -134,7 +164,7 @@
   }
   function projectCard(p, cls=''){
     const tags=(p.tags||'').split(',').map(x=>x.trim()).filter(Boolean).join(' · ');
-    const cats=[p.category,p.content_type].filter(Boolean).join(' · ') || 'Kreatif İş'; const url=p.project_url||'#';
+    const cats=[p.category,p.content_type].filter(Boolean).join(' · ').replace(/\bDigital\b/g,'Dijital') || 'Kreatif İş'; const url=p.project_url||'#';
     return `<article class="work-item reveal visible ${cls}" data-tags="${esc((p.filter_tags||p.tags||'').toLowerCase().replaceAll(' ',''))}" data-ratio="${esc(p.ratio||'16:9')}"><a class="project-card" href="${esc(url)}">${mediaMarkup(p)}<div class="project-meta"><div><div class="eyebrow">${esc(cats)}${p.year?' · '+esc(p.year):''}</div><h3>${esc(p.title||'Proje')}</h3>${tags?`<div class="project-tags">${esc(tags)}</div>`:''}${p.client?`<div class="project-client">${esc(p.client)}</div>`:''}</div><div class="view-chip">↗</div></div></a></article>`;
   }
   function enhanceCards(root=document){
@@ -152,15 +182,25 @@
 
   async function loadProjects(){
     const host=$('[data-project-grid]'); if(!host||!window.PMData) return [];
-    try{const rows=await PMData.projects();currentProjects=rows;if(rows.length){host.innerHTML=rows.map(p=>projectCard(p)).join('');enhanceCards(host);buildWorkMega(rows)}return rows}
-    catch(err){console.warn('Projects unavailable',err);return []}
+    try{
+      const rows=(await PMData.projects()).map(normalizeProject).filter(Boolean);
+      currentProjects=rows;
+      if(rows.length){host.innerHTML=rows.map(p=>projectCard(p)).join('');enhanceCards(host);buildWorkMega(rows)}
+      return rows;
+    }catch(err){console.warn('Projects unavailable',err);return []}
   }
   async function loadFeatured(){
     const host=$('[data-featured-grid]'); if(!host||!window.PMData) return;
-    try{const rows=(await PMData.projects()).filter(x=>x.featured).slice(0,6);if(!rows.length)return;host.innerHTML=rows.map((p,i)=>{
-      const tags=(p.tags||'').split(',').map(x=>x.trim()).filter(Boolean).join(' · '); const cats=[p.category,p.content_type].filter(Boolean).join(' · ')||'Kreatif İş';
-      return `<a class="project-card ${i%3===1?'small':''} reveal visible" href="${esc(p.project_url||'isler.html')}">${mediaMarkup(p)}<div class="project-meta"><div><div class="eyebrow">${esc(cats)}${p.year?' · '+esc(p.year):''}</div><h3>${esc(p.title||'Proje')}</h3>${tags?`<div class="project-tags">${esc(tags)}</div>`:''}${p.client?`<div class="project-client">${esc(p.client)}</div>`:''}</div><div class="view-chip">↗</div></div></a>`
-    }).join('');enhanceCards(host);buildWorkMega(rows)}catch(err){console.warn('Featured unavailable',err)}
+    try{
+      const rows=(await PMData.projects()).map(normalizeProject).filter(Boolean).filter(x=>x.featured).slice(0,6);
+      // Keep the curated static home grid if the CMS does not yet contain enough complete featured projects.
+      if(rows.length<3){buildWorkMega(rows);return}
+      host.innerHTML=rows.map((p,i)=>{
+        const tags=(p.tags||'').split(',').map(x=>x.trim()).filter(Boolean).join(' · ');
+        const cats=[p.category,p.content_type].filter(Boolean).join(' · ').replace(/\bDigital\b/g,'Dijital')||'Kreatif İş';
+        return `<a class="project-card ${i%3===1?'small':''} reveal visible" href="${esc(p.project_url||'isler.html')}">${mediaMarkup(p)}<div class="project-meta"><div><div class="eyebrow">${esc(cats)}${p.year?' · '+esc(p.year):''}</div><h3>${esc(p.title||'Proje')}</h3>${tags?`<div class="project-tags">${esc(tags)}</div>`:''}${p.client?`<div class="project-client">${esc(p.client)}</div>`:''}</div><div class="view-chip">↗</div></div></a>`
+      }).join('');enhanceCards(host);buildWorkMega(rows);
+    }catch(err){console.warn('Featured unavailable',err)}
   }
 
   /* Works filtering with staged reflow instead of abrupt layout jumps */
@@ -189,7 +229,12 @@
       let rows=await PMData.brands(); if(!rows.length)return;
       const limit=parseInt(window.PMContentMap?.['brands.carousel_limit']||'14',10)||14; rows=rows.slice(0,limit);
       const row1=rows.filter(x=>Number(x.row_no||1)===1); const row2=rows.filter(x=>Number(x.row_no||1)===2);
-      const make=(arr,reverse=false)=>{if(!arr.length)return'';const list=[...arr,...arr,...arr];return `<div class="marquee-row"><div class="marquee ${reverse?'reverse':''}">${list.map(b=>`<a class="brand-pill" ${b.url?`href="${esc(b.url)}" target="_blank" rel="noreferrer"`:''}>${b.logo_url?`<img src="${esc(b.logo_url)}" alt="${esc(b.name)}"/>`:`<span>${esc(b.name)}</span>`}</a>`).join('')}</div></div>`};
+      const make=(arr,reverse=false)=>{
+        if(!arr.length)return'';
+        const item=b=>`<a class="brand-pill" ${b.url?`href="${esc(b.url)}" target="_blank" rel="noreferrer"`:''}>${b.logo_url?`<img src="${esc(b.logo_url)}" alt="${esc(b.name)}"/>`:`<span>${esc(b.name)}</span>`}</a>`;
+        const group=arr.map(item).join('');
+        return `<div class="marquee-row"><div class="marquee ${reverse?'reverse':''}"><div class="marquee-group">${group}</div><div class="marquee-group" aria-hidden="true">${group}</div></div></div>`;
+      };
       wrap.innerHTML=make(row1.length?row1:rows.filter((_,i)=>i%2===0),false)+make(row2.length?row2:rows.filter((_,i)=>i%2===1),true);
     }catch(err){console.warn('Brands unavailable',err)}
   }
