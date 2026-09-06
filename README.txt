@@ -1,11 +1,8 @@
-Gökhan Türkmen konser fotoğrafları güncellemesi
+Hakan Peker konser fotoğraf güncellemesi
 
-Yükle:
+GitHub repo köküne yükle:
 - konser.html
-- concert-gokhan-turkmen-01.jpg ... concert-gokhan-turkmen-10.jpg
+- concert-hakan-peker-01.jpg ... concert-hakan-peker-10.jpg
 
-Bu güncelleme konser sayfasına, mevcut videoların altına ayrı bir "Konser Fotoğrafı / Gökhan Türkmen" bölümü ekler.
-Fotoğraflar tıklanınca büyür.
-
-backend-config.js, app.js ve styles.css dosyalarına dokunma.
-Supabase SQL gerekmez.
+Bu paket mevcut Gökhan Türkmen fotoğraf bölümünü korur ve altına Hakan Peker için yeni 10 fotoğraflık bölüm ekler.
+Supabase gerekmez. backend-config.js, app.js ve styles.css dosyalarına dokunma.
