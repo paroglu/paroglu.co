@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#07070b">
   <title>Konser İçerikleri — Paroglu Media</title>
-  <meta name="description" content="Sefo, Hakan Peker, Dedublüman ve Poizi konser videoları — Paroglu Media.">
+  <meta name="description" content="Sefo, Hakan Peker, Dedublüman ve Poizi konser videoları ile Gökhan Türkmen konser fotoğrafları — Paroglu Media.">
   <link rel="stylesheet" href="styles.css">
   <style>
     .concert-hero{min-height:78svh;display:flex;align-items:flex-end;position:relative;overflow:hidden;padding:150px 0 72px;background:#07070b}
@@ -30,7 +30,33 @@
     .concert-section{padding:90px 0 120px;background:#09090e}
     .concert-section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:28px}.concert-section-head h2{margin:0;color:#fff;font-size:clamp(42px,7vw,90px);line-height:.92;letter-spacing:-.055em}.concert-section-head p{max-width:430px;color:#918d99;line-height:1.65;margin:0}
     .concert-back{display:inline-flex;margin-top:34px}
-    @media(max-width:760px){.concert-hero{padding:120px 0 54px;min-height:70svh}.concert-grid{grid-template-columns:1fr;gap:22px}.concert-section{padding:65px 0 90px}.concert-section-head{display:block}.concert-section-head p{margin-top:18px}.concert-card:hover{transform:none}}
+
+    .concert-photo-section{padding:110px 0 125px;background:#07070b;border-top:1px solid rgba(255,255,255,.06)}
+    .concert-photo-head{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:48px;align-items:end;margin-bottom:38px}
+    .concert-photo-head h2{margin:0;color:#fff;font-size:clamp(48px,8vw,112px);line-height:.88;letter-spacing:-.06em}
+    .concert-photo-head h2 em{display:block;color:#9870ff;font-style:normal}
+    .concert-photo-head p{margin:0 0 8px;color:#9e9aa7;line-height:1.7;max-width:480px}
+    .concert-photo-count{display:inline-flex;margin-top:18px;border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:8px 12px;color:#d9d5e2;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+    .concert-photo-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;grid-auto-flow:dense}
+    .concert-photo{position:relative;display:block;width:100%;padding:0;border:0;background:#0b0b10;border-radius:22px;overflow:hidden;cursor:zoom-in;min-height:0;box-shadow:0 28px 70px rgba(0,0,0,.24)}
+    .concert-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(0,0,0,.38));opacity:.35;transition:opacity .35s ease}
+    .concert-photo:hover::after{opacity:.7}
+    .concert-photo img{display:block;width:100%;height:100%;aspect-ratio:3/4;object-fit:cover;transition:transform .65s cubic-bezier(.2,.7,.2,1),filter .45s ease}
+    .concert-photo:hover img{transform:scale(1.025);filter:saturate(1.06) contrast(1.02)}
+    .concert-photo.featured{grid-column:span 2;grid-row:span 2}
+    .concert-photo.featured img{aspect-ratio:auto;min-height:100%;object-position:center center}
+    .concert-photo:nth-child(4){grid-row:span 2}
+    .concert-photo:nth-child(4) img{aspect-ratio:auto;min-height:100%}
+    .concert-photo-tag{position:absolute;left:14px;right:14px;bottom:14px;z-index:3;display:flex;justify-content:space-between;gap:10px;align-items:end;color:#fff;opacity:0;transform:translateY(7px);transition:.28s ease}
+    .concert-photo:hover .concert-photo-tag,.concert-photo:focus-visible .concert-photo-tag{opacity:1;transform:none}
+    .concert-photo-tag span{font-size:10px;font-weight:800;letter-spacing:.11em;text-transform:uppercase}
+    .concert-photo-tag i{font-style:normal;font-size:11px;color:#c8c2d4}
+    .concert-lightbox{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:30px;background:rgba(5,5,8,.94);backdrop-filter:blur(18px)}
+    .concert-lightbox.open{display:flex}
+    .concert-lightbox img{max-width:min(92vw,1100px);max-height:90vh;border-radius:18px;box-shadow:0 30px 120px rgba(0,0,0,.55)}
+    .concert-lightbox-close{position:fixed;top:22px;right:24px;width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);color:#fff;font-size:28px;line-height:1;cursor:pointer}
+    @media(max-width:900px){.concert-photo-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.concert-photo.featured{grid-column:span 2}.concert-photo-head{grid-template-columns:1fr;gap:22px}}
+    @media(max-width:760px){.concert-hero{padding:120px 0 54px;min-height:70svh}.concert-grid{grid-template-columns:1fr;gap:22px}.concert-section{padding:65px 0 90px}.concert-section-head{display:block}.concert-section-head p{margin-top:18px}.concert-card:hover{transform:none}.concert-photo-section{padding:72px 0 88px}.concert-photo-grid{grid-template-columns:1fr;gap:13px}.concert-photo.featured{grid-column:auto;grid-row:auto}.concert-photo:nth-child(4){grid-row:auto}.concert-photo img,.concert-photo.featured img,.concert-photo:nth-child(4) img{aspect-ratio:3/4;min-height:0}.concert-photo-tag{opacity:1;transform:none}.concert-lightbox{padding:16px}.concert-lightbox-close{top:14px;right:14px}}
   </style>
 <link rel="preload" as="image" href="paroglu-media-logo-light.png"></head>
 <body>
@@ -39,10 +65,10 @@
 <main>
   <section class="concert-hero">
     <div class="container">
-      <div class="kicker reveal">KONSER · REELS · VIDEO</div>
+      <div class="kicker reveal">KONSER · REELS · FOTOĞRAF</div>
       <h1 class="concert-title reveal">Sahnedeki<br><em>enerji.</em></h1>
-      <p class="concert-lead reveal">Konser çekimlerinde sahnenin ritmini, seyircinin enerjisini ve sanatçının performansını dikey videoya taşıyan seçili çalışmalar.</p>
-      <div class="concert-meta reveal"><span>Sefo</span><span>Hakan Peker</span><span>Dedublüman</span><span>Poizi</span><span>9:16</span></div>
+      <p class="concert-lead reveal">Konser çekimlerinde sahnenin ritmini, seyircinin enerjisini ve sanatçının performansını video ve fotoğrafla taşıyan seçili çalışmalar.</p>
+      <div class="concert-meta reveal"><span>Sefo</span><span>Hakan Peker</span><span>Dedublüman</span><span>Poizi</span><span>Gökhan Türkmen</span><span>Video + Fotoğraf</span></div>
       <a class="pill concert-back" href="isler.html">← İşlere Dön</a>
     </div>
   </section>
@@ -73,9 +99,54 @@
       </div>
     </div>
   </section>
+
+  <section class="concert-photo-section">
+    <div class="container">
+      <div class="concert-photo-head reveal">
+        <div>
+          <div class="kicker">KONSER FOTOĞRAFI</div>
+          <h2>Gökhan<em>Türkmen.</em></h2>
+        </div>
+        <div>
+          <p>Sahne ışığı, yakın plan detaylar ve performans anlarından oluşan seçili konser fotoğraf serisi.</p>
+          <span class="concert-photo-count">10 seçili kare · Konser fotoğrafçılığı</span>
+        </div>
+      </div>
+      <div class="concert-photo-grid" data-concert-photo-gallery>
+        <button class="concert-photo featured reveal" type="button" data-full="concert-gokhan-turkmen-01.jpg"><img src="concert-gokhan-turkmen-01.jpg" alt="Gökhan Türkmen konser fotoğrafı 1" loading="lazy"><span class="concert-photo-tag"><span>Gökhan Türkmen</span><i>01</i></span></button>
+        <button class="concert-photo reveal" type="button" data-full="concert-gokhan-turkmen-02.jpg"><img src="concert-gokhan-turkmen-02.jpg" alt="Gökhan Türkmen konser fotoğrafı 2" loading="lazy"><span class="concert-photo-tag"><span>Canlı Performans</span><i>02</i></span></button>
+        <button class="concert-photo reveal" type="button" data-full="concert-gokhan-turkmen-03.jpg"><img src="concert-gokhan-turkmen-03.jpg" alt="Gökhan Türkmen konser fotoğrafı 3" loading="lazy"><span class="concert-photo-tag"><span>Sahne Portresi</span><i>03</i></span></button>
+        <button class="concert-photo reveal" type="button" data-full="concert-gokhan-turkmen-04.jpg"><img src="concert-gokhan-turkmen-04.jpg" alt="Gökhan Türkmen konser fotoğrafı 4" loading="lazy"><span class="concert-photo-tag"><span>Performans</span><i>04</i></span></button>
+        <button class="concert-photo reveal" type="button" data-full="concert-gokhan-turkmen-05.jpg"><img src="concert-gokhan-turkmen-05.jpg" alt="Gökhan Türkmen konser fotoğrafı 5" loading="lazy"><span class="concert-photo-tag"><span>Sahne</span><i>05</i></span></button>
+        <button class="concert-photo reveal" type="button" data-full="concert-gokhan-turkmen-06.jpg"><img src="concert-gokhan-turkmen-06.jpg" alt="Gökhan Türkmen konser fotoğrafı 6" loading="lazy"><span class="concert-photo-tag"><span>Işık & Silüet</span><i>06</i></span></button>
+        <button class="concert-photo reveal" type="button" data-full="concert-gokhan-turkmen-07.jpg"><img src="concert-gokhan-turkmen-07.jpg" alt="Gökhan Türkmen konser fotoğrafı 7" loading="lazy"><span class="concert-photo-tag"><span>Detay</span><i>07</i></span></button>
+        <button class="concert-photo reveal" type="button" data-full="concert-gokhan-turkmen-08.jpg"><img src="concert-gokhan-turkmen-08.jpg" alt="Gökhan Türkmen konser fotoğrafı 8" loading="lazy"><span class="concert-photo-tag"><span>Yakın Plan</span><i>08</i></span></button>
+        <button class="concert-photo reveal" type="button" data-full="concert-gokhan-turkmen-09.jpg"><img src="concert-gokhan-turkmen-09.jpg" alt="Gökhan Türkmen konser fotoğrafı 9" loading="lazy"><span class="concert-photo-tag"><span>Canlı Sahne</span><i>09</i></span></button>
+        <button class="concert-photo reveal" type="button" data-full="concert-gokhan-turkmen-10.jpg"><img src="concert-gokhan-turkmen-10.jpg" alt="Gökhan Türkmen konser fotoğrafı 10" loading="lazy"><span class="concert-photo-tag"><span>Portre</span><i>10</i></span></button>
+      </div>
+    </div>
+  </section>
+
+  <div class="concert-lightbox" data-concert-lightbox aria-hidden="true">
+    <button class="concert-lightbox-close" type="button" aria-label="Kapat">×</button>
+    <img src="" alt="Büyütülmüş konser fotoğrafı">
+  </div>
+
 </main>
 <footer class="footer"><div class="container"><h2 class="footer-cta reveal"><span>Bir sonraki işi</span> <a href="teklif-al.html">birlikte yapalım.</a></h2><div class="footer-bottom"><span>© 2026 Paroglu Media</span><a href="isler.html">Tüm İşler</a></div></div></footer>
 <button class="assistant-launch"><i>✦</i><span>Paroglu Asistan</span></button><aside class="assistant-panel"><div class="assistant-head"><div><strong>Paroglu Asistan ✦</strong><small>Projen için yardımcı olur.</small></div><button class="assistant-close">×</button></div><div class="messages"></div><div class="assistant-input"><input placeholder="Bir şey yaz..."><button>↑</button></div></aside>
+<script>
+(() => {
+  const box = document.querySelector('[data-concert-lightbox]');
+  if (!box) return;
+  const img = box.querySelector('img');
+  const close = () => { box.classList.remove('open'); box.setAttribute('aria-hidden','true'); img.removeAttribute('src'); document.body.style.overflow=''; };
+  document.querySelectorAll('[data-concert-photo-gallery] [data-full]').forEach(btn => btn.addEventListener('click', () => { img.src = btn.dataset.full; box.classList.add('open'); box.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }));
+  box.querySelector('.concert-lightbox-close').addEventListener('click', close);
+  box.addEventListener('click', e => { if (e.target === box) close(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && box.classList.contains('open')) close(); });
+})();
+</script>
 <script src="backend-config.js"></script><script src="data-store.js"></script><script src="app.js"></script>
 </body>
 </html>
