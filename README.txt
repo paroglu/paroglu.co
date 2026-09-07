@@ -1,18 +1,18 @@
-PAROGLU MEDIA V7.2.3 — TYPOGRAPHY ONLY
+PAROGLU MEDIA — V7.2.4 ASCENSION INTRO
 
-Bu paket yalnızca styles.css içerir.
-V7.2.2 Static Safe sürümünün üzerine styles.css dosyasını yükleyin.
+Bu paket SADECE ana sayfa girişini ve tipografi stilini günceller.
+Mevcut çalışan portfolyo, app.js, backend-config.js, data-store.js ve Supabase yapısına dokunmaz.
 
-Değişenler:
-- Büyük başlıklarda Inter Tight 300/400 creative-studio tipografisi
-- Daha ince ağırlık, daha sıkı harf aralığı ve editoryal satır yüksekliği
-- Body, menü, buton ve açıklama metinlerinin okunabilirliği korunur
+Yüklenecek dosyalar:
+- index.html  (mevcut index.html üzerine)
+- styles.css  (mevcut styles.css üzerine)
+- paroglu-chrome.png
+- karabuk-otobus-01.jpg (aynı dosya zaten varsa üzerine yazılabilir)
 
-Değişmeyenler:
-- index.html
+DOKUNMA:
 - app.js
-- görseller
-- animasyon altyapısı
 - backend-config.js
 - data-store.js
 - Supabase
+
+Giriş JS'ye bağlı değildir. app.js çalışmasa bile giriş ve ana içerik görünür kalır.
