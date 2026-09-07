@@ -382,3 +382,12 @@ body[data-home="true"] .home-category-card,body[data-home="true"] .home-case-fra
   .motion-work-mobile-strip{display:flex;gap:10px;width:max-content}.motion-mobile-card{display:block;flex:0 0 78vw;max-width:420px;color:#fff;text-decoration:none;scroll-snap-align:start}.motion-mobile-card .motion-mobile-media{position:relative;overflow:hidden;border-radius:20px;border:1px solid rgba(255,255,255,.09);background:#09080c;aspect-ratio:4/5}.motion-mobile-card img{width:100%;height:100%;object-fit:contain;display:block}.motion-mobile-card small{display:block;color:#9c75f3;font-size:8px;letter-spacing:.14em;margin-top:13px}.motion-mobile-card strong{display:block;font-size:26px;letter-spacing:-.045em;margin-top:3px}.motion-mobile-card span{display:block;color:#85808b;font-size:10px;margin-top:4px}
 }
 @media(prefers-reduced-motion:reduce){.motion-work-side i::after,.home-final-cta h2 em{animation:none}.motion-work-img,.motion-work-copy,.motion-work-media{transition:none!important}}
+
+/* V7.2.1 emergency stability overrides: content must never remain hidden if JS/CMS fails */
+.reveal,.motion-title{opacity:1!important;transform:none!important;filter:none!important}
+body:not(.page-ready) .hero-kicker,
+body:not(.page-ready) .hero-title .word,
+body:not(.page-ready) .hero-copy,
+body:not(.page-ready) .hero-actions{opacity:1!important;transform:none!important;filter:none!important;animation:none!important}
+.hero-title .word,.hero-kicker,.hero-copy,.hero-actions{opacity:1}
+.site-loader{display:none!important}
