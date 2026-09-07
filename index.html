@@ -116,4 +116,21 @@
 </main>
 <footer class="footer"><div class="container"><h2 class="footer-cta reveal"><span data-cms="footer.cta_start">Bir sonraki işi</span> <a data-cms="footer.cta_link" href="teklif-al.html">birlikte yapalım.</a></h2><div class="footer-grid"><div><img alt="Paroglu Media" class="footer-logo" src="paroglu-media-logo-light.png"/><span data-cms="footer.disciplines">Reels · Fotoğraf · Tasarım · Sosyal Medya · Drone · Dijital</span></div><div><strong>Keşfet</strong><a href="hakkimda.html">Hakkımda</a><br/><a href="hizmetler.html">Hizmetler</a><br/><a href="isler.html">İşler</a></div><div><strong>İletişim</strong><a data-cms="contact.email" data-cms-href="contact.email_href" href="mailto:umutparoglu87@gmail.com">umutparoglu87@gmail.com</a><br/><a data-cms="contact.phone" data-cms-href="contact.phone_href" href="tel:+905416629862">+90 541 662 98 62</a></div></div><div class="footer-bottom"><span>© 2026 Paroglu Media</span><span>Karabük / Türkiye</span></div></div></footer>
 <button class="assistant-launch"><i>✦</i><span>Paroglu Asistan</span></button><aside class="assistant-panel"><div class="assistant-head"><div><strong>Paroglu Asistan ✦</strong><small>Projen için yardımcı olur.</small></div><button class="assistant-close">×</button></div><div class="messages"></div><div class="assistant-input"><input placeholder="Bir şey yaz..."/><button>↑</button></div></aside>
-<script src="backend-config.js"></script><script src="data-store.js"></script><script src="app.js"></script></body></html>
+<script src="backend-config.js"></script><script src="data-store.js"></script><script src="app.js"></script><script>
+(function(){
+  function forceVisible(){
+    document.body.classList.add('page-ready');
+    document.querySelectorAll('.reveal,.motion-title,.section-title,.inner-hero h1,.about-headline').forEach(function(el){
+      el.classList.add('visible','motion-in');
+      el.style.opacity='1';el.style.transform='none';el.style.filter='none';el.style.clipPath='none';el.style.visibility='visible';
+    });
+    document.querySelectorAll('main .section,main section,main .home-work-card,main .home-category-card,main .home-case-frame,main .home-why-card,main .home-process-step,main .home-service-card').forEach(function(el){
+      el.style.opacity='1';el.style.visibility='visible';
+    });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',forceVisible); else forceVisible();
+  setTimeout(forceVisible,250);
+  setTimeout(forceVisible,1200);
+})();
+</script>
+</body></html>
