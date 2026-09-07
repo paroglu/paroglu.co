@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter+Tight:wght@300;400;500;600&display=swap");
 :root{
   --bg:#07070b;--bg2:#0d0b14;--card:#11101a;--card2:#15121f;--text:#f5f3f8;--muted:#a7a1b4;
   --purple:#7d45f5;--purple2:#a77bff;--purple3:#c3a8ff;--line:rgba(255,255,255,.11);--line2:rgba(255,255,255,.18);
@@ -384,3 +385,87 @@ body:not(.page-ready) .hero-actions,
 main,.section,.home-work-section,.home-category-hub,.home-case-study,.brands,.home-why,.home-process,.home-services-condensed,.home-final-cta{visibility:visible!important;opacity:1!important}
 .home-work-track,.home-category-grid,.home-case-grid,.home-why-grid,.home-process-line,.home-service-grid,.brand-marquee-grid{visibility:visible!important;opacity:1!important}
 .home-work-card,.home-category-card,.home-case-frame,.home-why-card,.home-process-step,.home-service-card,.brand-tile{visibility:visible!important;opacity:1!important}
+
+/* =========================================================
+   V7.2.3 — TYPOGRAPHY ONLY
+   Reference: thin editorial / creative-studio display type.
+   No layout, animation, media, JS or Supabase behavior changed.
+   ========================================================= */
+:root{
+  --display-font:"Inter Tight","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+/* Large editorial display typography */
+.hero-title,
+.section-title,
+.inner-hero h1,
+.case-hero-copy h1,
+.home-case-copy h2,
+.artist-gallery-head h2,
+.empty-project-state h2,
+.next-project h2,
+.portfolio-slide-content h3,
+.project-meta h3,
+.discipline-row h3,
+.service-top h2,
+.artist-cover strong,
+.about-headline,
+.motion-title{
+  font-family:var(--display-font);
+  font-weight:300;
+  letter-spacing:-.055em;
+  font-kerning:normal;
+  text-rendering:optimizeLegibility;
+}
+
+.hero-title{
+  font-weight:300;
+  letter-spacing:-.062em;
+  line-height:.88;
+}
+.section-title{
+  font-weight:300;
+  letter-spacing:-.052em;
+  line-height:.93;
+}
+.inner-hero h1,
+.case-hero-copy h1{
+  font-weight:300;
+  letter-spacing:-.06em!important;
+  line-height:.88!important;
+}
+.home-case-copy h2,
+.artist-gallery-head h2,
+.portfolio-slide-content h3{
+  font-weight:300;
+  letter-spacing:-.06em;
+}
+.project-meta h3,
+.discipline-row h3,
+.service-top h2,
+.artist-cover strong,
+.next-project h2{
+  font-weight:400;
+  letter-spacing:-.045em;
+}
+
+/* Keep utility/navigation/body copy highly readable */
+body,
+.nav-links,
+.btn,
+.hero-copy,
+.lead,
+.kicker,
+.eyebrow,
+.hero-kicker,
+.project-tags,
+.portfolio-slide-content p,
+.case-hero-copy>p{
+  font-family:Inter,"Helvetica Neue",Arial,sans-serif;
+}
+
+@media(max-width:640px){
+  .hero-title{letter-spacing:-.05em;line-height:.91}
+  .section-title{letter-spacing:-.045em;line-height:.96}
+  .inner-hero h1,.case-hero-copy h1{letter-spacing:-.05em!important;line-height:.91!important}
+}
