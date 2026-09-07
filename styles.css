@@ -883,3 +883,173 @@ body.pm-text-motion .home-why-card:hover h3{
 .home-concert-case::before{content:"";position:absolute;width:760px;height:760px;left:-340px;top:5%;border-radius:50%;background:radial-gradient(circle,rgba(118,87,127,.16),transparent 68%);filter:blur(28px);pointer-events:none}
 .home-concert-case .home-case-grid{position:relative;z-index:1}
 .home-concert-case .home-case-frame:nth-child(1) img{object-position:center}
+
+/* =========================================================
+   V7.2.11 — PAROGLU PURPLE FLOW
+   Matte ↔ Neon purple balance + safe animated gradients
+   Visual layer only. No layout / JS / Supabase changes.
+   ========================================================= */
+:root{
+  --bg:#08070d;
+  --bg2:#0d0a14;
+  --card:#111018;
+  --card2:#17131f;
+  --text:#f5f3fb;
+  --muted:#aaa4b5;
+  --purple:#7464ee;
+  --purple2:#9583ff;
+  --purple3:#b8a9ff;
+  --purple-soft:rgba(116,100,238,.16);
+  --purple-deep:#493d9d;
+  --line:rgba(228,223,255,.105);
+  --line2:rgba(194,183,255,.21);
+}
+
+html{background:#08070d}
+body{
+  background:
+    radial-gradient(900px 720px at 8% 8%,rgba(116,100,238,.14),transparent 64%),
+    radial-gradient(820px 680px at 94% 22%,rgba(149,131,255,.11),transparent 62%),
+    radial-gradient(820px 720px at 34% 78%,rgba(72,50,157,.13),transparent 66%),
+    linear-gradient(132deg,#08070d 0%,#0d0a15 36%,#0a0810 66%,#100b18 100%);
+  background-size:155% 155%,165% 165%,175% 175%,220% 220%;
+  animation:pmPurpleFlow 24s cubic-bezier(.45,.05,.55,.95) infinite alternate;
+}
+
+@keyframes pmPurpleFlow{
+  0%{background-position:0% 0%,100% 12%,22% 100%,0% 50%}
+  38%{background-position:18% 16%,82% 30%,42% 82%,48% 50%}
+  72%{background-position:4% 34%,100% 8%,24% 64%,82% 50%}
+  100%{background-position:26% 4%,72% 26%,54% 100%,100% 50%}
+}
+
+/* navigation / buttons: matte base, neon only at the edge */
+.site-nav{
+  background:linear-gradient(to bottom,rgba(8,7,13,.93),rgba(8,7,13,.54),rgba(8,7,13,0));
+}
+.nav-links .nav-cta,.btn.primary{
+  background:linear-gradient(118deg,#5d52c8 0%,#7666ec 42%,#9583ff 70%,#6557d5 100%);
+  background-size:220% 220%;
+  border-color:rgba(184,169,255,.34);
+  box-shadow:0 10px 34px rgba(88,72,198,.24),inset 0 1px rgba(255,255,255,.12);
+  animation:pmButtonFlow 8s ease-in-out infinite alternate;
+}
+.nav-links .nav-cta:hover,.btn.primary:hover{
+  background:linear-gradient(118deg,#6759d8 0%,#8372f4 46%,#a08dff 74%,#6b5cdd 100%);
+  background-size:220% 220%;
+  box-shadow:0 12px 38px rgba(116,100,238,.31),0 0 26px rgba(149,131,255,.12);
+}
+@keyframes pmButtonFlow{from{background-position:0% 50%}to{background-position:100% 50%}}
+
+/* hero: slow ambient light, never blocks content */
+.hero::before{
+  width:min(980px,96vw);height:min(980px,96vw);
+  background:
+    radial-gradient(circle at 38% 42%,rgba(149,131,255,.20),transparent 30%),
+    radial-gradient(circle at 63% 58%,rgba(75,61,157,.19),transparent 38%),
+    radial-gradient(circle,rgba(116,100,238,.08),transparent 70%);
+  filter:blur(18px);
+  animation:pmHeroGlow 13s ease-in-out infinite alternate;
+}
+@keyframes pmHeroGlow{
+  0%{transform:translate(-54%,-50%) scale(.94);opacity:.72}
+  55%{transform:translate(-47%,-53%) scale(1.06);opacity:1}
+  100%{transform:translate(-50%,-46%) scale(.98);opacity:.82}
+}
+
+.hero-kicker::before{
+  background:var(--purple2);
+  box-shadow:0 0 12px rgba(149,131,255,.62),0 0 28px rgba(116,100,238,.24);
+}
+.hero-title em,.home-final-cta h2 em{
+  background:linear-gradient(108deg,#eeeaff 0%,#b8a9ff 25%,#8d7af4 50%,#6b5ad7 73%,#d5cdff 100%);
+  background-size:230% auto;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:pmTitleGradient 8.5s ease-in-out infinite alternate;
+}
+@keyframes pmTitleGradient{from{background-position:0% 50%}to{background-position:100% 50%}}
+
+.kicker,.eyebrow,.cv-kicker{color:#aa9bf7}
+.pill{border-color:rgba(184,169,255,.16)}
+
+/* sections keep the dark matte base, with restrained living purple */
+.disciplines{
+  background:linear-gradient(180deg,transparent,rgba(116,100,238,.042),rgba(149,131,255,.025),transparent);
+}
+.home-showreel{
+  background:
+    radial-gradient(circle at 16% 34%,rgba(116,100,238,.105),transparent 30%),
+    radial-gradient(circle at 84% 72%,rgba(149,131,255,.065),transparent 28%),
+    linear-gradient(180deg,rgba(255,255,255,.01),transparent 35%,rgba(116,100,238,.022));
+}
+.showreel-item.active{
+  background:linear-gradient(90deg,rgba(116,100,238,.17),rgba(149,131,255,.055),rgba(116,100,238,.02));
+}
+.showreel-item.active>b,.showreel-item.active>i{color:#b4a5ff}
+
+.home-featured-concert{
+  background:linear-gradient(180deg,transparent,rgba(116,100,238,.05),rgba(73,61,157,.028),transparent);
+}
+.home-featured-concert::before{
+  background:radial-gradient(circle,rgba(149,131,255,.17),rgba(116,100,238,.07) 36%,transparent 68%);
+  animation:pmOrbFloat 14s ease-in-out infinite alternate;
+}
+.home-concert-case::before{
+  background:radial-gradient(circle,rgba(116,100,238,.145),rgba(73,61,157,.055) 42%,transparent 69%);
+  animation:pmOrbFloat 17s ease-in-out infinite alternate-reverse;
+}
+@keyframes pmOrbFloat{from{transform:translate3d(-2%,0,0) scale(.94)}to{transform:translate3d(5%,4%,0) scale(1.08)}}
+
+/* cards / borders get only a small electric lift */
+.project-card:hover,.home-service-card:hover{
+  border-color:rgba(149,131,255,.30);
+}
+.home-service-card::after{
+  background:radial-gradient(circle,rgba(116,100,238,.19),rgba(149,131,255,.07) 44%,transparent 69%);
+}
+.discipline-row.open .plus{border-color:#9583ff}
+.myth-note{border-left-color:#7464ee;background:rgba(116,100,238,.075)}
+
+.home-final-cta{
+  background:
+    radial-gradient(720px 520px at 50% 55%,rgba(116,100,238,.095),transparent 66%),
+    linear-gradient(180deg,#08070d,#0d0915);
+}
+.home-final-cta::before{
+  background:radial-gradient(circle,rgba(149,131,255,.17),rgba(116,100,238,.055) 40%,transparent 70%);
+  animation:pmHeroGlow 15s ease-in-out infinite alternate;
+}
+
+/* Concert ecosystem follows the same palette */
+.concert-v2{background:#08070d}
+.cv-hero{background:#08070d}
+.cv-hero::before{
+  background:
+    radial-gradient(circle at 72% 30%,rgba(116,100,238,.20),transparent 30%),
+    radial-gradient(circle at 18% 72%,rgba(149,131,255,.07),transparent 29%);
+  animation:pmConcertAmbient 16s ease-in-out infinite alternate;
+}
+@keyframes pmConcertAmbient{
+  from{background-position:0 0,0 0;filter:saturate(.92)}
+  to{background-position:-42px 28px,38px -20px;filter:saturate(1.08)}
+}
+.cv-hero h1 em{color:#9b8cf6}
+.cv-section-soft{background:linear-gradient(180deg,rgba(116,100,238,.04),rgba(255,255,255,.006),transparent)}
+
+/* mobile: same mood, less animation and less paint cost */
+@media (max-width:760px){
+  body{
+    background-size:180% 180%,190% 190%,200% 200%,230% 230%;
+    animation-duration:32s;
+  }
+  .hero::before{filter:blur(28px);opacity:.75;animation-duration:18s}
+  .home-featured-concert::before,.home-concert-case::before{animation-duration:22s}
+  .nav-links .nav-cta,.btn.primary{animation-duration:11s}
+}
+
+@media (prefers-reduced-motion:reduce){
+  body,.hero::before,.home-featured-concert::before,.home-concert-case::before,
+  .nav-links .nav-cta,.btn.primary,.hero-title em,.home-final-cta h2 em,.cv-hero::before{
+    animation:none!important;
+  }
+}
