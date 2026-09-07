@@ -1,81 +1,15 @@
-<!DOCTYPE html>
-
-<html lang="tr">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1" name="viewport"/>
-<meta content="#07070b" name="theme-color"/>
-<title>Konser İçerikleri — Paroglu Media</title>
-<meta content="Sefo, Hakan Peker, Dedublüman ve Poizi konser videoları — Paroglu Media." name="description"/>
-<link href="styles.css" rel="stylesheet"/>
-<style>
-    .concert-hero{min-height:78svh;display:flex;align-items:flex-end;position:relative;overflow:hidden;padding:150px 0 72px;background:#07070b}
-    .concert-hero::before{content:"";position:absolute;inset:-15%;background:radial-gradient(circle at 75% 30%,rgba(126,72,255,.27),transparent 27%),radial-gradient(circle at 20% 70%,rgba(255,37,115,.18),transparent 30%);filter:blur(18px);animation:concertGlow 9s ease-in-out infinite alternate}
-    .concert-hero::after{content:"LIVE";position:absolute;right:-2vw;bottom:-3vw;font:900 clamp(120px,25vw,430px)/.75 Arial,sans-serif;letter-spacing:-.08em;color:rgba(255,255,255,.025);pointer-events:none}
-    @keyframes concertGlow{to{transform:translate3d(-4%,3%,0) scale(1.05)}}
-    .concert-hero .container{position:relative;z-index:2}
-    .concert-title{max-width:1000px;margin:0;font-size:clamp(58px,9vw,148px);line-height:.86;letter-spacing:-.065em;color:#fff}
-    .concert-title em{font-style:normal;color:#9870ff}
-    .concert-lead{max-width:700px;margin:28px 0 0;color:rgba(255,255,255,.7);font-size:clamp(16px,2vw,22px);line-height:1.5}
-    .concert-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:28px}.concert-meta span{border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:8px 12px;color:#dcd8e8;font-size:11px;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.035)}
-    .concert-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px;margin-top:42px}
-    .concert-card{position:relative;border:1px solid rgba(255,255,255,.1);border-radius:24px;overflow:hidden;background:rgba(255,255,255,.035);box-shadow:0 26px 80px rgba(0,0,0,.28);transition:transform .45s cubic-bezier(.2,.7,.2,1),border-color .35s ease}
-    .concert-card:hover{transform:translateY(-7px);border-color:rgba(152,112,255,.45)}
-    .concert-video-wrap{position:relative;aspect-ratio:9/16;background:#000;overflow:hidden}
-    .concert-video-wrap video{display:block;width:100%;height:100%;object-fit:cover;background:#000}
-    .concert-card-info{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;padding:18px 18px 20px}
-    .concert-card-info small{display:block;color:#9870ff;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:7px}
-    .concert-card-info h3{margin:0;color:#fff;font-size:clamp(24px,3vw,40px);letter-spacing:-.04em}
-    .concert-duration{flex:none;border:1px solid rgba(255,255,255,.12);border-radius:999px;padding:7px 10px;color:#aaa5b3;font-size:12px}
-    .concert-note{margin:16px 0 0;color:#a6a2ad;font-size:13px;line-height:1.6}
-    .concert-section{padding:90px 0 120px;background:#09090e}
-    .concert-section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:28px}.concert-section-head h2{margin:0;color:#fff;font-size:clamp(42px,7vw,90px);line-height:.92;letter-spacing:-.055em}.concert-section-head p{max-width:430px;color:#918d99;line-height:1.65;margin:0}
-    .concert-back{display:inline-flex;margin-top:34px}
-    @media(max-width:760px){.concert-hero{padding:120px 0 54px;min-height:70svh}.concert-grid{grid-template-columns:1fr;gap:22px}.concert-section{padding:65px 0 90px}.concert-section-head{display:block}.concert-section-head p{margin-top:18px}.concert-card:hover{transform:none}}
-  </style>
-<link as="image" href="paroglu-media-logo-light.png" rel="preload"/></head>
-<body>
-<div aria-hidden="true" class="site-loader"><div class="loader-aurora"></div><div class="loader-core"><div class="loader-logo-wrap"><img alt="" src="paroglu-media-logo-light.png"/></div><div class="loader-track"><span></span></div><div class="loader-caption">CREATIVE STUDIO · PAROGLU MEDIA</div></div></div><div class="noise"></div><div class="page-transition"></div>
-<header class="site-nav"><div class="nav-inner"><a aria-label="Paroglu Media" class="brand" href="index.html"><img alt="Paroglu Media" class="brand-logo" src="paroglu-media-logo-light.png"/></a><nav class="nav-links"><a href="hakkimda.html">Hakkımda</a><a href="hizmetler.html">Hizmetler</a><a class="active" href="isler.html">İşler</a><a class="nav-cta" href="teklif-al.html">Teklif Al</a><a href="iletisim.html">İletişim</a></nav><button aria-expanded="false" aria-label="Menüyü aç" class="menu-toggle" type="button">☰</button></div><div class="mobile-menu"><a href="hakkimda.html">Hakkımda</a><a href="hizmetler.html">Hizmetler</a><a href="isler.html">İşler</a><a class="mobile-cta" href="teklif-al.html">Teklif Al</a><a href="iletisim.html">İletişim</a></div></header>
-<main>
-<section class="concert-hero">
-<div class="container">
-<div class="kicker reveal">KONSER · REELS · VIDEO</div>
-<h1 class="concert-title reveal">Sahnedeki<br/><em>enerji.</em></h1>
-<p class="concert-lead reveal">Konser çekimlerinde sahnenin ritmini, seyircinin enerjisini ve sanatçının performansını dikey videoya taşıyan seçili çalışmalar.</p>
-<div class="concert-meta reveal"><span>Sefo</span><span>Hakan Peker</span><span>Dedublüman</span><span>Poizi</span><span>9:16</span></div>
-<a class="pill concert-back" href="isler.html">← İşlere Dön</a>
-</div>
-</section>
-<section class="concert-section">
-<div class="container">
-<div class="concert-section-head reveal">
-<div><div class="kicker">SEÇİLİ KONSERLER</div><h2>Dört sahne,<br/>dört farklı enerji.</h2></div>
-<p>Videolar web için optimize edildi. Oynat butonuna basarak sesli ve tam uzunlukta izleyebilirsin.</p>
-</div>
-<div class="concert-grid">
-<article class="concert-card reveal">
-<div class="concert-video-wrap"><video controls="" playsinline="" poster="concert-sefo-poster.jpg" preload="metadata"><source src="concert-sefo.mp4" type="video/mp4"/></video></div>
-<div class="concert-card-info"><div><small>KONSER · REELS</small><h3>Sefo</h3><p class="concert-note">Sahne enerjisi, kalabalık ve performans odaklı dikey konser kurgusu.</p></div><span class="concert-duration">1:20</span></div>
-</article>
-<article class="concert-card reveal">
-<div class="concert-video-wrap"><video controls="" playsinline="" poster="concert-hakan-peker-poster.jpg" preload="metadata"><source src="concert-hakan-peker.mp4" type="video/mp4"/></video></div>
-<div class="concert-card-info"><div><small>KONSER · VIDEO</small><h3>Hakan Peker</h3><p class="concert-note">Performansın ritmini ve seyirci etkileşimini öne çıkaran kısa konser filmi.</p></div><span class="concert-duration">0:47</span></div>
-</article>
-<article class="concert-card reveal">
-<div class="concert-video-wrap"><video controls="" playsinline="" poster="concert-dedubluman-poster.jpg" preload="metadata"><source src="concert-dedubluman.mp4" type="video/mp4"/></video></div>
-<div class="concert-card-info"><div><small>KONSER · REELS</small><h3>Dedublüman</h3><p class="concert-note">Atmosfer, ışık ve sahne detaylarını bir araya getiren uzun form dikey konser kurgusu.</p></div><span class="concert-duration">1:28</span></div>
-</article>
-<article class="concert-card reveal">
-<div class="concert-video-wrap"><video controls="" playsinline="" poster="concert-poizi-poster.jpg" preload="metadata"><source src="concert-poizi.mp4" type="video/mp4"/></video></div>
-<div class="concert-card-info"><div><small>KONSER · REELS</small><h3>Poizi</h3><p class="concert-note">Hızlı ritim, yakın planlar ve seyirci enerjisiyle şekillenen dikey performans videosu.</p></div><span class="concert-duration">1:03</span></div>
-</article>
-</div>
-</div>
-</section>
-<section class="concert-photo-teaser"><div class="container"><div class="section-head reveal"><div><div class="kicker">KONSER FOTOĞRAFI</div><h2 class="section-title">Sahneden kareler.</h2><p class="section-copy">Konser fotoğraf serileri sanatçı bazında ayrı kategorilerde.</p></div><a class="pill" href="konser-fotograf.html">Tüm Fotoğraflar ↗</a></div><div class="artist-cover-grid"><a class="artist-cover reveal" href="konser-fotograf.html#gokhan-turkmen"><img alt="Gökhan Türkmen" src="cover-gokhan-turkmen.jpg"/><div><small>KONSER FOTOĞRAFI</small><strong>Gökhan Türkmen</strong><span>10 kare ↗</span></div></a><a class="artist-cover reveal" href="konser-fotograf.html#hakan-peker"><img alt="Hakan Peker" src="cover-hakan-peker.jpg"/><div><small>KONSER FOTOĞRAFI</small><strong>Hakan Peker</strong><span>10 kare ↗</span></div></a><a class="artist-cover reveal" href="konser-fotograf.html#sefo"><img alt="SEFO" src="cover-sefo-photo.jpg"/><div><small>KONSER FOTOĞRAFI</small><strong>SEFO</strong><span>10 kare ↗</span></div></a></div></div></section></main>
-<footer class="footer"><div class="container"><h2 class="footer-cta reveal"><span>Bir sonraki işi</span> <a href="teklif-al.html">birlikte yapalım.</a></h2><div class="footer-bottom"><span>© 2026 Paroglu Media</span><a href="isler.html">Tüm İşler</a></div></div></footer>
-<button class="assistant-launch"><i>✦</i><span>Paroglu Asistan</span></button><aside class="assistant-panel"><div class="assistant-head"><div><strong>Paroglu Asistan ✦</strong><small>Projen için yardımcı olur.</small></div><button class="assistant-close">×</button></div><div class="messages"></div><div class="assistant-input"><input placeholder="Bir şey yaz..."/><button>↑</button></div></aside>
-<script src="backend-config.js"></script><script src="data-store.js"></script><script src="app.js"></script>
-</body>
-</html>
+<!doctype html><html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#08080b"><title>Konser İşleri — Paroglu Media</title><meta name="description" content="Paroglu Media konser video, reels ve fotoğraf çalışmaları."><link rel="stylesheet" href="styles.css"><link rel="preload" as="image" href="paroglu-media-logo-light.png"></head><body class="concert-v2"><div class="noise"></div><div class="page-transition"></div><header class="site-nav"><div class="nav-inner"><a aria-label="Paroglu Media" class="brand" href="index.html"><img alt="Paroglu Media" class="brand-logo" src="paroglu-media-logo-light.png"></a><nav class="nav-links"><a href="hakkimda.html">Hakkımda</a><a href="hizmetler.html">Hizmetler</a><a class="active" href="isler.html">İşler</a><a class="nav-cta" href="teklif-al.html">Teklif Al</a><a href="iletisim.html">İletişim</a></nav><button aria-expanded="false" aria-label="Menüyü aç" class="menu-toggle" type="button">☰</button></div><div class="mobile-menu"><a href="hakkimda.html">Hakkımda</a><a href="hizmetler.html">Hizmetler</a><a href="isler.html">İşler</a><a class="mobile-cta" href="teklif-al.html">Teklif Al</a><a href="iletisim.html">İletişim</a></div></header><main>
+<section class="cv-hero"><div class="cv-container cv-hero-inner"><div class="cv-kicker">CONCERT / LIVE / CONTENT</div><h1>Sahnenin<br><em>enerjisi.</em></h1><p>Konser çekimi, dikey video, fotoğraf ve kurgu. Her işi tek bir gecenin atmosferini taşıyan görsel bir seri gibi ele alıyorum.</p><div class="cv-chip-row"><span class="cv-chip">Video Production</span><span class="cv-chip">Concert Photography</span><span class="cv-chip">Vertical Reels</span><span class="cv-chip">Editing</span></div></div></section>
+<section class="cv-section cv-section-soft"><div class="cv-container"><div class="cv-head"><div><div class="cv-kicker">FILM / VIDEO</div><h2>Hareketli<br>işler.</h2></div><p>Sahnenin ritmi, ışık ve seyirci enerjisi; sosyal medya için hızlı, dikey ve güçlü bir video diline dönüşüyor.</p></div><div class="cv-projects">
+<a class="cv-project" href="konser-sefo.html"><div class="cv-project-media"><video src="showreel-sefo.mp4" poster="concert-sefo-poster.jpg" muted playsinline loop autoplay preload="metadata"></video></div><div class="cv-project-copy"><div><div class="cv-num">01 / CONCERT FILM</div><h3>SEFO</h3><p>Sahne enerjisi, kalabalık ve performansı öne çıkaran dikey konser filmi.</p><div class="cv-meta"><span>Video</span><span>Reels</span><span>Editing</span></div></div><span class="cv-link">Case Study ↗</span></div></a>
+<a class="cv-project" href="konser-hakan-peker.html"><div class="cv-project-media"><video src="showreel-hakan-peker.mp4" poster="concert-hakan-peker-poster.jpg" muted playsinline loop autoplay preload="metadata"></video></div><div class="cv-project-copy"><div><div class="cv-num">02 / PHOTO + VIDEO</div><h3>Hakan Peker</h3><p>Performansın ritmini hem hareketli görüntü hem de seçili fotoğraf serisiyle anlatan konser çalışması.</p><div class="cv-meta"><span>Video</span><span>Photography</span><span>Social Content</span></div></div><span class="cv-link">Case Study ↗</span></div></a>
+<a class="cv-project" href="konser-dedubluman.html"><div class="cv-project-media"><video src="showreel-dedubluman.mp4" poster="concert-dedubluman-poster.jpg" muted playsinline loop autoplay preload="metadata"></video></div><div class="cv-project-copy"><div><div class="cv-num">03 / CONCERT FILM</div><h3>Dedublüman</h3><p>Işık, atmosfer ve sahne detaylarını bir araya getiren dikey performans kurgusu.</p><div class="cv-meta"><span>Video</span><span>Reels</span><span>Editing</span></div></div><span class="cv-link">Projeyi Gör ↗</span></div></a>
+<a class="cv-project" href="konser-poizi.html"><div class="cv-project-media"><video src="showreel-poizi.mp4" poster="concert-poizi-poster.jpg" muted playsinline loop autoplay preload="metadata"></video></div><div class="cv-project-copy"><div><div class="cv-num">04 / CONCERT FILM</div><h3>Poizi</h3><p>Yakın planlar ve hızlı ritimle şekillenen dikey canlı performans içeriği.</p><div class="cv-meta"><span>Video</span><span>Reels</span><span>Social</span></div></div><span class="cv-link">Projeyi Gör ↗</span></div></a>
+</div></div></section>
+<section class="cv-section"><div class="cv-container"><div class="cv-head"><div><div class="cv-kicker">PHOTOGRAPHY</div><h2>Sahneden<br>kareler.</h2></div><p>Fotoğrafları tek tek değil, sanatçı bazında küratörlü seri olarak sunuyorum.</p></div><div class="cv-photo-cards">
+<a class="cv-photo-card" href="konser-gokhan-turkmen.html"><img src="cover-gokhan-turkmen.jpg" alt="Gökhan Türkmen konser fotoğrafı"><div><small>CONCERT PHOTOGRAPHY</small><strong>Gökhan Türkmen</strong><span>10 seçili kare ↗</span></div></a>
+<a class="cv-photo-card" href="konser-hakan-peker.html"><img src="cover-hakan-peker.jpg" alt="Hakan Peker konser fotoğrafı"><div><small>PHOTO + VIDEO</small><strong>Hakan Peker</strong><span>Case study ↗</span></div></a>
+<a class="cv-photo-card" href="konser-sefo.html"><img src="cover-sefo-photo.jpg" alt="SEFO konser fotoğrafı"><div><small>PHOTO + VIDEO</small><strong>SEFO</strong><span>Case study ↗</span></div></a>
+</div></div></section>
+<section class="cv-cta"><div class="cv-container"><div class="cv-kicker">CONCERT / EVENT</div><h2>Bir geceyi<br><em>içeriğe dönüştürelim.</em></h2><p>Konser veya etkinlik planlıyorsan; çekim, fotoğraf ve sosyal medya teslimlerini birlikte konuşalım.</p><a class="btn primary" href="teklif-al.html?service=concert">Projeyi Konuşalım ↗</a></div></section>
+</main><footer class="footer"><div class="container"><h2 class="footer-cta"><span>Bir sonraki işi</span> <a href="teklif-al.html">birlikte yapalım.</a></h2><div class="footer-grid"><div><img alt="Paroglu Media" class="footer-logo" src="paroglu-media-logo-light.png"><span>Video · Fotoğraf · Tasarım · Sosyal Medya · Drone</span></div><div><strong>Keşfet</strong><a href="konser.html">Konser</a><br><a href="isler.html">Tüm İşler</a><br><a href="hizmetler.html">Hizmetler</a></div><div><strong>İletişim</strong><a href="mailto:umutparoglu87@gmail.com">umutparoglu87@gmail.com</a><br><a href="tel:+905416629862">+90 541 662 98 62</a></div></div><div class="footer-bottom"><span>© 2026 Paroglu Media</span><span>Karabük / Türkiye</span></div></div></footer><button class="assistant-launch"><i>✦</i><span>Paroglu Asistan</span></button><aside class="assistant-panel"><div class="assistant-head"><div><strong>Paroglu Asistan ✦</strong><small>Projen için yardımcı olur.</small></div><button class="assistant-close">×</button></div><div class="messages"></div><div class="assistant-input"><input placeholder="Bir şey yaz..."><button>↑</button></div></aside><script src="backend-config.js"></script><script src="data-store.js"></script><script src="app.js"></script></body></html>
