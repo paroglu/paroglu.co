@@ -1,22 +1,24 @@
-PAROGLU MEDIA — V7.1 KARABÜK İDMAN YURDU OTOBÜS TASARIMI
+PAROGLU MEDIA V7.2 — ANA SAYFA YAPI REVİZYONU
 
-Bu paket mevcut V7 sitenin ÜZERİNE yüklenir.
-backend-config.js dosyasına dokunmaz.
+Bu paket Genç İşi Medya'dan yalnızca içerik akışı / satış mantığı referans alınarak,
+Paroglu Media'nın mevcut mor / creative studio görsel dili korunarak hazırlandı.
 
-EKLENENLER
-- Karabük İdman Yurdu Otobüs Tasarımı için ayrı detay sayfası
-- 5 proje görseli
-- Ana sayfa İşlerimiz carousel kartı
-- İşler sayfasında Tasarım + Spor filtrelerine bağlı proje kartı
-- Tasarım sayfasında öne çıkan proje alanı ve 5 detay görseli
-- Tasarım sayfasındaki eski kapak placeholder'ı cover-design.jpg ile düzeltildi
-- Supabase proje kaydı için tek SQL dosyası
+Güncellenen dosyalar:
+- index.html
+- styles.css
+- app.js
 
-YÜKLEME
-1) Bu klasördeki site dosyalarını GitHub reposunun köküne yükle.
-2) Aynı isimli index.html / isler.html / tasarim.html dosyalarının üzerine yazılmasına izin ver.
-3) 5 JPG ve karabuk-otobus-tasarimi.html dosyasını da yükle.
-4) Supabase SQL Editor'da supabase-karabuk-otobus.sql dosyasını bir kez çalıştır.
+Değişiklikler:
+- Ana sayfa İşlerimiz bölümü gerçek medya oranlarını korur.
+- Görsel değişim animasyonu iyileştirildi.
+- Ana kategori alanı eklendi.
+- Karabük İdman Yurdu otobüs tasarımı case study olarak öne çıkarıldı.
+- 8 gerçek marka kayan bantta tutuldu.
+- Neden Paroglu bölümü eklendi.
+- Brief > Planlama > Üretim > Teslim/Yayın çalışma akışı eklendi.
+- Ana sayfa hizmetleri sadeleştirildi.
+- Sayfa sonuna güçlü teklif çağrısı eklendi.
+- Ana sayfa kategori linklerinden İşler sayfasına filtreli giriş desteği eklendi.
 
-NOT
-Supabase'de projects tablosu İşler sayfasını dinamik olarak doldurduğu için SQL adımı önemlidir.
+Supabase SQL gerekmez.
+backend-config.js dosyasına dokunmayın.

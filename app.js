@@ -267,6 +267,8 @@
     },185);
   }
   $$('.filter-btn').forEach(btn=>btn.addEventListener('click',()=>{$$('.filter-btn').forEach(x=>x.classList.remove('active'));btn.classList.add('active');filterWorks(btn.dataset.filter)}));
+  // Deep-link portfolio categories from the homepage, e.g. isler.html?filter=sport
+  (()=>{const requested=new URLSearchParams(location.search).get('filter');if(!requested)return;const btn=$(`.filter-btn[data-filter="${requested.replace(/[^a-z-]/gi,'')}"]`);if(btn){$$('.filter-btn').forEach(x=>x.classList.remove('active'));btn.classList.add('active');filterWorks(btn.dataset.filter);setTimeout(()=>document.querySelector('.work-toolbar')?.scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'start'}),90)}})();
   $$('.view-mode button').forEach(btn=>btn.addEventListener('click',()=>{$$('.view-mode button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');document.body.classList.toggle('showreel-mode',btn.dataset.view==='showreel')}));
 
   /* ---------------------------------------------------------
@@ -445,7 +447,7 @@
     cards.forEach((card,cardIndex)=>{
       const img=card.querySelector('.home-work-media img'),media=card.querySelector('.home-work-media');
       const items=(card.dataset.rotate||'').split('|').filter(Boolean);if(!img||items.length<2)return;
-      let i=0;const swap=()=>{i=(i+1)%items.length;img.classList.add('is-swapping');media?.classList.remove('is-swap');setTimeout(()=>{img.src=items[i];media?.classList.add('is-swap');img.onload=()=>img.classList.remove('is-swapping');setTimeout(()=>img.classList.remove('is-swapping'),420)},220)};
+      let i=0;const swap=()=>{i=(i+1)%items.length;img.classList.add('is-swapping');media?.classList.remove('is-swap');setTimeout(()=>{const next=items[i];const done=()=>{img.classList.remove('is-swapping');media?.classList.add('is-swap');setTimeout(()=>media?.classList.remove('is-swap'),760)};img.addEventListener('load',done,{once:true});img.src=next;if(img.complete)requestAnimationFrame(done);setTimeout(()=>img.classList.remove('is-swapping'),650)},210)};
       if(!reduceMotion)setInterval(swap,3600+(cardIndex*420));
     });
     const step=()=>Math.min(viewport.clientWidth*.72,520);
