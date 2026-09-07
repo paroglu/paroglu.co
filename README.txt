@@ -1,14 +1,6 @@
-PAROGLU MEDIA V7.2.7 — TYPOGRAPHY + SAFE TEXT MOTION
+Paroglu Media V7.2.9 — Showreel
 
-Yüklenecek dosyalar:
-- index.html
-- styles.css
+Ana sayfaya İşlerimiz bölümünün hemen altına otomatik oynayan sessiz video/showreel alanı ekler.
 
-Dokunma:
-- app.js
-- backend-config.js
-- data-store.js
-- Supabase
-
-Bu sürüm V7.2.6 güvenli ana sayfa + V7.2.3 ince premium tipografi + metin animasyonlarını birlikte içerir.
-Animasyonlar metin katmanındadır. Görsel yolları, portfolyo, menü ve backend yapısı değiştirilmemiştir.
+Yükle: index.html, styles.css, 4 showreel-*.mp4 ve 4 concert-*-poster.jpg.
+Dokunma: app.js, backend-config.js, data-store.js, Supabase.

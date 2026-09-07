@@ -34,6 +34,35 @@
   <div class="container home-work-controls"><span>Kaydır / sürükle</span><div><button aria-label="Önceki" data-home-prev="" type="button">←</button><button aria-label="Sonraki" data-home-next="" type="button">→</button></div></div>
 </section>
 
+
+<section class="section home-showreel" id="showreel" data-showreel>
+  <div class="container">
+    <div class="section-head reveal">
+      <div><div class="kicker">MOTION / SHOWREEL</div><h2 class="section-title">Hareketli işler.</h2></div>
+      <p class="section-copy">Seçili konser videolarından kısa, sessiz ve otomatik oynayan önizlemeler. Tam videolar proje sayfasında.</p>
+    </div>
+    <div class="showreel-shell">
+      <div class="showreel-stage" data-showreel-stage style="--showreel-poster:url('concert-sefo-poster.jpg')">
+        <div class="showreel-ambient" aria-hidden="true"></div>
+        <video class="showreel-video" data-showreel-video src="showreel-sefo.mp4" poster="concert-sefo-poster.jpg" muted playsinline autoplay preload="metadata" aria-label="SEFO konser videosu sessiz önizleme"></video>
+        <div class="showreel-shade" aria-hidden="true"></div>
+        <div class="showreel-topline"><span>SESSİZ ÖNİZLEME</span><span>10 SN / AUTO</span></div>
+        <div class="showreel-caption">
+          <div><small data-showreel-kicker>01 · KONSER REEL</small><strong data-showreel-title>SEFO</strong><span data-showreel-subtitle>Concert Reel · 2026</span></div>
+          <a href="konser.html">Videoyu Aç ↗</a>
+        </div>
+      </div>
+      <div class="showreel-list" aria-label="Showreel seçimi">
+        <button class="showreel-item active" type="button" aria-pressed="true" data-src="showreel-sefo.mp4" data-poster="concert-sefo-poster.jpg" data-title="SEFO" data-subtitle="Concert Reel · 2026" data-kicker="01 · KONSER REEL"><b>01</b><span><strong>SEFO</strong><small>Konser / Reels</small></span><i>↗</i></button>
+        <button class="showreel-item" type="button" aria-pressed="false" data-src="showreel-hakan-peker.mp4" data-poster="concert-hakan-peker-poster.jpg" data-title="Hakan Peker" data-subtitle="Concert Reel · 2026" data-kicker="02 · KONSER REEL"><b>02</b><span><strong>Hakan Peker</strong><small>Konser / Reels</small></span><i>↗</i></button>
+        <button class="showreel-item" type="button" aria-pressed="false" data-src="showreel-dedubluman.mp4" data-poster="concert-dedubluman-poster.jpg" data-title="Dedublüman" data-subtitle="Concert Reel · 2026" data-kicker="03 · KONSER REEL"><b>03</b><span><strong>Dedublüman</strong><small>Konser / Reels</small></span><i>↗</i></button>
+        <button class="showreel-item" type="button" aria-pressed="false" data-src="showreel-poizi.mp4" data-poster="concert-poizi-poster.jpg" data-title="Poizi" data-subtitle="Concert Reel · 2026" data-kicker="04 · KONSER REEL"><b>04</b><span><strong>Poizi</strong><small>Konser / Reels</small></span><i>↗</i></button>
+        <div class="showreel-note"><span>✦</span><p>Video yalnızca bölüm ekrandayken oynar. Mobilde sessiz ve <b>playsinline</b> çalışır.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section home-category-hub">
   <div class="container">
     <div class="section-head reveal"><div><div class="kicker">NE YAPIYORUM?</div><h2 class="section-title">Alanlar</h2></div><p class="section-copy">Her disiplin kendi portfolyosuna açılıyor. Yeni işler geldikçe yemek, otomotiv, ürün gibi alt kategoriler aynı sistemin içine eklenebilir.</p></div>
@@ -133,4 +162,68 @@
   setTimeout(forceVisible,1200);
 })();
 </script>
+
+<script>
+(function(){
+  var root=document.querySelector('[data-showreel]');
+  if(!root) return;
+  var video=root.querySelector('[data-showreel-video]');
+  var stage=root.querySelector('[data-showreel-stage]');
+  var items=Array.prototype.slice.call(root.querySelectorAll('.showreel-item'));
+  var title=root.querySelector('[data-showreel-title]');
+  var subtitle=root.querySelector('[data-showreel-subtitle]');
+  var kicker=root.querySelector('[data-showreel-kicker]');
+  var current=0, inView=false;
+
+  function playSafe(){
+    if(!video || !inView) return;
+    var p=video.play();
+    if(p && p.catch) p.catch(function(){});
+  }
+  function activate(next){
+    if(!items.length) return;
+    current=(next+items.length)%items.length;
+    var item=items[current];
+    items.forEach(function(btn,i){
+      var active=i===current;
+      btn.classList.toggle('active',active);
+      btn.setAttribute('aria-pressed',active?'true':'false');
+    });
+    var src=item.getAttribute('data-src');
+    var poster=item.getAttribute('data-poster');
+    if(title) title.textContent=item.getAttribute('data-title')||'';
+    if(subtitle) subtitle.textContent=item.getAttribute('data-subtitle')||'';
+    if(kicker) kicker.textContent=item.getAttribute('data-kicker')||'';
+    if(stage && poster) stage.style.setProperty('--showreel-poster','url("'+poster+'")');
+    if(video){
+      video.pause();
+      if(poster) video.poster=poster;
+      if(src && video.getAttribute('src')!==src){
+        video.setAttribute('src',src);
+        video.load();
+      }
+      video.setAttribute('aria-label',(item.getAttribute('data-title')||'Proje')+' konser videosu sessiz önizleme');
+      playSafe();
+    }
+  }
+  items.forEach(function(btn,i){btn.addEventListener('click',function(){activate(i);});});
+  if(video) video.addEventListener('ended',function(){activate(current+1);});
+
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        inView=entry.isIntersecting && entry.intersectionRatio>.22;
+        if(inView) playSafe(); else if(video) video.pause();
+      });
+    },{threshold:[0,.22,.55]});
+    io.observe(root);
+  }else{inView=true;playSafe();}
+
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){ if(video) video.pause(); }
+    else playSafe();
+  });
+})();
+</script>
+
 </body></html>
