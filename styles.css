@@ -1146,3 +1146,89 @@ body{
   .nav-links .nav-cta::after,.mobile-menu .mobile-cta::after,.btn.primary::after,.cta-pulse::after,
   .page-transition::before,.page-transition::after{animation:none!important}
 }
+
+/* =========================================================
+   V7.2.17 — CRISP TEXT / CORPORATE CLEANUP
+   iPad/Safari: remove blur-based text motion and keep all copy sharp.
+   Background glows, media transitions and neon gradient motion remain.
+   ========================================================= */
+html,body{
+  text-rendering:optimizeLegibility;
+  font-kerning:normal;
+}
+
+/* Small labels should glow through color, not through blurred glyph edges. */
+.kicker,.eyebrow,.hero-kicker{
+  text-shadow:none!important;
+}
+
+/* Never animate text with CSS blur. This is the main Safari/iPad sharpness fix. */
+body.pm-text-motion .hero-title .line,
+body.pm-text-motion .hero-copy .pm-copy-motion,
+body.pm-text-motion .hero-actions .btn,
+body.pm-text-motion .home-work-meta,
+body.pm-text-motion .home-category-card>div,
+body.pm-text-motion .home-case-copy>*,
+body.pm-text-motion .home-why-card>*,
+body.pm-text-motion .home-process-step>*,
+body.pm-text-motion .home-service-card>*,
+body.pm-text-motion .home-final-cta .container>*,
+body.pm-text-motion .footer-cta>*,
+.motion-title,.section-title,.inner-hero h1,.case-hero-copy h1,.about-headline{
+  filter:none!important;
+  -webkit-filter:none!important;
+}
+
+/* Safari can leave scroll-timeline text on a composited layer and make it soft.
+   Keep the motion on backgrounds/cards, but render copy on a static text layer. */
+@supports (animation-timeline:view()){
+  body.pm-text-motion .section-head>div,
+  body.pm-text-motion .section-head>.section-copy,
+  body.pm-text-motion .section-head>.pill,
+  body.pm-text-motion .home-work-meta,
+  body.pm-text-motion .home-category-card>div,
+  body.pm-text-motion .home-case-copy>*,
+  body.pm-text-motion .home-why-card>*,
+  body.pm-text-motion .home-process-step>*,
+  body.pm-text-motion .home-service-card>*,
+  body.pm-text-motion .home-final-cta .container>*,
+  body.pm-text-motion .footer-cta>*{
+    animation:none!important;
+    animation-timeline:auto!important;
+    opacity:1!important;
+    transform:none!important;
+    filter:none!important;
+  }
+}
+
+/* Hero keeps a subtle entrance, but no blur. */
+body.pm-text-motion .hero-title .line{
+  filter:none!important;
+}
+@keyframes pmHeroLineIn{
+  0%{opacity:.10;transform:translate3d(0,24px,0) scale(.992);filter:none}
+  100%{opacity:1;transform:none;filter:none}
+}
+@keyframes pmHeroCopyIn{
+  0%{opacity:0;transform:translate3d(0,12px,0);filter:none}
+  100%{opacity:1;transform:none;filter:none}
+}
+
+/* Form feedback stays clean and obvious. */
+.talk-field input:required:invalid:not(:placeholder-shown),
+.talk-field textarea:required:invalid:not(:placeholder-shown){
+  border-color:rgba(255,118,142,.46);
+}
+.talk-field input:focus,.talk-field textarea:focus{
+  outline:none;
+  border-color:rgba(148,117,255,.56);
+  box-shadow:0 0 0 3px rgba(115,95,255,.08);
+}
+
+.empty-project-state .btn{justify-self:start;margin-top:18px}
+
+/* Preserve crisp UI text inside glass surfaces. */
+.site-nav,.mobile-menu,.talk-scope-card,.showreel-topline span,.showreel-caption>a,
+.home-case-frame figcaption,.artist-shot span{
+  -webkit-font-smoothing:antialiased;
+}
