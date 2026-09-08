@@ -1,17 +1,16 @@
-Paroglu Media V7.2.15 — Instagram Dark Fix
+PAROGLU MEDIA V7.2.16 — Neon Gradient + Yeni Sayfa Geçişi
 
-Upload only these files to the repository root:
-- index.html
-- styles.css
+Yalnızca styles.css değişti.
+Mevcut GitHub repo kökündeki styles.css dosyasının üzerine yükleyin.
 
-This update:
-- restores the missing Instagram showcase CSS,
-- fixes tablet/mobile layout and the large blank area,
-- removes the visible technical “REEL / LIVE EMBED” label,
-- switches the section to a dark matte-neon frame,
-- keeps one Instagram embed loaded at a time,
-- uses non-captioned embed to reduce extra Instagram chrome.
+Değişenler:
+- Genel mor palet daha gradient / mat-neon hale getirildi.
+- Arka planda çok yavaş hareket eden mor ambient geçiş eklendi.
+- Hero mor ışık atmosferi güçlendirildi.
+- Teklif Al ve ana CTA butonlarında kontrollü neon gradient hareketi eklendi.
+- Kart hover ve seçili öğelerde mor ışık derinliği artırıldı.
+- Eski düz mor sayfa geçişi kaldırılarak koyu, ışıklı gradient sweep görünümü getirildi.
+- Mobilde animasyonlar daha hafif çalışır.
+- prefers-reduced-motion desteği korunur.
 
-Note: Instagram's own iframe interface is hosted by Instagram and cannot be recolored with the site's CSS. Its internal header may remain light. The surrounding site UI is fully dark.
-
-Do NOT change app.js, backend-config.js, data-store.js or Supabase for this update.
+HTML, app.js, backend-config.js, data-store.js ve Supabase değişmedi.
