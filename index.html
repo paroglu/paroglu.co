@@ -68,8 +68,8 @@
   <div class="container">
     <div class="section-head reveal instagram-showcase-head">
       <div>
-        <div class="kicker">INSTAGRAM / SEÇİLİ REELS</div>
-        <h2 class="section-title">Akıştan, portfolyoya.</h2>
+        <div class="kicker">INSTAGRAM / REELS</div>
+        <h2 class="section-title">Üretim devam ediyor.</h2>
       </div>
       <p class="section-copy">Sosyal medya için üretilen seçili Reels, etkinlik ve marka çalışmalarından güncel içerikler.</p>
     </div>
@@ -78,10 +78,10 @@
       <div class="instagram-showcase-copy">
         <div class="instagram-showcase-topline">
           <span class="instagram-reel-index" data-instagram-index>01 / 13</span>
-          <span class="instagram-live-badge"><i></i> INSTAGRAM'DAN CANLI</span>
+          <span class="instagram-live-badge"><i></i> INSTAGRAM REELS</span>
         </div>
-        <h3>Seçili Reels.</h3>
-        <p class="instagram-showcase-lead">Konser, spor, prodüksiyon ve sosyal medya çalışmalarından seçili kısa videolar.</p>
+        <h3>Son işlerden seçkiler.</h3>
+        <p class="instagram-showcase-lead">Konser, spor, prodüksiyon ve sosyal medya çalışmalarından güncel kısa video seçkileri.</p>
         <div class="instagram-showcase-actions">
           <button class="instagram-arrow" type="button" data-instagram-prev aria-label="Önceki Instagram Reel">←</button>
           <button class="instagram-arrow" type="button" data-instagram-next aria-label="Sonraki Instagram Reel">→</button>
@@ -103,13 +103,12 @@
           <button class="instagram-reel-chip" type="button" role="tab" aria-selected="false" data-instagram-select="11"><b>12</b><span>Reel</span></button>
           <button class="instagram-reel-chip" type="button" role="tab" aria-selected="false" data-instagram-select="12"><b>13</b><span>Reel</span></button>
         </div>
-        <small class="instagram-showcase-note">Güncel üretimlerden seçili Reels çalışmalarını keşfet.</small>
+        <small class="instagram-showcase-note">Bir Reel seç, doğrudan burada izle veya Instagram’da aç.</small>
       </div>
 
       <div class="instagram-showcase-stage">
         <div class="instagram-stage-glow" aria-hidden="true"></div>
         <div class="instagram-reel-device instagram-reel-device-v2">
-          <div class="instagram-device-top"><span></span><b>REEL / LIVE EMBED</b><span></span></div>
           <iframe class="instagram-reel-frame" data-instagram-frame src="https://www.instagram.com/reel/DXoHQSrCNvx/embed/captioned/" title="Paroglu Media Instagram Reel 01" loading="lazy" scrolling="no" frameborder="0" allowtransparency="true" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture; fullscreen"></iframe>
         </div>
       </div>
@@ -315,7 +314,7 @@
   var current=0;
 
   function cleanUrl(code){ return 'https://www.instagram.com/reel/'+code+'/'; }
-  function embedUrl(code){ return cleanUrl(code)+'embed/captioned/'; }
+  function embedUrl(code){ return cleanUrl(code)+'embed/'; }
   function activate(next){
     current=(next+reels.length)%reels.length;
     var code=reels[current];

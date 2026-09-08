@@ -1,20 +1,17 @@
-PAROGLU MEDIA — V7.2.13 INSTAGRAM SHOWCASE
+Paroglu Media V7.2.15 — Instagram Dark Fix
 
-Güncelleme:
-- Mevcut tekli Instagram Reel alanı 13 Reel'lik seçkiye dönüştürüldü.
-- İlk Reel: DXoHQSrCNvx + kullanıcının gönderdiği 12 yeni Reel.
-- Tek seferde yalnızca seçili Reel iframe'i yüklenir; 13 iframe aynı anda açılmaz.
-- Oynatıcı captioned embed kullanır; paylaşım açıklaması Instagram kartının içinde canlı görünür.
-- Önceki / Sonraki kontrolleri ve 01–13 seçim şeridi eklendi.
-- Instagram'da Aç bağlantısı seçili Reel'e göre otomatik güncellenir.
-- Mobil yatay seçim şeridi ve tek kolon görünüm eklendi.
-- Mevcut Purple Flow tasarım dili korunur.
+Upload only these files to the repository root:
+- index.html
+- styles.css
 
-Yükleme:
-1) ZIP'i aç.
-2) index.html ve styles.css dosyalarını GitHub repo köküne yükle.
-3) Aynı isimli dosyaları değiştir.
-4) app.js, backend-config.js, data-store.js veya Supabase ayarlarına dokunma.
+This update:
+- restores the missing Instagram showcase CSS,
+- fixes tablet/mobile layout and the large blank area,
+- removes the visible technical “REEL / LIVE EMBED” label,
+- switches the section to a dark matte-neon frame,
+- keeps one Instagram embed loaded at a time,
+- uses non-captioned embed to reduce extra Instagram chrome.
 
-Not:
-GitHub Pages statik olduğu için Instagram açıklamasını kendi HTML metnimize güvenli ve güncel biçimde çekmek için Meta API/backend gerekir. Bu sürüm açıklamayı Instagram'ın captioned embed kartı içinde doğrudan gösterir.
+Note: Instagram's own iframe interface is hosted by Instagram and cannot be recolored with the site's CSS. Its internal header may remain light. The surrounding site UI is fully dark.
+
+Do NOT change app.js, backend-config.js, data-store.js or Supabase for this update.
