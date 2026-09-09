@@ -59,25 +59,29 @@
   function buildWorkMega(projects=[]){
     const nav=$('.site-nav'); const workLink=$('.nav-links a[href="isler.html"]');
     if(!nav||!workLink) return;
+    const categories=[
+      ['TÜM İŞLER','Portfolyo','isler.html'],
+      ['VİDEO / REELS','Hareketli işler','isler.html?filter=film'],
+      ['FOTOĞRAF','Seçili fotoğraf serileri','fotograf.html'],
+      ['KONSER','Film + fotoğraf','konser.html'],
+      ['TASARIM','Grafik / kampanya','tasarim.html'],
+      ['SPOR / SOSYAL','Kulüp iletişimi','isler.html?filter=sport'],
+      ['DRONE','Hava çekimleri','drone.html']
+    ];
     let mega=$('.work-mega',nav);
     if(!mega){
-      mega=document.createElement('div'); mega.className='work-mega';
-      mega.innerHTML='<div class="work-mega-head"><span>FAVORİ İŞLER</span><a href="isler.html">Tüm işleri gör ↗</a></div><div class="work-mega-grid"></div>';
+      mega=document.createElement('div'); mega.className='work-mega work-mega-categories';
+      mega.innerHTML='<div class="work-mega-head"><span>İŞLER / KATEGORİLER</span><a href="isler.html">Tüm işleri gör ↗</a></div><div class="work-mega-grid"></div>';
       nav.appendChild(mega);
       const open=()=>mega.classList.add('open'), close=()=>mega.classList.remove('open');
       workLink.addEventListener('mouseenter',open); workLink.addEventListener('focus',open); mega.addEventListener('mouseenter',open);
       nav.addEventListener('mouseleave',close); workLink.addEventListener('blur',()=>setTimeout(()=>{if(!mega.matches(':hover'))close()},80));
     }
-    const favorites=(projects.length?projects.filter(x=>x.featured):[]).slice(0,3);
-    const defaults=[
-      {category:'SOSYAL MEDYA · SPOR',title:'Karabük İdman Yurdu',project_url:'karabuk-idman-yurdu.html'},
-      {category:'KONSER · REELS',title:'Konser İçerikleri',project_url:'konser.html'},
-      {category:'SOSYAL MEDYA · SPOR',title:'Kepezspor Maç Günü',project_url:'kepezspor.html'}
-    ];
-    const rows=favorites.length?favorites:defaults;
-    $('.work-mega-grid',mega).innerHTML=rows.map((p,i)=>`<a class="work-mega-item" href="${esc(p.project_url||'isler.html')}"><span>0${i+1}</span><div><small>${esc([p.category,p.content_type].filter(Boolean).join(' · ')||'KREATİF İŞ')}</small><strong>${esc(p.title||'Proje')}</strong></div><i>↗</i></a>`).join('');
-    if(mobile && !$('.mobile-favorites',mobile)){
-      const box=document.createElement('div'); box.className='mobile-favorites'; box.innerHTML='<span>Favori İşler</span>'+rows.slice(0,2).map(p=>`<a href="${esc(p.project_url||'isler.html')}">${esc(p.title||'Proje')} <i>↗</i></a>`).join(''); mobile.appendChild(box);
+    $('.work-mega-grid',mega).innerHTML=categories.map((c,i)=>`<a class="work-mega-item" href="${c[2]}"><span>${String(i+1).padStart(2,'0')}</span><div><small>${c[0]}</small><strong>${c[1]}</strong></div><i>↗</i></a>`).join('');
+    if(mobile && !$('.mobile-work-categories',mobile)){
+      const box=document.createElement('div'); box.className='mobile-favorites mobile-work-categories';
+      box.innerHTML='<span>İşler / Kategoriler</span>'+categories.map(c=>`<a href="${c[2]}">${c[0]} <i>↗</i></a>`).join('');
+      mobile.appendChild(box);
     }
   }
   buildWorkMega();
