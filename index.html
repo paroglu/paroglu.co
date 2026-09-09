@@ -26,6 +26,29 @@
 <button aria-label="ACK Bıçak filmini aç" class="selected-film-play" data-film-open="" type="button"><i>▶</i><span>Tam Filmi İzle</span></button>
 <div class="selected-film-caption"><strong>Ateş. Çelik. Zanaat.</strong><span>01:24 · Film</span></div>
 </div>
+<div class="reels-peek" data-reels-peek>
+  <div class="reels-peek-window">
+    <div class="reels-peek-head">
+      <a class="reels-peek-profile" href="https://www.instagram.com/iamparoglu/" target="_blank" rel="noopener" aria-label="iamparoglu Instagram profilini aç">
+        <span class="reels-peek-avatar">P</span>
+        <span><strong>@iamparoglu</strong><small>son üretimler</small></span>
+      </a>
+      <span class="reels-peek-mark" aria-hidden="true">↗</span>
+    </div>
+    <div class="reels-peek-screen">
+      <iframe class="reels-peek-frame" data-reels-frame title="Paroglu Media Instagram Reel 01" loading="lazy" scrolling="no" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen src="https://www.instagram.com/reel/DXoHQSrCNvx/embed/"></iframe>
+      <div class="reels-peek-tint" aria-hidden="true"></div>
+      <span class="reels-peek-label"><i></i><b data-reels-count>01 / 05</b></span>
+      <a class="reels-peek-hit" data-reels-link href="https://www.instagram.com/reel/DXoHQSrCNvx/" target="_blank" rel="noopener" aria-label="Instagram Reel 01'i aç"></a>
+    </div>
+    <div class="reels-peek-foot">
+      <span>Instagram’dan seçili işler</span>
+      <a data-reels-link-text href="https://www.instagram.com/reel/DXoHQSrCNvx/" target="_blank" rel="noopener">Gör ↗</a>
+    </div>
+    <div class="reels-peek-progress" aria-hidden="true"><span data-reels-progress></span></div>
+  </div>
+</div>
+
 </div>
 </section><section class="section home-work-section" id="selected">
 <div class="container">
@@ -109,4 +132,56 @@
   document.querySelectorAll('[data-film-close]').forEach(function(btn){btn.addEventListener('click',closeFilm)});
   document.addEventListener('keydown',function(e){if(e.key==='Escape'&&modal.classList.contains('open'))closeFilm()});
 })();
-</script></body></html>
+</script>
+<script>
+(function(){
+  var root=document.querySelector('[data-reels-peek]');
+  if(!root) return;
+  var reels=['DXoHQSrCNvx','DIBMYMBMxnh','DRPi3SPCExr','DI_meJjsVr-','DKtgLKoo0wK'];
+  var frame=root.querySelector('[data-reels-frame]');
+  var count=root.querySelector('[data-reels-count]');
+  var hit=root.querySelector('[data-reels-link]');
+  var textLink=root.querySelector('[data-reels-link-text]');
+  var progress=root.querySelector('[data-reels-progress]');
+  var current=0,timer=null,visible=true,paused=false;
+  function clean(code){return 'https://www.instagram.com/reel/'+code+'/'}
+  function embed(code){return clean(code)+'embed/'}
+  function paintProgress(){
+    if(!progress) return;
+    progress.classList.remove('run');
+    void progress.offsetWidth;
+    if(visible&&!paused) progress.classList.add('run');
+  }
+  function activate(next){
+    current=(next+reels.length)%reels.length;
+    var code=reels[current],label=String(current+1).padStart(2,'0')+' / '+String(reels.length).padStart(2,'0');
+    root.classList.add('switching');
+    if(count) count.textContent=label;
+    if(hit){hit.href=clean(code);hit.setAttribute('aria-label','Instagram Reel '+String(current+1).padStart(2,'0')+'\'i aç');}
+    if(textLink) textLink.href=clean(code);
+    window.setTimeout(function(){
+      if(frame){frame.title='Paroglu Media Instagram Reel '+String(current+1).padStart(2,'0');frame.src=embed(code)}
+      root.classList.remove('switching');
+      paintProgress();
+    },180);
+  }
+  function stop(){if(timer){clearInterval(timer);timer=null} if(progress)progress.classList.remove('run')}
+  function start(){
+    stop();
+    if(!visible||paused) return;
+    paintProgress();
+    timer=setInterval(function(){activate(current+1)},5000);
+  }
+  root.addEventListener('mouseenter',function(){paused=true;stop()});
+  root.addEventListener('mouseleave',function(){paused=false;start()});
+  root.addEventListener('focusin',function(){paused=true;stop()});
+  root.addEventListener('focusout',function(){paused=false;start()});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(entries){entries.forEach(function(e){visible=e.isIntersecting&&e.intersectionRatio>.18;if(visible)start();else stop()})},{threshold:[0,.18,.6]});
+    io.observe(root);
+  }else start();
+  if(frame) frame.addEventListener('load',function(){root.classList.remove('switching')});
+  start();
+})();
+</script>
+</body></html>
