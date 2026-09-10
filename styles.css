@@ -1273,46 +1273,28 @@ body[data-home="true"] .home-why{padding-top:92px}
 }
 @media(prefers-reduced-motion:reduce){.selected-film-play,.film-modal,.film-modal-dialog{transition:none}}
 
-/* =========================================================
-   V7.2.20 — MINI INSTAGRAM REELS PEEK
-   A small in-flow window, not a homepage section.
-   ========================================================= */
-.selected-film-wrap{position:relative}
-.reels-peek{position:absolute;right:clamp(18px,3vw,42px);bottom:-82px;z-index:8;width:218px;transform:rotate(1.1deg);transform-origin:70% 100%;transition:transform .32s cubic-bezier(.2,.75,.2,1),filter .32s ease}
-.reels-peek:hover,.reels-peek:focus-within{transform:rotate(.2deg) translateY(-5px) scale(1.025);filter:drop-shadow(0 18px 42px rgba(90,62,188,.18))}
-.reels-peek::before{content:"";position:absolute;inset:-22px;border-radius:42px;background:radial-gradient(circle at 60% 70%,rgba(137,89,255,.24),transparent 58%);filter:blur(20px);opacity:.65;pointer-events:none}
-.reels-peek-window{position:relative;overflow:hidden;border-radius:24px;border:1px solid rgba(190,171,255,.28);background:linear-gradient(155deg,rgba(19,16,27,.98),rgba(6,6,9,.99) 72%);box-shadow:0 24px 74px rgba(0,0,0,.56),inset 0 1px 0 rgba(255,255,255,.07),0 0 0 1px rgba(116,80,222,.04);isolation:isolate}
-.reels-peek-window::after{content:"";position:absolute;inset:0;border-radius:24px;pointer-events:none;background:linear-gradient(120deg,transparent 0 32%,rgba(172,148,255,.10) 48%,transparent 64%);transform:translateX(-130%);opacity:0}
-.reels-peek.switching .reels-peek-window::after{animation:reelsPeekSweep .65s ease-out}
-@keyframes reelsPeekSweep{0%{transform:translateX(-130%);opacity:0}30%{opacity:.9}100%{transform:translateX(130%);opacity:0}}
-.reels-peek-head{height:52px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 11px 8px 9px;border-bottom:1px solid rgba(255,255,255,.065);background:linear-gradient(180deg,rgba(255,255,255,.035),transparent);position:relative;z-index:5}
-.reels-peek-profile{display:flex;align-items:center;gap:8px;min-width:0}.reels-peek-avatar{width:30px;height:30px;flex:0 0 30px;border-radius:50%;display:grid;place-items:center;font-size:10px;font-weight:700;color:#fff;background:radial-gradient(circle at 30% 25%,#d5caff,#9c76ff 42%,#5d3bbb 72%,#1b122a 100%);box-shadow:0 0 0 2px rgba(9,8,13,.98),0 0 0 3px rgba(174,143,255,.36)}
-.reels-peek-profile>span:last-child{min-width:0}.reels-peek-profile strong,.reels-peek-profile small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.reels-peek-profile strong{font-size:10px;font-weight:650;letter-spacing:.005em;color:#f6f2ff}.reels-peek-profile small{margin-top:2px;font-size:7px;letter-spacing:.08em;text-transform:uppercase;color:rgba(235,228,245,.44)}.reels-peek-mark{font-size:12px;color:#a997ff}
-.reels-peek-screen{position:relative;height:246px;overflow:hidden;background:#030304}.reels-peek-screen::after{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(2,2,3,.04),transparent 46%,rgba(4,3,7,.42)),linear-gradient(90deg,rgba(107,69,205,.09),transparent 34%)}
-.reels-peek-frame{position:absolute;left:0;top:-64px;width:100%;height:calc(100% + 142px);border:0;background:#050506;pointer-events:none;transform:scale(1.018);transform-origin:center center;transition:opacity .22s ease,transform .35s ease;filter:saturate(.96) contrast(1.02)}
-.reels-peek.switching .reels-peek-frame{opacity:.18;transform:scale(1.035)}
-.reels-peek-tint{position:absolute;inset:0;z-index:3;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.03),inset 0 -30px 54px rgba(5,4,9,.24)}
-.reels-peek-label{position:absolute;left:10px;top:9px;z-index:6;display:flex;align-items:center;gap:6px;padding:6px 7px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(5,4,8,.56);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff}.reels-peek-label i{width:5px;height:5px;border-radius:50%;background:#9d82ff;box-shadow:0 0 10px rgba(157,130,255,.9)}.reels-peek-label b{font-size:7px;letter-spacing:.12em;font-weight:600}
-.reels-peek-hit{position:absolute;inset:0;z-index:7;cursor:pointer}
-.reels-peek-foot{height:46px;display:flex;align-items:center;justify-content:space-between;gap:9px;padding:0 11px;position:relative;z-index:5;background:rgba(8,7,12,.98)}.reels-peek-foot span{font-size:7px;letter-spacing:.06em;color:rgba(236,230,244,.48);white-space:nowrap}.reels-peek-foot a{font-size:8px;font-weight:650;color:#cfc2ff;white-space:nowrap}
-.reels-peek-progress{height:2px;background:rgba(255,255,255,.055);overflow:hidden;position:relative;z-index:5}.reels-peek-progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#6b4fe7,#9f7cff,#d0c3ff);box-shadow:0 0 12px rgba(159,124,255,.6)}.reels-peek-progress span.run{animation:reelsPeekProgress 5s linear forwards}@keyframes reelsPeekProgress{from{width:0}to{width:100%}}
 
-/* Give the tiny window breathing room without turning it into another section. */
-body[data-home="true"] .home-work-section{padding-top:124px}
+/* =========================================================
+   V7.2.21 — MINIMAL INSTAGRAM REELS PREVIEW
+   Lives inside the Selected Works heading; never a new section.
+   ========================================================= */
+.home-work-head-actions{display:flex;align-items:center;gap:18px}
+.reels-minimal{position:relative;width:104px;height:126px;flex:0 0 104px;z-index:2;filter:drop-shadow(0 16px 30px rgba(0,0,0,.28))}
+.reels-minimal-media{position:absolute;right:0;top:0;width:86px;height:118px;overflow:hidden;border-radius:18px;border:1px solid rgba(187,165,255,.28);background:#07070a;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 0 30px rgba(122,108,255,.09);transform:rotate(2deg);transition:transform .3s cubic-bezier(.2,.75,.2,1),border-color .3s ease,box-shadow .3s ease}
+.reels-minimal:hover .reels-minimal-media,.reels-minimal:focus-within .reels-minimal-media{transform:rotate(.4deg) translateY(-3px) scale(1.035);border-color:rgba(190,172,255,.48);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 42px rgba(0,0,0,.36),0 0 34px rgba(122,108,255,.14)}
+.reels-minimal-frame{position:absolute;left:-7px;top:-52px;width:100px;height:235px;border:0;pointer-events:none;background:#050506;transform:scale(1.02);filter:saturate(.92) contrast(1.04);transition:opacity .18s ease,transform .28s ease}
+.reels-minimal.is-switching .reels-minimal-frame{opacity:.15;transform:scale(1.055)}
+.reels-minimal-shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(5,4,8,.02) 40%,rgba(5,4,8,.72) 100%),linear-gradient(90deg,rgba(95,66,184,.12),transparent 48%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)}
+.reels-minimal-count{position:absolute;right:7px;bottom:7px;padding:4px 5px;border-radius:99px;background:rgba(7,6,10,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font-size:6px;font-weight:650;letter-spacing:.12em;color:rgba(255,255,255,.82);z-index:3}
+.reels-minimal-chip{position:absolute;left:0;bottom:2px;z-index:5;display:flex;align-items:center;gap:5px;height:30px;padding:0 9px;border-radius:999px;border:1px solid rgba(189,170,255,.30);background:rgba(12,10,18,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06);font-size:8px;font-weight:600;letter-spacing:.015em;color:#f4f0ff;white-space:nowrap;transition:transform .22s ease,border-color .22s ease,background .22s ease}
+.reels-minimal-chip:hover{transform:translateY(-2px);border-color:rgba(196,181,255,.52);background:rgba(22,17,34,.94)}
+.reels-minimal-chip b{font-size:9px;color:#a998ff}.reels-live-dot{width:5px;height:5px;border-radius:50%;background:#9b82ff;box-shadow:0 0 0 3px rgba(155,130,255,.08),0 0 10px rgba(155,130,255,.62)}
+.reels-minimal.is-playing .reels-live-dot{animation:reelsMinimalPulse 1.8s ease-in-out infinite}@keyframes reelsMinimalPulse{50%{opacity:.45;transform:scale(.78)}}
 
 @media(max-width:980px){
-  .reels-peek{right:18px;width:205px;bottom:-76px}
-  .reels-peek-screen{height:226px}
+  .home-work-head-actions{gap:12px}.reels-minimal{width:94px;height:116px;flex-basis:94px}.reels-minimal-media{width:78px;height:108px}.reels-minimal-frame{left:-8px;top:-48px;width:94px;height:218px}.reels-minimal-chip{height:28px;padding:0 8px;font-size:7.5px}
 }
 @media(max-width:640px){
-  .selected-film-wrap{padding-bottom:0}
-  .reels-peek{position:relative;right:auto;bottom:auto;width:182px;margin:14px 2px -22px auto;transform:rotate(.6deg)}
-  .reels-peek:hover,.reels-peek:focus-within{transform:rotate(0) translateY(-2px) scale(1.01)}
-  .reels-peek-head{height:46px;padding:7px 9px}.reels-peek-avatar{width:27px;height:27px;flex-basis:27px}.reels-peek-profile strong{font-size:9px}.reels-peek-profile small{font-size:6.5px}
-  .reels-peek-screen{height:192px}.reels-peek-frame{top:-56px;height:calc(100% + 126px)}
-  .reels-peek-foot{height:40px;padding:0 9px}.reels-peek-foot span{font-size:6.5px}.reels-peek-foot a{font-size:7.5px}
-  body[data-home="true"] .home-work-section{padding-top:78px}
+  .home-work-section .section-head{align-items:flex-end;gap:14px}.home-work-head-actions{align-self:flex-end;gap:8px}.home-work-head-actions>.pill{display:none}.reels-minimal{width:88px;height:108px;flex-basis:88px}.reels-minimal-media{width:72px;height:101px;border-radius:15px}.reels-minimal-frame{left:-9px;top:-47px;width:92px;height:208px}.reels-minimal-chip{height:27px;padding:0 7px;font-size:7px}.reels-minimal-count{font-size:5.5px;right:5px;bottom:6px}
 }
-@media(prefers-reduced-motion:reduce){
-  .reels-peek,.reels-peek-frame{transition:none!important}.reels-peek-progress span.run,.reels-peek.switching .reels-peek-window::after{animation:none!important}.reels-peek-progress span{width:100%}
-}
+@media(prefers-reduced-motion:reduce){.reels-minimal-media,.reels-minimal-frame,.reels-minimal-chip{transition:none!important}.reels-minimal.is-playing .reels-live-dot{animation:none!important}}

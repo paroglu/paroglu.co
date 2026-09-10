@@ -26,35 +26,22 @@
 <button aria-label="ACK Bıçak filmini aç" class="selected-film-play" data-film-open="" type="button"><i>▶</i><span>Tam Filmi İzle</span></button>
 <div class="selected-film-caption"><strong>Ateş. Çelik. Zanaat.</strong><span>01:24 · Film</span></div>
 </div>
-<div class="reels-peek" data-reels-peek>
-  <div class="reels-peek-window">
-    <div class="reels-peek-head">
-      <a class="reels-peek-profile" href="https://www.instagram.com/iamparoglu/" target="_blank" rel="noopener" aria-label="iamparoglu Instagram profilini aç">
-        <span class="reels-peek-avatar">P</span>
-        <span><strong>@iamparoglu</strong><small>son üretimler</small></span>
-      </a>
-      <span class="reels-peek-mark" aria-hidden="true">↗</span>
-    </div>
-    <div class="reels-peek-screen">
-      <iframe class="reels-peek-frame" data-reels-frame title="Paroglu Media Instagram Reel 01" loading="lazy" scrolling="no" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen src="https://www.instagram.com/reel/DXoHQSrCNvx/embed/"></iframe>
-      <div class="reels-peek-tint" aria-hidden="true"></div>
-      <span class="reels-peek-label"><i></i><b data-reels-count>01 / 05</b></span>
-      <a class="reels-peek-hit" data-reels-link href="https://www.instagram.com/reel/DXoHQSrCNvx/" target="_blank" rel="noopener" aria-label="Instagram Reel 01'i aç"></a>
-    </div>
-    <div class="reels-peek-foot">
-      <span>Instagram’dan seçili işler</span>
-      <a data-reels-link-text href="https://www.instagram.com/reel/DXoHQSrCNvx/" target="_blank" rel="noopener">Gör ↗</a>
-    </div>
-    <div class="reels-peek-progress" aria-hidden="true"><span data-reels-progress></span></div>
-  </div>
-</div>
-
 </div>
 </section><section class="section home-work-section" id="selected">
 <div class="container">
 <div class="section-head reveal">
 <div><div class="kicker">PORTFOLYO / SEÇKİ</div><h2 class="section-title">İş konuşsun.</h2><p class="section-copy home-work-copy">Konserden spora, sosyal medyadan tasarıma uzanan seçili işler. Her biri farklı bir ihtiyacı güçlü bir görsel dile dönüştürüyor.</p></div>
+<div class="home-work-head-actions">
+<div class="reels-minimal" data-reels-minimal aria-label="Instagram’dan son işler">
+  <a class="reels-minimal-media" data-reels-link href="https://www.instagram.com/reel/DXoHQSrCNvx/" target="_blank" rel="noopener" aria-label="Instagram Reel 01’i aç">
+    <iframe class="reels-minimal-frame" data-reels-frame title="Paroglu Media Instagram Reel 01" loading="lazy" scrolling="no" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen src="https://www.instagram.com/reel/DXoHQSrCNvx/embed/?autoplay=1"></iframe>
+    <span class="reels-minimal-shade" aria-hidden="true"></span>
+    <span class="reels-minimal-count" data-reels-count>01 / 05</span>
+  </a>
+  <a class="reels-minimal-chip" href="https://www.instagram.com/iamparoglu/" target="_blank" rel="noopener"><span class="reels-live-dot"></span>@iamparoglu <b>↗</b></a>
+</div>
 <a class="pill" href="isler.html">Tüm Portfolyo ↗</a>
+</div>
 </div>
 </div>
 <div class="home-work-viewport" data-home-work="">
@@ -135,53 +122,55 @@
 </script>
 <script>
 (function(){
-  var root=document.querySelector('[data-reels-peek]');
+  var root=document.querySelector('[data-reels-minimal]');
   if(!root) return;
   var reels=['DXoHQSrCNvx','DIBMYMBMxnh','DRPi3SPCExr','DI_meJjsVr-','DKtgLKoo0wK'];
   var frame=root.querySelector('[data-reels-frame]');
   var count=root.querySelector('[data-reels-count]');
-  var hit=root.querySelector('[data-reels-link]');
-  var textLink=root.querySelector('[data-reels-link-text]');
-  var progress=root.querySelector('[data-reels-progress]');
-  var current=0,timer=null,visible=true,paused=false;
+  var reelLink=root.querySelector('[data-reels-link]');
+  var current=0,timer=null,visible=false,loaded=false;
   function clean(code){return 'https://www.instagram.com/reel/'+code+'/'}
-  function embed(code){return clean(code)+'embed/'}
-  function paintProgress(){
-    if(!progress) return;
-    progress.classList.remove('run');
-    void progress.offsetWidth;
-    if(visible&&!paused) progress.classList.add('run');
+  function embed(code){return clean(code)+'embed/?autoplay=1'}
+  function unload(){
+    if(!frame||!loaded) return;
+    frame.src='about:blank';
+    loaded=false;
+    root.classList.remove('is-playing');
+  }
+  function loadCurrent(){
+    if(!frame||!visible||document.hidden) return;
+    var code=reels[current];
+    frame.title='Paroglu Media Instagram Reel '+String(current+1).padStart(2,'0');
+    frame.src=embed(code);
+    loaded=true;
+    root.classList.add('is-playing');
   }
   function activate(next){
     current=(next+reels.length)%reels.length;
-    var code=reels[current],label=String(current+1).padStart(2,'0')+' / '+String(reels.length).padStart(2,'0');
-    root.classList.add('switching');
-    if(count) count.textContent=label;
-    if(hit){hit.href=clean(code);hit.setAttribute('aria-label','Instagram Reel '+String(current+1).padStart(2,'0')+'\'i aç');}
-    if(textLink) textLink.href=clean(code);
-    window.setTimeout(function(){
-      if(frame){frame.title='Paroglu Media Instagram Reel '+String(current+1).padStart(2,'0');frame.src=embed(code)}
-      root.classList.remove('switching');
-      paintProgress();
-    },180);
+    var code=reels[current];
+    root.classList.add('is-switching');
+    if(count) count.textContent=String(current+1).padStart(2,'0')+' / '+String(reels.length).padStart(2,'0');
+    if(reelLink){reelLink.href=clean(code);reelLink.setAttribute('aria-label','Instagram Reel '+String(current+1).padStart(2,'0')+'’i aç');}
+    unload();
+    window.setTimeout(function(){loadCurrent();root.classList.remove('is-switching')},160);
   }
-  function stop(){if(timer){clearInterval(timer);timer=null} if(progress)progress.classList.remove('run')}
-  function start(){
-    stop();
-    if(!visible||paused) return;
-    paintProgress();
+  function stopTimer(){if(timer){clearInterval(timer);timer=null}}
+  function startTimer(){
+    stopTimer();
+    if(!visible||document.hidden) return;
     timer=setInterval(function(){activate(current+1)},5000);
   }
-  root.addEventListener('mouseenter',function(){paused=true;stop()});
-  root.addEventListener('mouseleave',function(){paused=false;start()});
-  root.addEventListener('focusin',function(){paused=true;stop()});
-  root.addEventListener('focusout',function(){paused=false;start()});
+  function setVisible(on){
+    visible=on;
+    if(visible&&!document.hidden){loadCurrent();startTimer()}
+    else{stopTimer();unload()}
+  }
   if('IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(entries){entries.forEach(function(e){visible=e.isIntersecting&&e.intersectionRatio>.18;if(visible)start();else stop()})},{threshold:[0,.18,.6]});
-    io.observe(root);
-  }else start();
-  if(frame) frame.addEventListener('load',function(){root.classList.remove('switching')});
-  start();
+    new IntersectionObserver(function(entries){entries.forEach(function(e){setVisible(e.isIntersecting&&e.intersectionRatio>.12)})},{threshold:[0,.12,.5]}).observe(root);
+  }else setVisible(true);
+  document.addEventListener('visibilitychange',function(){
+    if(document.hidden){stopTimer();unload()}else if(visible){loadCurrent();startTimer()}
+  });
 })();
 </script>
 </body></html>
