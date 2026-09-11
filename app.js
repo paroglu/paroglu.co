@@ -283,7 +283,7 @@
     try{
       let rows=await PMData.brands(); if(!rows.length)return;
       const limit=parseInt(window.PMContentMap?.['brands.carousel_limit']||'16',10)||16;
-      rows=rows.filter((b,i,a)=>b?.name && a.findIndex(x=>String(x.name).toLocaleLowerCase('tr-TR')===String(b.name).toLocaleLowerCase('tr-TR'))===i).slice(0,limit);
+      rows=rows.filter((b,i,a)=>b?.name && !/prime\s*b\.?\s*u\.?\s*coffee/i.test(String(b.name).normalize('NFD').replace(/[\u0300-\u036f]/g,'')) && a.findIndex(x=>String(x.name).toLocaleLowerCase('tr-TR')===String(b.name).toLocaleLowerCase('tr-TR'))===i).slice(0,limit);
       if(rows.length<2)return;
       const item=b=>`<a class="brand-tile" ${b.url?`href="${esc(b.url)}" target="_blank" rel="noreferrer"`:''}>${b.logo_url?`<img src="${esc(b.logo_url)}" alt="${esc(b.name)}"/>`:`<span>${esc(b.name)}</span>`}</a>`;
       const rowA=rows.filter((_,i)=>i%2===0), rowB=rows.filter((_,i)=>i%2===1);
@@ -471,6 +471,40 @@
 
 
   /* ---------------------------------------------------------
+     V8 RC2 — compact utility drawer behind the top-right three-line menu.
+     Main navigation stays visible on desktop; the drawer is for portfolio
+     shortcuts and social/contact. On mobile it also carries the main links.
+  --------------------------------------------------------- */
+  (()=>{
+    const drawer=document.querySelector('.mobile-menu');if(!drawer)return;
+    drawer.innerHTML=`
+      <div class="menu-drawer-top"><span>MENÜ</span><small>PAROGLU MEDIA</small></div>
+      <div class="drawer-primary">
+        <a href="hakkimda.html">Hakkımda <i>↗</i></a>
+        <a href="hizmetler.html">Hizmetler <i>↗</i></a>
+        <a href="isler.html">İşler <i>↗</i></a>
+        <a class="mobile-cta" href="teklif-al.html">Teklif Al <i>↗</i></a>
+      </div>
+      <div class="menu-drawer-label">PORTFOLYO</div>
+      <div class="menu-drawer-grid">
+        <a href="konser.html">Konser <i>↗</i></a>
+        <a href="fotograf.html">Fotoğraf <i>↗</i></a>
+        <a href="tasarim.html">Tasarım <i>↗</i></a>
+        <a href="drone.html">Drone <i>↗</i></a>
+      </div>
+      <div class="menu-drawer-label">BAĞLANTI</div>
+      <div class="menu-drawer-links">
+        <a href="iletisim.html">İletişim <i>↗</i></a>
+        <a href="https://www.instagram.com/iamparoglu/" target="_blank" rel="noopener">Instagram · @iamparoglu <i>↗</i></a>
+      </div>`;
+    const page=(location.pathname.split('/').pop()||'index.html').toLowerCase();
+    drawer.querySelectorAll('a[href]').forEach(a=>{
+      const href=(a.getAttribute('href')||'').split('?')[0].toLowerCase();
+      if(href===page)a.classList.add('is-current');
+    });
+  })();
+
+  /* ---------------------------------------------------------
      V8 LAUNCH INTERACTIONS — menu, Instagram orb, tactile homepage drag
   --------------------------------------------------------- */
   (()=>{
@@ -489,7 +523,7 @@
     if(document.querySelector('.ig-orb-shell'))return;
     const reels=['DXoHQSrCNvx','DIBMYMBMxnh','DRPi3SPCExr','DI_meJjsVr-','DKtgLKoo0wK','DcdiUdLsL0n','DcBj3tZtcLP','DQ3Xw3fDGqB','DKZBmjHoR9u','DRBwJYZAsZk','Dc28-L-u1OV','DcBqnqNsfzw','DbyLBaKM7bd'];
     const shell=document.createElement('div');shell.className='ig-orb-shell';
-    shell.innerHTML=`<button class="ig-orb" type="button" aria-expanded="false" aria-label="Instagram’dan son işleri aç"><span class="ig-orb-mark">@</span><span class="ig-orb-tip">Son işler · @iamparoglu</span></button><aside class="ig-reel-dock" aria-hidden="true" aria-label="Instagram’dan son işler"><div class="ig-dock-head"><a href="https://www.instagram.com/iamparoglu/" target="_blank" rel="noopener"><strong>@iamparoglu</strong><small>Instagram · son üretimler</small></a><button class="ig-dock-close" type="button" aria-label="Kapat">×</button></div><div class="ig-dock-stage"><iframe class="ig-dock-frame" title="Paroglu Media Instagram Reel" src="about:blank" loading="lazy" scrolling="no" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe><span class="ig-dock-shade" aria-hidden="true"></span></div><div class="ig-dock-foot"><span class="ig-dock-count">01 / 13</span><span class="ig-dock-progress"><i></i></span><span class="ig-dock-actions"><button type="button" data-ig-prev aria-label="Önceki Reel">←</button><button type="button" data-ig-next aria-label="Sonraki Reel">→</button></span></div><a class="ig-dock-link" data-ig-link href="https://www.instagram.com/reel/DXoHQSrCNvx/" target="_blank" rel="noopener"><span>Reel’i Instagram’da aç</span><span>↗</span></a></aside>`;
+    shell.innerHTML=`<button class="ig-orb" type="button" aria-expanded="false" aria-label="Instagram’dan son işleri aç"><span class="ig-orb-mark" aria-hidden="true"><svg viewBox="0 0 24 24" role="img"><rect x="3.2" y="3.2" width="17.6" height="17.6" rx="5.2"></rect><circle cx="12" cy="12" r="4.15"></circle><circle class="ig-orb-dot" cx="17.45" cy="6.85" r="1.05"></circle></svg></span><span class="ig-orb-tip">Son işler · @iamparoglu</span></button><aside class="ig-reel-dock" aria-hidden="true" aria-label="Instagram’dan son işler"><div class="ig-dock-head"><a href="https://www.instagram.com/iamparoglu/" target="_blank" rel="noopener"><strong>@iamparoglu</strong><small>Instagram · son üretimler</small></a><button class="ig-dock-close" type="button" aria-label="Kapat">×</button></div><div class="ig-dock-stage"><iframe class="ig-dock-frame" title="Paroglu Media Instagram Reel" src="about:blank" loading="lazy" scrolling="no" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe><span class="ig-dock-shade" aria-hidden="true"></span></div><div class="ig-dock-foot"><span class="ig-dock-count">01 / 13</span><span class="ig-dock-progress"><i></i></span><span class="ig-dock-actions"><button type="button" data-ig-prev aria-label="Önceki Reel">←</button><button type="button" data-ig-next aria-label="Sonraki Reel">→</button></span></div><a class="ig-dock-link" data-ig-link href="https://www.instagram.com/reel/DXoHQSrCNvx/" target="_blank" rel="noopener"><span>Reel’i Instagram’da aç</span><span>↗</span></a></aside>`;
     document.body.appendChild(shell);
     const orb=$('.ig-orb',shell),dock=$('.ig-reel-dock',shell),closeBtn=$('.ig-dock-close',shell),frame=$('.ig-dock-frame',shell),count=$('.ig-dock-count',shell),reelLink=$('[data-ig-link]',shell),progress=$('.ig-dock-progress i',shell);
     let index=0,timer=null,openScroll=0;
