@@ -1,16 +1,10 @@
-PAROGLU MEDIA V7.2.16 — Neon Gradient + Yeni Sayfa Geçişi
+Paroglu Media V8.0 RC3.1 — Hero CTA alignment hotfix
 
-Yalnızca styles.css değişti.
-Mevcut GitHub repo kökündeki styles.css dosyasının üzerine yükleyin.
+Upload/replace only styles.css in the repository root.
 
-Değişenler:
-- Genel mor palet daha gradient / mat-neon hale getirildi.
-- Arka planda çok yavaş hareket eden mor ambient geçiş eklendi.
-- Hero mor ışık atmosferi güçlendirildi.
-- Teklif Al ve ana CTA butonlarında kontrollü neon gradient hareketi eklendi.
-- Kart hover ve seçili öğelerde mor ışık derinliği artırıldı.
-- Eski düz mor sayfa geçişi kaldırılarak koyu, ışıklı gradient sweep görünümü getirildi.
-- Mobilde animasyonlar daha hafif çalışır.
-- prefers-reduced-motion desteği korunur.
+Fixes:
+- Restores the primary "İşleri Keşfet" hero CTA that could remain invisible because its neon animation overrode the entrance animation.
+- Centers the hero action group exactly below the intro copy.
+- Keeps the primary CTA neon flow animation intact.
 
-HTML, app.js, backend-config.js, data-store.js ve Supabase değişmedi.
+Do not change backend-config.js or data-store.js.
