@@ -1515,3 +1515,128 @@ main,.footer{background:transparent}
 @media(max-width:767px){.contact-hero-v2{padding:118px 0 72px}.contact-intro-v2 h1{font-size:clamp(58px,17vw,82px);margin:14px 0 22px}.contact-methods-v2{grid-template-columns:1fr}.contact-method-v2{min-height:0;padding:18px}.contact-method-v2:hover{transform:none}.contact-next-v2{padding-bottom:82px}.contact-next-grid-v2{padding:23px 18px;border-radius:22px}.contact-next-actions-v2{flex-direction:column}.contact-next-actions-v2 .btn{width:100%}}
 
 @media(prefers-reduced-motion:reduce){body,.hero-ghost,.contact-availability i{animation:none!important}}
+
+/* =========================================================
+   V8.0 RC3 — SMOOTH AMBIENT WAVE / 10S GHOST / 10S REELS
+   ========================================================= */
+
+/*
+  Replace background-position animation with oversized, blurred light fields.
+  They move as whole shapes so there are no visible rectangular/square seams.
+*/
+html{background:#050408}
+body{
+  position:relative;
+  isolation:isolate;
+  background:#06050a!important;
+  background-image:none!important;
+  animation:none!important;
+}
+body::before,
+body::after{
+  content:"";
+  position:fixed;
+  pointer-events:none;
+  z-index:-1;
+  border-radius:50%;
+  will-change:transform,opacity;
+  transform:translate3d(0,0,0);
+}
+body::before{
+  width:150vmax;
+  height:115vmax;
+  left:-56vmax;
+  top:-49vmax;
+  background:
+    radial-gradient(ellipse at 47% 45%,rgba(112,78,255,.26) 0%,rgba(87,56,203,.15) 18%,rgba(54,34,128,.075) 34%,transparent 61%),
+    radial-gradient(ellipse at 66% 62%,rgba(170,131,255,.13) 0%,rgba(102,70,225,.06) 31%,transparent 64%);
+  filter:blur(78px) saturate(115%);
+  opacity:.84;
+  animation:pmAmbientWaveA 26s cubic-bezier(.45,.05,.55,.95) infinite alternate;
+}
+body::after{
+  width:128vmax;
+  height:102vmax;
+  right:-50vmax;
+  bottom:-46vmax;
+  background:
+    radial-gradient(ellipse at 49% 47%,rgba(143,102,255,.21) 0%,rgba(83,53,194,.11) 25%,rgba(43,27,104,.055) 43%,transparent 68%),
+    radial-gradient(ellipse at 30% 31%,rgba(91,63,218,.12) 0%,transparent 56%);
+  filter:blur(88px) saturate(112%);
+  opacity:.72;
+  animation:pmAmbientWaveB 31s cubic-bezier(.42,.02,.58,.98) infinite alternate;
+}
+@keyframes pmAmbientWaveA{
+  0%{transform:translate3d(-2vw,-1vh,0) rotate(-7deg) scale(.97);opacity:.72}
+  35%{transform:translate3d(11vw,7vh,0) rotate(2deg) scale(1.05);opacity:.90}
+  68%{transform:translate3d(5vw,18vh,0) rotate(8deg) scale(1.10);opacity:.79}
+  100%{transform:translate3d(17vw,10vh,0) rotate(13deg) scale(1.03);opacity:.86}
+}
+@keyframes pmAmbientWaveB{
+  0%{transform:translate3d(1vw,2vh,0) rotate(8deg) scale(1.02);opacity:.64}
+  38%{transform:translate3d(-12vw,-9vh,0) rotate(1deg) scale(1.09);opacity:.78}
+  72%{transform:translate3d(-5vw,-18vh,0) rotate(-8deg) scale(1.04);opacity:.69}
+  100%{transform:translate3d(-16vw,-7vh,0) rotate(-14deg) scale(1.11);opacity:.80}
+}
+
+/* Hero ghost: low base opacity stays intact; short, stronger neon burst every 10s. */
+.hero-ghost{
+  opacity:.82!important;
+  -webkit-text-stroke:1px rgba(255,255,255,.068)!important;
+  text-stroke:1px rgba(255,255,255,.068)!important;
+  filter:drop-shadow(0 0 0 rgba(139,111,255,0));
+  animation:pmGhostNeonRC3 10s linear infinite!important;
+}
+@keyframes pmGhostNeonRC3{
+  0%,76%,100%{
+    opacity:.82;
+    -webkit-text-stroke-color:rgba(255,255,255,.068);
+    filter:drop-shadow(0 0 0 rgba(139,111,255,0));
+  }
+  78%{
+    opacity:.96;
+    -webkit-text-stroke-color:rgba(210,199,255,.25);
+    filter:drop-shadow(0 0 11px rgba(147,117,255,.38)) drop-shadow(0 0 34px rgba(118,88,255,.16));
+  }
+  78.7%{
+    opacity:.58;
+    -webkit-text-stroke-color:rgba(255,255,255,.045);
+    filter:drop-shadow(0 0 2px rgba(118,88,255,.07));
+  }
+  79.4%{
+    opacity:1;
+    -webkit-text-stroke-color:rgba(226,217,255,.29);
+    filter:drop-shadow(0 0 14px rgba(160,132,255,.46)) drop-shadow(0 0 44px rgba(120,90,255,.18));
+  }
+  80.2%{
+    opacity:.66;
+    -webkit-text-stroke-color:rgba(255,255,255,.052);
+    filter:drop-shadow(0 0 4px rgba(118,88,255,.08));
+  }
+  81.2%{
+    opacity:.94;
+    -webkit-text-stroke-color:rgba(202,187,255,.22);
+    filter:drop-shadow(0 0 10px rgba(147,117,255,.32));
+  }
+  83%{
+    opacity:.82;
+    -webkit-text-stroke-color:rgba(255,255,255,.068);
+    filter:drop-shadow(0 0 0 rgba(139,111,255,0));
+  }
+}
+
+/* Reel timer now represents a full 10-second viewing beat. */
+.ig-orb-shell.open .ig-dock-progress i{animation-duration:10s!important}
+
+/* Lighter ambient field on tablets/phones to keep scrolling smooth. */
+@media(max-width:1180px){
+  body::before{width:166vmax;height:126vmax;filter:blur(64px);opacity:.72}
+  body::after{width:148vmax;height:116vmax;filter:blur(70px);opacity:.62}
+}
+@media(max-width:767px){
+  body::before{left:-75vmax;top:-53vmax;filter:blur(52px);opacity:.66}
+  body::after{right:-72vmax;bottom:-48vmax;filter:blur(58px);opacity:.56}
+}
+@media(prefers-reduced-motion:reduce){
+  body::before,body::after,.hero-ghost{animation:none!important}
+}
