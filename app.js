@@ -364,23 +364,33 @@
   $('[data-submit-brief]')?.addEventListener('click',async e=>{const btn=e.currentTarget;btn.disabled=true;btn.textContent='Gönderiliyor…';try{await PMData.submitBrief({name:brief.name||'',company:brief.company||'',email:brief.email||'',phone:brief.phone||'',service:brief.service||'',project_type:brief.project_type||'',budget:brief.budget||'',deadline:brief.deadline||'',city:brief.city||'',notes:[brief.notes,brief.website&&`Web/IG: ${brief.website}`,brief.colors&&`Renkler: ${brief.colors}`,brief.sector&&`Sektör: ${brief.sector}`,brief.channel&&`İletişim: ${brief.channel}`].filter(Boolean).join('\n'),source:'website'});btn.textContent='Brief alındı ✓';sessionStorage.removeItem('pmAssistantLead')}catch(err){btn.disabled=false;btn.textContent='Tekrar Dene';alert('Brief gönderilemedi: '+err.message)}});
 
   /* ---------------------------------------------------------
-     CASE STUDY LIGHTBOX
+     CASE STUDY LIGHTBOX — touch page-turn + mouse cinematic slide
   --------------------------------------------------------- */
   (()=>{
     const shots=$$('[data-lightbox-gallery] [data-full]');
     if(!shots.length)return;
     const items=shots.map(x=>x.dataset.full).filter(Boolean); let idx=0;
-    const lb=document.createElement('div');lb.className='pm-lightbox';lb.innerHTML=`<button class="lb-close" aria-label="Kapat">×</button><button class="lb-prev" aria-label="Önceki">‹</button><img alt="Proje görseli"><button class="lb-next" aria-label="Sonraki">›</button><div class="lb-count"></div>`;document.body.appendChild(lb);
-    const img=$('img',lb),count=$('.lb-count',lb);
-    const show=(n)=>{idx=(n+items.length)%items.length;img.classList.remove('swap');void img.offsetWidth;img.src=items[idx];img.classList.add('swap');count.textContent=`${idx+1} / ${items.length}`};
-    const open=(n)=>{show(n);lb.classList.add('open');document.documentElement.style.overflow='hidden'};
-    const closeLb=()=>{lb.classList.remove('open');document.documentElement.style.overflow=''};
+    const lb=document.createElement('div');lb.className='pm-lightbox';lb.innerHTML=`<button class="lb-close" aria-label="Kapat" type="button">×</button><button class="lb-prev" aria-label="Önceki" type="button">‹</button><img alt="Proje görseli"><button class="lb-next" aria-label="Sonraki" type="button">›</button><div class="lb-count"></div>`;document.body.appendChild(lb);
+    const img=$('img',lb),count=$('.lb-count',lb);let touchStart=null,touchDx=0;
+    const clearAnim=()=>{img.classList.remove('lb-touch-next','lb-touch-prev','lb-mouse-next','lb-mouse-prev');img.style.transform='';img.style.transformOrigin=''};
+    const show=(n,mode='mouse-next')=>{
+      idx=(n+items.length)%items.length;clearAnim();
+      img.src=items[idx];void img.offsetWidth;
+      img.classList.add(mode);count.textContent=`${idx+1} / ${items.length}`;
+    };
+    const open=n=>{show(n,'lb-mouse-next');lb.classList.add('open');document.documentElement.style.overflow='hidden'};
+    const closeLb=()=>{lb.classList.remove('open');document.documentElement.style.overflow='';clearAnim()};
     shots.forEach((b,i)=>b.addEventListener('click',()=>open(i)));
-    $('.lb-close',lb).addEventListener('click',closeLb);$('.lb-prev',lb).addEventListener('click',()=>show(idx-1));$('.lb-next',lb).addEventListener('click',()=>show(idx+1));
+    $('.lb-close',lb).addEventListener('click',closeLb);
+    $('.lb-prev',lb).addEventListener('click',()=>show(idx-1,'lb-mouse-prev'));
+    $('.lb-next',lb).addEventListener('click',()=>show(idx+1,'lb-mouse-next'));
     lb.addEventListener('click',e=>{if(e.target===lb)closeLb()});
-    addEventListener('keydown',e=>{if(!lb.classList.contains('open'))return;if(e.key==='Escape')closeLb();if(e.key==='ArrowLeft')show(idx-1);if(e.key==='ArrowRight')show(idx+1)});
+    img.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse')return;touchStart=e.clientX;touchDx=0;img.setPointerCapture?.(e.pointerId)});
+    img.addEventListener('pointermove',e=>{if(touchStart==null)return;touchDx=e.clientX-touchStart;const angle=Math.max(-13,Math.min(13,touchDx/12));img.style.transformOrigin=touchDx<0?'left center':'right center';img.style.transform=`perspective(1200px) translateX(${touchDx*.16}px) rotateY(${angle}deg) scale(.995)`});
+    const finishTouch=()=>{if(touchStart==null)return;const dx=touchDx;touchStart=null;touchDx=0;img.style.transform='';img.style.transformOrigin='';if(Math.abs(dx)>52)show(idx+(dx<0?1:-1),dx<0?'lb-touch-next':'lb-touch-prev')};
+    img.addEventListener('pointerup',finishTouch);img.addEventListener('pointercancel',finishTouch);
+    addEventListener('keydown',e=>{if(!lb.classList.contains('open'))return;if(e.key==='Escape')closeLb();if(e.key==='ArrowLeft')show(idx-1,'lb-mouse-prev');if(e.key==='ArrowRight')show(idx+1,'lb-mouse-next')});
   })();
-
 
   /* ---------------------------------------------------------
      V6 CURATED PORTFOLIO REEL + NAV POLISH
@@ -457,6 +467,55 @@
     document.querySelector('[data-home-next]')?.addEventListener('click',()=>viewport.scrollBy({left:step(),behavior:'smooth'}));
     document.querySelector('[data-home-prev]')?.addEventListener('click',()=>viewport.scrollBy({left:-step(),behavior:'smooth'}));
     let timer;if(!reduceMotion){timer=setInterval(()=>{const end=viewport.scrollLeft+viewport.clientWidth>=viewport.scrollWidth-20;viewport.scrollTo({left:end?0:viewport.scrollLeft+step(),behavior:'smooth'})},6200);viewport.addEventListener('pointerdown',()=>clearInterval(timer),{once:true})}
+  })();
+
+
+  /* ---------------------------------------------------------
+     V8 LAUNCH INTERACTIONS — menu, Instagram orb, tactile homepage drag
+  --------------------------------------------------------- */
+  (()=>{
+    const nav=document.querySelector('.site-nav'), toggle=document.querySelector('.menu-toggle'), panel=document.querySelector('.mobile-menu');
+    if(toggle&&panel){
+      const close=()=>{panel.classList.remove('open');toggle.setAttribute('aria-expanded','false');document.body.classList.remove('mobile-nav-open')};
+      const open=()=>{panel.classList.add('open');toggle.setAttribute('aria-expanded','true');document.body.classList.add('mobile-nav-open')};
+      // Existing listener toggles; this layer adds outside-click, Escape and clean link exit.
+      panel.querySelectorAll('a').forEach(a=>a.addEventListener('click',close));
+      document.addEventListener('keydown',e=>{if(e.key==='Escape'&&panel.classList.contains('open')){close();toggle.focus()}});
+      document.addEventListener('pointerdown',e=>{if(panel.classList.contains('open')&&!nav?.contains(e.target))close()},{passive:true});
+    }
+  })();
+
+  (()=>{
+    if(document.querySelector('.ig-orb-shell'))return;
+    const reels=['DXoHQSrCNvx','DIBMYMBMxnh','DRPi3SPCExr','DI_meJjsVr-','DKtgLKoo0wK','DcdiUdLsL0n','DcBj3tZtcLP','DQ3Xw3fDGqB','DKZBmjHoR9u','DRBwJYZAsZk','Dc28-L-u1OV','DcBqnqNsfzw','DbyLBaKM7bd'];
+    const shell=document.createElement('div');shell.className='ig-orb-shell';
+    shell.innerHTML=`<button class="ig-orb" type="button" aria-expanded="false" aria-label="Instagram’dan son işleri aç"><span class="ig-orb-mark">@</span><span class="ig-orb-tip">Son işler · @iamparoglu</span></button><aside class="ig-reel-dock" aria-hidden="true" aria-label="Instagram’dan son işler"><div class="ig-dock-head"><a href="https://www.instagram.com/iamparoglu/" target="_blank" rel="noopener"><strong>@iamparoglu</strong><small>Instagram · son üretimler</small></a><button class="ig-dock-close" type="button" aria-label="Kapat">×</button></div><div class="ig-dock-stage"><iframe class="ig-dock-frame" title="Paroglu Media Instagram Reel" src="about:blank" loading="lazy" scrolling="no" frameborder="0" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe><span class="ig-dock-shade" aria-hidden="true"></span></div><div class="ig-dock-foot"><span class="ig-dock-count">01 / 13</span><span class="ig-dock-progress"><i></i></span><span class="ig-dock-actions"><button type="button" data-ig-prev aria-label="Önceki Reel">←</button><button type="button" data-ig-next aria-label="Sonraki Reel">→</button></span></div><a class="ig-dock-link" data-ig-link href="https://www.instagram.com/reel/DXoHQSrCNvx/" target="_blank" rel="noopener"><span>Reel’i Instagram’da aç</span><span>↗</span></a></aside>`;
+    document.body.appendChild(shell);
+    const orb=$('.ig-orb',shell),dock=$('.ig-reel-dock',shell),closeBtn=$('.ig-dock-close',shell),frame=$('.ig-dock-frame',shell),count=$('.ig-dock-count',shell),reelLink=$('[data-ig-link]',shell),progress=$('.ig-dock-progress i',shell);
+    let index=0,timer=null,openScroll=0;
+    const url=i=>`https://www.instagram.com/reel/${reels[i]}/`;
+    const resetProgress=()=>{if(!progress||reduceMotion)return;progress.style.animation='none';void progress.offsetWidth;progress.style.animation='pmIgProgress 5s linear forwards'};
+    const load=()=>{frame.title=`Paroglu Media Instagram Reel ${String(index+1).padStart(2,'0')}`;frame.src=url(index)+'embed/?autoplay=1';count.textContent=`${String(index+1).padStart(2,'0')} / ${String(reels.length).padStart(2,'0')}`;reelLink.href=url(index);resetProgress()};
+    const stop=()=>{if(timer){clearInterval(timer);timer=null}};
+    const start=()=>{stop();if(reduceMotion||!shell.classList.contains('open'))return;timer=setInterval(()=>change(index+1),5000)};
+    const change=n=>{index=(n+reels.length)%reels.length;dock.classList.add('is-changing');frame.src='about:blank';setTimeout(()=>{if(shell.classList.contains('open'))load();dock.classList.remove('is-changing')},130)};
+    const open=()=>{shell.classList.add('open');orb.setAttribute('aria-expanded','true');dock.setAttribute('aria-hidden','false');openScroll=scrollY;load();start()};
+    const close=()=>{shell.classList.remove('open');orb.setAttribute('aria-expanded','false');dock.setAttribute('aria-hidden','true');stop();frame.src='about:blank'};
+    orb.addEventListener('click',()=>shell.classList.contains('open')?close():open());closeBtn.addEventListener('click',close);
+    $('[data-ig-prev]',shell).addEventListener('click',()=>{change(index-1);start()});$('[data-ig-next]',shell).addEventListener('click',()=>{change(index+1);start()});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape'&&shell.classList.contains('open')){close();orb.focus()}});
+    document.addEventListener('visibilitychange',()=>{if(document.hidden)close()});
+    let ticking=false;addEventListener('scroll',()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{ticking=false;if(shell.classList.contains('open')&&Math.abs(scrollY-openScroll)>64)close()})},{passive:true});
+  })();
+
+  (()=>{
+    const viewport=document.querySelector('[data-home-work]');if(!viewport)return;
+    let startX=null,card=null,moved=false,lastDx=0;
+    viewport.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;startX=e.clientX;lastDx=0;moved=false;card=e.target.closest('.home-work-card');if(card)card.classList.add('is-hand-turn')},{passive:true});
+    viewport.addEventListener('pointermove',e=>{if(startX==null||!card)return;lastDx=e.clientX-startX;if(Math.abs(lastDx)>8)moved=true;const angle=Math.max(-8,Math.min(8,lastDx/18));card.style.setProperty('--hand-turn',`${angle}deg`);card.style.setProperty('--fold-side',lastDx<0?'270deg':'90deg');card.style.setProperty('--fold-opacity',String(Math.min(.34,.12+Math.abs(lastDx)/360)))},{passive:true});
+    const end=()=>{if(startX==null)return;startX=null;if(card){const a=Math.max(-7,Math.min(7,lastDx/18));card.classList.remove('is-hand-turn');card.style.removeProperty('--hand-turn');card.classList.add('page-settle');card.style.setProperty('--settle-angle',`${a}deg`);setTimeout(()=>{card?.classList.remove('page-settle');card?.style.removeProperty('--settle-angle')},480)}card=null};
+    viewport.addEventListener('pointerup',end,{passive:true});viewport.addEventListener('pointercancel',end,{passive:true});
+    viewport.addEventListener('click',e=>{if(moved&&e.target.closest('.home-work-card')){e.preventDefault();e.stopPropagation();moved=false}},true);
   })();
 
   /* BOOT */

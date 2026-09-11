@@ -1275,26 +1275,140 @@ body[data-home="true"] .home-why{padding-top:92px}
 
 
 /* =========================================================
-   V7.2.21 — MINIMAL INSTAGRAM REELS PREVIEW
-   Lives inside the Selected Works heading; never a new section.
+   V8.0 RC — LAUNCH POLISH / 2026-09-11
+   Stable, CSS-first finishing pass. No architecture-changing motion.
    ========================================================= */
-.home-work-head-actions{display:flex;align-items:center;gap:18px}
-.reels-minimal{position:relative;width:104px;height:126px;flex:0 0 104px;z-index:2;filter:drop-shadow(0 16px 30px rgba(0,0,0,.28))}
-.reels-minimal-media{position:absolute;right:0;top:0;width:86px;height:118px;overflow:hidden;border-radius:18px;border:1px solid rgba(187,165,255,.28);background:#07070a;box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 0 30px rgba(122,108,255,.09);transform:rotate(2deg);transition:transform .3s cubic-bezier(.2,.75,.2,1),border-color .3s ease,box-shadow .3s ease}
-.reels-minimal:hover .reels-minimal-media,.reels-minimal:focus-within .reels-minimal-media{transform:rotate(.4deg) translateY(-3px) scale(1.035);border-color:rgba(190,172,255,.48);box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 42px rgba(0,0,0,.36),0 0 34px rgba(122,108,255,.14)}
-.reels-minimal-frame{position:absolute;left:-7px;top:-52px;width:100px;height:235px;border:0;pointer-events:none;background:#050506;transform:scale(1.02);filter:saturate(.92) contrast(1.04);transition:opacity .18s ease,transform .28s ease}
-.reels-minimal.is-switching .reels-minimal-frame{opacity:.15;transform:scale(1.055)}
-.reels-minimal-shade{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(5,4,8,.02) 40%,rgba(5,4,8,.72) 100%),linear-gradient(90deg,rgba(95,66,184,.12),transparent 48%);box-shadow:inset 0 0 0 1px rgba(255,255,255,.02)}
-.reels-minimal-count{position:absolute;right:7px;bottom:7px;padding:4px 5px;border-radius:99px;background:rgba(7,6,10,.62);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);font-size:6px;font-weight:650;letter-spacing:.12em;color:rgba(255,255,255,.82);z-index:3}
-.reels-minimal-chip{position:absolute;left:0;bottom:2px;z-index:5;display:flex;align-items:center;gap:5px;height:30px;padding:0 9px;border-radius:999px;border:1px solid rgba(189,170,255,.30);background:rgba(12,10,18,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 24px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06);font-size:8px;font-weight:600;letter-spacing:.015em;color:#f4f0ff;white-space:nowrap;transition:transform .22s ease,border-color .22s ease,background .22s ease}
-.reels-minimal-chip:hover{transform:translateY(-2px);border-color:rgba(196,181,255,.52);background:rgba(22,17,34,.94)}
-.reels-minimal-chip b{font-size:9px;color:#a998ff}.reels-live-dot{width:5px;height:5px;border-radius:50%;background:#9b82ff;box-shadow:0 0 0 3px rgba(155,130,255,.08),0 0 10px rgba(155,130,255,.62)}
-.reels-minimal.is-playing .reels-live-dot{animation:reelsMinimalPulse 1.8s ease-in-out infinite}@keyframes reelsMinimalPulse{50%{opacity:.45;transform:scale(.78)}}
+:root{
+  --pm-section-desktop:112px;
+  --pm-section-tablet:92px;
+  --pm-section-mobile:72px;
+  --pm-head-gap:42px;
+  --pm-copy-gap:16px;
+  --pm-ease:cubic-bezier(.22,.72,.18,1);
+}
+body{font-family:"Inter Tight","Helvetica Neue",Arial,sans-serif;font-weight:400;text-rendering:optimizeLegibility}
+h1,h2,h3,.section-title,.hero-title,.inner-hero h1,.about-headline,.contact-big,.case-hero-copy h1,.cv-title h1,.talk-intro h1{font-family:"Inter Tight","Helvetica Neue",Arial,sans-serif;font-weight:400}
+p,.section-copy,.lead{letter-spacing:-.008em}
+.kicker,.eyebrow{font-weight:600;letter-spacing:.16em}
+.section{padding:var(--pm-section-desktop) 0}.section.compact{padding:82px 0}
+.section-head{gap:clamp(26px,4vw,64px);margin-bottom:var(--pm-head-gap);align-items:flex-end}
+.section-head .section-title{margin-top:10px}
+.section-copy{max-width:580px;line-height:1.65;color:#aaa3b4}
+.section-head>div>.section-copy{margin-top:var(--pm-copy-gap)}
+.section-title{font-weight:400;letter-spacing:-.052em;line-height:.96}
+.section-title em,.hero-title em{font-weight:300}
+.home-service-card h3,.home-why-card h3,.home-work-meta strong{font-weight:450;letter-spacing:-.03em}
 
-@media(max-width:980px){
-  .home-work-head-actions{gap:12px}.reels-minimal{width:94px;height:116px;flex-basis:94px}.reels-minimal-media{width:78px;height:108px}.reels-minimal-frame{left:-8px;top:-48px;width:94px;height:218px}.reels-minimal-chip{height:28px;padding:0 8px;font-size:7.5px}
+/* Hero ghost: more visible, but signals only occasionally. */
+.hero-ghost{
+  opacity:.82;
+  -webkit-text-stroke:1px rgba(255,255,255,.072);
+  text-stroke:1px rgba(255,255,255,.072);
+  animation:pmGhostSignal 10.8s ease-in-out infinite;
+  will-change:opacity,-webkit-text-stroke-color;
 }
-@media(max-width:640px){
-  .home-work-section .section-head{align-items:flex-end;gap:14px}.home-work-head-actions{align-self:flex-end;gap:8px}.home-work-head-actions>.pill{display:none}.reels-minimal{width:88px;height:108px;flex-basis:88px}.reels-minimal-media{width:72px;height:101px;border-radius:15px}.reels-minimal-frame{left:-9px;top:-47px;width:92px;height:208px}.reels-minimal-chip{height:27px;padding:0 7px;font-size:7px}.reels-minimal-count{font-size:5.5px;right:5px;bottom:6px}
+@keyframes pmGhostSignal{
+  0%,76%,100%{opacity:.82;-webkit-text-stroke-color:rgba(255,255,255,.072)}
+  80%{opacity:1;-webkit-text-stroke-color:rgba(183,171,255,.14)}
+  81.5%{opacity:.55;-webkit-text-stroke-color:rgba(255,255,255,.048)}
+  83%{opacity:.98;-webkit-text-stroke-color:rgba(154,140,255,.13)}
+  86%{opacity:.82;-webkit-text-stroke-color:rgba(255,255,255,.072)}
 }
-@media(prefers-reduced-motion:reduce){.reels-minimal-media,.reels-minimal-frame,.reels-minimal-chip{transition:none!important}.reels-minimal.is-playing .reels-live-dot{animation:none!important}}
+
+/* CTA and important hover moments: noticeable, not constant. */
+.btn.primary,.nav-cta,.mobile-cta{position:relative;overflow:hidden}
+.btn.primary::after,.nav-cta::after,.mobile-cta::after{content:"";position:absolute;inset:-80% -35%;background:linear-gradient(110deg,transparent 38%,rgba(255,255,255,.18) 50%,transparent 62%);transform:translateX(-90%) rotate(8deg);transition:transform .72s var(--pm-ease);pointer-events:none}
+.btn.primary:hover::after,.nav-cta:hover::after,.mobile-cta:hover::after{transform:translateX(90%) rotate(8deg)}
+
+/* Selected works: tactile mouse movement + hand-swipe page feel. */
+.home-work-card{transform-style:preserve-3d;transform-origin:center center;transition:transform .42s var(--pm-ease),border-color .28s ease,box-shadow .28s ease}
+.home-work-card:hover{transform:translateY(-5px) perspective(1200px) rotateX(.6deg);box-shadow:0 26px 72px rgba(0,0,0,.30)}
+.home-work-card.is-hand-turn{transition:none!important;transform:perspective(1100px) rotateY(var(--hand-turn,0deg)) translateY(-2px);z-index:4}
+.home-work-card.is-hand-turn .home-work-media::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(var(--fold-side,90deg),rgba(255,255,255,.10),transparent 24%,transparent 72%,rgba(0,0,0,.18));opacity:var(--fold-opacity,.18)}
+.home-work-card.page-settle{animation:pmPageSettle .46s var(--pm-ease)}
+@keyframes pmPageSettle{0%{transform:perspective(1100px) rotateY(var(--settle-angle,5deg))}100%{transform:none}}
+
+/* Lightbox: touch turns like a page; mouse/keyboard gets a cleaner cinematic slide. */
+.pm-lightbox{perspective:1400px;touch-action:none}
+.pm-lightbox img{transform-style:preserve-3d;backface-visibility:hidden;will-change:transform,opacity}
+.pm-lightbox img.lb-touch-next{animation:pmTouchPageNext .48s var(--pm-ease)}
+.pm-lightbox img.lb-touch-prev{animation:pmTouchPagePrev .48s var(--pm-ease)}
+.pm-lightbox img.lb-mouse-next{animation:pmMouseNext .34s var(--pm-ease)}
+.pm-lightbox img.lb-mouse-prev{animation:pmMousePrev .34s var(--pm-ease)}
+@keyframes pmTouchPageNext{0%{opacity:.32;transform-origin:left center;transform:translateX(28px) rotateY(-20deg) scale(.985)}100%{opacity:1;transform:translateX(0) rotateY(0) scale(1)}}
+@keyframes pmTouchPagePrev{0%{opacity:.32;transform-origin:right center;transform:translateX(-28px) rotateY(20deg) scale(.985)}100%{opacity:1;transform:translateX(0) rotateY(0) scale(1)}}
+@keyframes pmMouseNext{0%{opacity:.08;transform:translateX(24px) scale(.992)}100%{opacity:1;transform:none}}
+@keyframes pmMousePrev{0%{opacity:.08;transform:translateX(-24px) scale(.992)}100%{opacity:1;transform:none}}
+
+/* Instagram follower orb. Closed = tiny bubble. Reels only load after a click. */
+.ig-orb-shell{position:fixed;left:22px;bottom:22px;z-index:430;display:flex;align-items:flex-end;gap:12px;pointer-events:none}
+.ig-orb{pointer-events:auto;width:52px;height:52px;border-radius:50%;border:1px solid rgba(190,173,255,.34);background:radial-gradient(circle at 35% 30%,rgba(178,158,255,.28),rgba(21,17,32,.94) 48%,rgba(8,7,12,.97));box-shadow:0 18px 42px rgba(0,0,0,.38),0 0 30px rgba(122,108,255,.12),inset 0 1px 0 rgba(255,255,255,.09);display:grid;place-items:center;cursor:pointer;position:relative;transition:transform .28s var(--pm-ease),border-color .28s ease,box-shadow .28s ease;color:#fff}
+.ig-orb::before{content:"";position:absolute;inset:-5px;border-radius:inherit;border:1px solid rgba(154,140,255,.15);animation:pmIgRing 3.8s ease-in-out infinite}
+.ig-orb:hover{transform:translateY(-3px) scale(1.04);border-color:rgba(200,188,255,.58);box-shadow:0 22px 48px rgba(0,0,0,.42),0 0 40px rgba(122,108,255,.20)}
+.ig-orb-mark{font-size:18px;font-weight:500;letter-spacing:-.05em}.ig-orb-tip{position:absolute;left:62px;white-space:nowrap;padding:8px 11px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(10,9,15,.78);backdrop-filter:blur(13px);-webkit-backdrop-filter:blur(13px);font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:#cfc8db;opacity:0;transform:translateX(-6px);transition:.24s ease;pointer-events:none}.ig-orb:hover .ig-orb-tip,.ig-orb:focus-visible .ig-orb-tip{opacity:1;transform:none}
+@keyframes pmIgRing{0%,100%{opacity:.28;transform:scale(.94)}50%{opacity:.72;transform:scale(1.07)}}
+.ig-reel-dock{pointer-events:none;width:min(318px,calc(100vw - 30px));border:1px solid rgba(197,181,255,.20);border-radius:24px;background:rgba(9,8,14,.94);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);box-shadow:0 34px 90px rgba(0,0,0,.52),0 0 45px rgba(122,108,255,.10);opacity:0;visibility:hidden;transform:translateY(14px) scale(.975);transform-origin:left bottom;transition:.3s var(--pm-ease);overflow:hidden}
+.ig-orb-shell.open .ig-reel-dock{pointer-events:auto;opacity:1;visibility:visible;transform:none}
+.ig-dock-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 14px 11px;border-bottom:1px solid rgba(255,255,255,.08)}
+.ig-dock-head a{display:flex;flex-direction:column;gap:2px}.ig-dock-head strong{font-size:12px;font-weight:550}.ig-dock-head small{font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:#91899d}.ig-dock-close{width:31px;height:31px;border-radius:50%;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);cursor:pointer;font-size:19px;line-height:1}
+.ig-dock-stage{position:relative;aspect-ratio:9/13.3;background:#050506;overflow:hidden}.ig-dock-frame{position:absolute;inset:-48px -8px -48px -8px;width:calc(100% + 16px);height:calc(100% + 96px);border:0;background:#050506}.ig-dock-shade{position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025);background:linear-gradient(180deg,rgba(5,4,8,.06),transparent 18%,transparent 75%,rgba(5,4,8,.20))}
+.ig-dock-foot{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:9px;padding:11px 12px}.ig-dock-count{font-size:9px;letter-spacing:.12em;color:#9f98aa}.ig-dock-progress{height:2px;border-radius:9px;background:rgba(255,255,255,.09);overflow:hidden}.ig-dock-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#7a6cff,#b7adff)}.ig-orb-shell.open .ig-dock-progress i{animation:pmIgProgress 5s linear forwards}.ig-dock-actions{display:flex;gap:5px}.ig-dock-actions button{width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.035);cursor:pointer}.ig-dock-link{display:flex;justify-content:space-between;align-items:center;padding:0 13px 13px;font-size:10px;color:#d8d2df}.ig-dock-link span:last-child{color:#a99cff}
+@keyframes pmIgProgress{from{width:0}to{width:100%}}
+.ig-reel-dock.is-changing .ig-dock-stage{opacity:.58;transform:scale(.995)}.ig-dock-stage{transition:opacity .16s ease,transform .16s ease}
+
+/* Keep fixed helpers away from each other. */
+.assistant-launch{right:22px;bottom:22px}
+
+/* Desktop rhythm */
+@media(min-width:1181px){
+  .container{width:min(var(--max),calc(100% - 64px))}
+  .hero-title{font-size:clamp(78px,8.7vw,142px)}
+  .home-work-section .section-head{margin-bottom:38px}
+  .home-service-grid,.home-why-grid{gap:18px}
+}
+/* iPad / tablet is treated as its own layout, not squeezed desktop. */
+@media(min-width:768px) and (max-width:1180px){
+  :root{--nav:74px;--pm-head-gap:34px}
+  .section{padding:var(--pm-section-tablet) 0}.section.compact{padding:72px 0}
+  .container{width:min(100% - 44px,980px)}
+  .nav-inner{width:calc(100% - 32px)}
+  .hero{min-height:88svh;padding-top:calc(var(--nav) + 54px)}
+  .hero-title{font-size:clamp(68px,10.6vw,106px);line-height:.9}
+  .hero-copy{max-width:650px;font-size:17px}
+  .section-title{font-size:clamp(48px,7vw,72px)}
+  .section-head{align-items:flex-end}
+  .home-work-card{width:min(46vw,440px)}.home-work-card.ratio-landscape{width:min(60vw,570px)}
+  .selected-film-head{gap:26px}.selected-film-stage{border-radius:25px}
+  .brand-marquee-group{min-width:112vw;width:112vw}
+  .ig-orb-shell{left:18px;bottom:18px}.assistant-launch{right:18px;bottom:18px}
+}
+/* Mobile: tighter type rhythm, touch targets, no desktop hover dependency. */
+@media(max-width:767px){
+  :root{--nav:70px;--pm-head-gap:26px;--pm-copy-gap:12px}
+  .section{padding:var(--pm-section-mobile) 0}.section.compact{padding:62px 0}
+  .container{width:calc(100% - 28px)}
+  .section-head{display:block;margin-bottom:var(--pm-head-gap)}
+  .section-head>.pill,.section-head>div+.pill{display:inline-flex;margin-top:18px}
+  .section-title{font-size:clamp(42px,13.5vw,62px);line-height:.96;letter-spacing:-.047em}
+  .section-copy{font-size:14px;line-height:1.62;margin-top:12px}
+  .hero{min-height:92svh;padding:calc(var(--nav) + 46px) 0 54px}
+  .hero-title{font-size:clamp(54px,17vw,82px);line-height:.91;letter-spacing:-.052em;margin:25px auto 21px}
+  .hero-copy{font-size:15px;line-height:1.58;max-width:92%}.hero-actions{margin-top:26px;gap:8px;flex-wrap:wrap}.hero-actions .btn{min-height:46px}
+  .hero-ghost{font-size:31vw;-webkit-text-stroke-color:rgba(255,255,255,.06)}
+  .home-work-card:hover{transform:none}.home-work-card.is-hand-turn{transform:perspective(900px) rotateY(var(--hand-turn,0deg))}
+  .home-work-controls{margin-top:14px}
+  .ig-orb-shell{left:14px;bottom:max(14px,env(safe-area-inset-bottom));gap:9px}.ig-orb{width:48px;height:48px}.ig-orb-tip{display:none}.ig-reel-dock{width:min(286px,calc(100vw - 28px));border-radius:20px}.ig-dock-stage{aspect-ratio:9/12.8}
+  .assistant-launch{right:14px;bottom:max(14px,env(safe-area-inset-bottom))}
+}
+@media(max-width:390px){.ig-reel-dock{width:270px}.hero-title{font-size:clamp(50px,16.5vw,68px)}}
+@media(prefers-reduced-motion:reduce){.hero-ghost,.ig-orb::before,.ig-dock-progress i{animation:none!important}.home-work-card,.pm-lightbox img,.ig-reel-dock{transition:none!important}}
+
+/* V8 RC — concert photo lightbox receives the same tactile transition system. */
+.photo-lightbox{perspective:1400px;touch-action:none}
+.photo-lightbox img{transform-style:preserve-3d;backface-visibility:hidden;will-change:transform,opacity}
+.photo-lightbox .photo-lb-close{position:fixed;right:22px;top:20px}
+.photo-lightbox .photo-lb-prev,.photo-lightbox .photo-lb-next{position:fixed;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);font-size:28px;cursor:pointer;z-index:2}
+.photo-lightbox .photo-lb-prev{left:22px;right:auto}.photo-lightbox .photo-lb-next{right:22px;left:auto}
+.photo-lightbox .photo-lb-count{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);font-size:10px;letter-spacing:.13em;color:#aaa3b4}
+.photo-lightbox img.lb-touch-next{animation:pmTouchPageNext .48s var(--pm-ease)}.photo-lightbox img.lb-touch-prev{animation:pmTouchPagePrev .48s var(--pm-ease)}.photo-lightbox img.lb-mouse-next{animation:pmMouseNext .34s var(--pm-ease)}.photo-lightbox img.lb-mouse-prev{animation:pmMousePrev .34s var(--pm-ease)}
+@media(max-width:767px){.photo-lightbox .photo-lb-close{right:10px;top:10px}.photo-lightbox .photo-lb-prev{left:8px}.photo-lightbox .photo-lb-next{right:8px}.photo-lightbox .photo-lb-count{bottom:max(12px,env(safe-area-inset-bottom))}}
