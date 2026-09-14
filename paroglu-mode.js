@@ -6,7 +6,7 @@
 
   const worlds=[
     {
-      key:'home', no:'01', title:'Ana Dünya', hint:'Paroğlu Universe', bg:'mode-assets/world-home.png',
+      key:'home', no:'01', title:'Ana Dünya', hint:'Paroğlu Universe', bg:'mode-assets/paroglu-mode-home.png',
       headline:'IAM PAROĞLU', sub:'Görünen değil, hatırlanan işler üretiyoruz.',
       nodes:[
         {label:'Konser', world:1}, {label:'Spor', world:2}, {label:'Studio', world:3}, {label:'Prodüksiyon', world:4}
@@ -65,6 +65,7 @@
       <div class="pm10-track">
         ${worlds.map((w,wi)=>`<section class="pm10-world" data-world="${wi}" style="--scene:url('${esc(w.bg)}')">
           <div class="pm10-bg" aria-hidden="true"></div><div class="pm10-glow" aria-hidden="true"></div>
+          ${wi===0?`<div class="pm10-reference-frame" aria-label="Paroğlu Mode ana dünya"><img class="pm10-reference-image" src="mode-assets/paroglu-mode-home.png" alt="IAM PAROĞLU pixel dünya"><div class="pm10-reference-hotspots"><a class="pm10-ref-hotspot pm10-ref-isler" href="isler.html" aria-label="İşler"></a><a class="pm10-ref-hotspot pm10-ref-hakkimda" href="hakkimda.html" aria-label="Hakkımda"></a><a class="pm10-ref-hotspot pm10-ref-iletisim" href="iletisim.html" aria-label="İletişim"></a><button class="pm10-ref-hotspot pm10-ref-concert" type="button" data-ref-world="1" aria-label="Konser dünyasını aç"></button><button class="pm10-ref-hotspot pm10-ref-left" type="button" data-ref-move="-1" aria-label="Önceki dünya"></button><button class="pm10-ref-hotspot pm10-ref-right" type="button" data-ref-move="1" aria-label="Sonraki dünya"></button><button class="pm10-ref-hotspot pm10-ref-jump" type="button" data-ref-jump aria-label="Zıpla"></button><a class="pm10-ref-hotspot pm10-ref-portfolio" href="isler.html" aria-label="Portföyü aç"></a><button class="pm10-ref-off" type="button" data-ref-off>MODE OFF</button></div></div>`:''}
           <div class="pm10-copy"><span>UMUT PAROĞLU / GÖRSEL HİKÂYELER</span><h2>${esc(w.headline)}</h2><p>${esc(w.sub)}</p></div>
           <div class="pm10-world-tag"><b>WORLD ${w.no}</b><span>${esc(w.hint)}</span></div>
           <div class="pm10-nodes">${w.nodes.map((n,ni)=>`<button class="pm10-node" type="button" data-world="${wi}" data-node="${ni}"><i>?</i><small>${esc(n.label)}</small></button>`).join('')}</div>
@@ -83,6 +84,7 @@
   document.body.appendChild(layer);
 
   const track=layer.querySelector('.pm10-track'), viewport=layer.querySelector('.pm10-viewport'), avatar=layer.querySelector('.pm10-avatar'), current=layer.querySelector('.pm10-current'), currentTitle=layer.querySelector('.pm10-current-title');
+  const referenceFrame=layer.querySelector('.pm10-reference-frame');
   const project=layer.querySelector('.pm10-project'), projectMedia=layer.querySelector('.pm10-project-media'), projectTitle=layer.querySelector('.pm10-project-meta h3'), projectText=layer.querySelector('.pm10-project-meta p'), projectLink=layer.querySelector('.pm10-project-link');
   const reelsPanel=layer.querySelector('.pm10-reels'), reelFrame=layer.querySelector('.pm10-reels iframe'), reelCount=layer.querySelector('.pm10-reels-count'), reelProgress=layer.querySelector('.pm10-reels-foot i b');
   const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -99,6 +101,7 @@
   function walkPulse(){avatar.classList.add('walking'); clearTimeout(walkPulse.t); walkPulse.t=setTimeout(()=>avatar.classList.remove('walking'),460)}
   function movePlayer(delta){state.playerX+=delta*.055; if(state.playerX>.76){setWorld(state.index+1); return} if(state.playerX<.1){setWorld(state.index-1); state.playerX=.72} updateAvatar(); walkPulse()}
   function jump(){avatar.classList.remove('jump'); void avatar.offsetWidth; avatar.classList.add('jump'); setTimeout(()=>avatar.classList.remove('jump'),650)}
+  function referenceJump(){if(!referenceFrame)return; referenceFrame.classList.remove('ref-jump'); void referenceFrame.offsetWidth; referenceFrame.classList.add('ref-jump'); setTimeout(()=>referenceFrame.classList.remove('ref-jump'),420)}
 
   function stopReels(){clearInterval(state.reelTimer); state.reelTimer=null; reelFrame.src='about:blank'; reelsPanel.classList.remove('open'); reelsPanel.setAttribute('aria-hidden','true')}
   function loadReel(){reelFrame.src=`https://www.instagram.com/reel/${reels[state.reelIndex]}/embed/?autoplay=1`; reelCount.textContent=`${String(state.reelIndex+1).padStart(2,'0')} / ${String(reels.length).padStart(2,'0')}`; reelProgress.style.animation='none'; void reelProgress.offsetWidth; if(!reduceMotion)reelProgress.style.animation='pm10Reel 10s linear forwards'}
@@ -116,6 +119,10 @@
   function open(){if(state.opened)return; state.opened=true; state.scrollY=scrollY; layer.hidden=false; document.documentElement.style.overflow='hidden'; document.body.style.overflow='hidden'; requestAnimationFrame(()=>layer.classList.add('open')); setWorld(0,false); viewport.focus({preventScroll:true})}
 
   layer.addEventListener('click',e=>{
+    const refWorld=e.target.closest('[data-ref-world]'); if(refWorld){setWorld(+refWorld.dataset.refWorld);return}
+    const refMove=e.target.closest('[data-ref-move]'); if(refMove){setWorld(state.index+(+refMove.dataset.refMove));return}
+    if(e.target.closest('[data-ref-jump]')){referenceJump();return}
+    if(e.target.closest('[data-ref-off]')){close();return}
     const node=e.target.closest('.pm10-node'); if(node){jump(); setTimeout(()=>openNode(+node.dataset.world,+node.dataset.node),260); return}
     if(e.target.closest('.pm10-off')){close();return} if(e.target.closest('[data-open-world]')){openCurrent();return}
     const mv=e.target.closest('[data-move]'); if(mv){setWorld(state.index+(+mv.dataset.move));return} if(e.target.closest('[data-jump]')){jump();return}

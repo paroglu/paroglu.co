@@ -11,3 +11,28 @@
 @media(max-width:760px){.pm10-hud{left:18px;right:18px;top:max(18px,env(safe-area-inset-top))}.pm10-brand span{margin-top:24px;font-size:6px}.pm10-nav a{display:none}.pm10-nav{gap:0}.pm10-off{font-size:6px;padding:9px}.pm10-copy{left:20px;top:24%;max-width:86vw}.pm10-copy>span{font-size:6px}.pm10-copy h2{font-size:clamp(34px,10vw,52px);margin:24px 0 16px}.pm10-copy p{font-size:7px;line-height:1.75}.pm10-counter{right:20px;top:16%;}.pm10-node{width:58px;height:58px;border-width:4px;box-shadow:inset 0 0 0 4px #ffd34d,4px 5px 0 rgba(46,15,39,.42)}.pm10-node i{font-size:24px}.pm10-node small{top:68px;font-size:6px}.pm10-node:nth-child(1){left:54%;top:51%}.pm10-node:nth-child(2){left:72%;top:61%}.pm10-node:nth-child(3){left:83%;top:45%}.pm10-node:nth-child(4){left:85%;top:68%}.pm10-avatar{bottom:9.5%;transform:translateX(-50%) scale(.68);transform-origin:bottom}.pm10-help{left:18px;bottom:7%;font-size:6px;max-width:170px}.pm10-controls{left:18px;bottom:2%;transform:none}.pm10-controls button{padding:10px 11px;font-size:6px}.pm10-controls button[data-jump]{display:none}.pm10-portfolio{right:16px;bottom:2%;padding:10px 11px;font-size:6px}.pm10-project{inset:6% 3%;display:block;overflow:auto}.pm10-project-media{height:48vh;min-height:0}.pm10-reels{top:7%;right:3%;bottom:7%}}
 @media(max-width:520px){.pm10-help{display:none}.pm10-copy{top:22%}.pm10-node:nth-child(1){left:55%;top:52%}.pm10-node:nth-child(2){left:76%;top:60%}.pm10-node:nth-child(n+3){display:none}.pm10-avatar{bottom:9%;}.pm10-portfolio{right:14px}.pm10-bg{background-position:center}}
 @media(prefers-reduced-motion:reduce){.pm10-track,.pm10-project,.pm10-reels,.pm10-bg{transition:none!important}.pm10-avatar.walking i,.pm10-avatar.jump,.pm10-layer.switching .pm10-transition i,.pm10-reels-foot i b{animation:none!important}}
+
+/* V10.3 — Reference-accurate Paroğlu Mode opening scene */
+.pm10-world[data-world="0"]{background:#160a2a;isolation:isolate}
+.pm10-world[data-world="0"]::before{content:"";position:absolute;inset:-9%;z-index:0;background:url('mode-assets/paroglu-mode-home.png') center/cover no-repeat;filter:blur(42px) saturate(1.05);opacity:.38;transform:scale(1.08);pointer-events:none}
+.pm10-world[data-world="0"]>.pm10-bg,.pm10-world[data-world="0"]>.pm10-glow,.pm10-world[data-world="0"]>.pm10-copy,.pm10-world[data-world="0"]>.pm10-world-tag,.pm10-world[data-world="0"]>.pm10-nodes,.pm10-world[data-world="0"]>.pm10-ground-shine{display:none!important}
+.pm10-reference-frame{position:absolute;z-index:10;left:50%;top:50%;width:min(100vw,133.333333vh);height:min(100vh,75vw);transform:translate(-50%,-50%);overflow:hidden;background:#1b0d35;box-shadow:0 0 80px rgba(77,31,129,.24)}
+.pm10-reference-image{display:block;width:100%;height:100%;object-fit:fill;image-rendering:auto;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.pm10-reference-hotspots{position:absolute;inset:0;z-index:3}
+.pm10-ref-hotspot{position:absolute;display:block;border:0;background:transparent;color:transparent;padding:0;cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent}
+.pm10-ref-hotspot:focus-visible{outline:2px solid #ffe36d;outline-offset:2px;background:rgba(255,227,109,.08)}
+.pm10-ref-isler{left:70.9%;top:5.6%;width:6.3%;height:5.5%}
+.pm10-ref-hakkimda{left:77.8%;top:5.6%;width:10%;height:5.5%}
+.pm10-ref-iletisim{left:88%;top:5.6%;width:8.5%;height:5.5%}
+.pm10-ref-concert{left:44.3%;top:42.8%;width:9.5%;height:14.5%}
+.pm10-ref-left{left:38.7%;top:82.6%;width:5.5%;height:7.6%}
+.pm10-ref-right{left:44.3%;top:82.6%;width:5.5%;height:7.6%}
+.pm10-ref-jump{left:49.8%;top:82.6%;width:9.1%;height:7.6%}
+.pm10-ref-portfolio{left:78.8%;top:82.3%;width:14.8%;height:8.2%}
+.pm10-ref-off{position:absolute;right:1.45%;top:1.6%;z-index:4;font:clamp(5px,.48vw,8px)/1 var(--pm10-pixel);letter-spacing:.02em;color:rgba(255,255,255,.72);background:rgba(18,8,38,.42);border:1px solid rgba(255,255,255,.14);padding:7px 8px;cursor:pointer;opacity:.22;transition:opacity .18s ease,background .18s ease}
+.pm10-ref-off:hover,.pm10-ref-off:focus-visible{opacity:1;background:rgba(45,17,74,.84);outline:none}
+.pm10-reference-frame.ref-jump{animation:pm10ReferenceKick .42s steps(4,end)}
+@keyframes pm10ReferenceKick{0%,100%{transform:translate(-50%,-50%)}35%{transform:translate(-50%,-51.2%)}65%{transform:translate(-50%,-49.6%)}}
+.pm10-layer[data-world="home"] .pm10-hud,.pm10-layer[data-world="home"] .pm10-avatar,.pm10-layer[data-world="home"] .pm10-counter,.pm10-layer[data-world="home"] .pm10-help,.pm10-layer[data-world="home"] .pm10-controls,.pm10-layer[data-world="home"] .pm10-portfolio{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
+@media(max-width:760px) and (orientation:portrait){.pm10-reference-frame{width:100vw;height:75vw;top:50%}.pm10-world[data-world="0"]::after{content:"PAROĞLU MODE · yatay görünümde en iyi deneyim";position:absolute;left:50%;bottom:max(18px,env(safe-area-inset-bottom));z-index:12;transform:translateX(-50%);width:max-content;max-width:90vw;color:rgba(255,255,255,.58);font:6px/1.6 var(--pm10-pixel);text-align:center}.pm10-ref-off{opacity:.75}}
+@media(prefers-reduced-motion:reduce){.pm10-reference-frame.ref-jump{animation:none!important}}
