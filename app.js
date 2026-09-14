@@ -591,8 +591,11 @@
     shell.setAttribute('role','dialog');
     shell.setAttribute('aria-modal','true');
     shell.setAttribute('aria-label','Paroğlu Mode');
-    shell.innerHTML = '<iframe class="pm-embedded-mode-frame" title="IAM PAROĞLU — Pixel Dünya" allow="autoplay; fullscreen" loading="eager"></iframe>';
+    shell.innerHTML = '<div class="pm-mode-loading">IAM PAROĞLU<span>Pixel dünya yükleniyor…</span></div><button class="pm-mode-emergency-close" type="button" aria-label="Paroğlu Mode kapat">×</button><iframe class="pm-embedded-mode-frame" title="IAM PAROĞLU — Pixel Dünya" allow="autoplay; fullscreen" loading="eager"></iframe>';
     iframe = shell.querySelector('iframe');
+    const emergencyClose=shell.querySelector('.pm-mode-emergency-close');
+    emergencyClose?.addEventListener('click',()=>closeMode());
+    iframe.addEventListener('load',()=>shell.classList.add('frame-ready'));
     document.body.appendChild(shell);
     return shell;
   };
@@ -603,7 +606,7 @@
     setState(true);
     document.documentElement.classList.add('pm-mode-open');
     document.body.classList.add('pm-mode-open');
-    iframe.src = 'iam-paroglu-mode.html?v=11.1';
+    iframe.src = 'iam-paroglu/index.html?v=1';
     requestAnimationFrame(() => shell.classList.add('is-open'));
   };
 
@@ -640,7 +643,7 @@
     html.pm-mode-open,body.pm-mode-open{overflow:hidden!important;overscroll-behavior:none}
     .pm-embedded-mode{position:fixed;inset:0;z-index:2147483000;background:#100a1d;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s ease,visibility 0s linear .22s}
     .pm-embedded-mode.is-open{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .22s ease}
-    .pm-embedded-mode-frame{display:block;width:100%;height:100%;height:100dvh;border:0;background:#100a1d}
+    .pm-mode-loading{position:absolute;inset:0;display:grid;place-content:center;text-align:center;gap:8px;background:#100a1d;color:#fff0c9;font:800 20px/1.2 ui-monospace,monospace;letter-spacing:.04em}.pm-mode-loading span{display:block;margin-top:8px;color:#b48ad9;font-size:12px}.pm-embedded-mode.frame-ready .pm-mode-loading{display:none}.pm-mode-emergency-close{position:absolute;right:18px;top:18px;z-index:3;width:44px;height:44px;border:1px solid #ffffff40;background:#21122fe8;color:#fff0c9;font-size:28px}.pm-embedded-mode-frame{position:relative;z-index:2;display:block;width:100%;height:100%;height:100dvh;border:0;background:#100a1d}
   `;
   document.head.appendChild(css);
 })();
