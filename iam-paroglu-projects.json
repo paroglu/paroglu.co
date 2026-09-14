@@ -1,0 +1,437 @@
+[
+  {
+    "id": "sefo-film",
+    "title": "SEFO",
+    "kind": "Konser filmi",
+    "client": "SEFO",
+    "cover": "concert-sefo-poster.jpg",
+    "media": [
+      {
+        "type": "video",
+        "src": "concert-sefo.mp4",
+        "poster": "concert-sefo-poster.jpg",
+        "duration": 81
+      }
+    ]
+  },
+  {
+    "id": "kiy",
+    "title": "Karabük İdman Yurdu",
+    "kind": "Sosyal medya tasarımları",
+    "client": "Karabük İdman Yurdu",
+    "cover": "karabuk-idman-yurdu-01.png",
+    "media": [
+      {
+        "type": "image",
+        "src": "karabuk-idman-yurdu-01.png"
+      },
+      {
+        "type": "image",
+        "src": "karabuk-idman-yurdu-02.png"
+      },
+      {
+        "type": "image",
+        "src": "karabuk-idman-yurdu-03.png"
+      },
+      {
+        "type": "image",
+        "src": "karabuk-idman-yurdu-04.png"
+      },
+      {
+        "type": "image",
+        "src": "karabuk-idman-yurdu-05.png"
+      },
+      {
+        "type": "image",
+        "src": "karabuk-idman-yurdu-06.png"
+      },
+      {
+        "type": "image",
+        "src": "karabuk-idman-yurdu-07.png"
+      },
+      {
+        "type": "image",
+        "src": "karabuk-idman-yurdu-08.png"
+      },
+      {
+        "type": "image",
+        "src": "karabuk-idman-yurdu-09.png"
+      },
+      {
+        "type": "image",
+        "src": "karabuk-idman-yurdu-10.png"
+      }
+    ]
+  },
+  {
+    "id": "gokhan-photo",
+    "title": "Gökhan Türkmen",
+    "kind": "Konser fotoğrafları",
+    "client": "Gökhan Türkmen",
+    "cover": "concert-gokhan-turkmen-01.jpg",
+    "media": [
+      {
+        "type": "image",
+        "src": "concert-gokhan-turkmen-01.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-gokhan-turkmen-02.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-gokhan-turkmen-03.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-gokhan-turkmen-04.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-gokhan-turkmen-05.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-gokhan-turkmen-06.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-gokhan-turkmen-07.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-gokhan-turkmen-08.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-gokhan-turkmen-09.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-gokhan-turkmen-10.jpg"
+      }
+    ]
+  },
+  {
+    "id": "ack",
+    "title": "ACK Bıçak",
+    "kind": "Tanıtım filmi",
+    "client": "ACK Bıçak",
+    "cover": "ack-bicak-poster.jpg",
+    "media": [
+      {
+        "type": "video",
+        "src": "ack-bicak-film.mp4",
+        "poster": "ack-bicak-poster.jpg",
+        "duration": 84
+      }
+    ]
+  },
+  {
+    "id": "corlu",
+    "title": "Çorluspor 1947",
+    "kind": "Sosyal medya tasarımları",
+    "client": "Çorluspor 1947",
+    "cover": "corluspor-1947-01.jpg",
+    "media": [
+      {
+        "type": "image",
+        "src": "corluspor-1947-01.jpg"
+      },
+      {
+        "type": "image",
+        "src": "corluspor-1947-02.jpg"
+      },
+      {
+        "type": "image",
+        "src": "corluspor-1947-03.jpg"
+      },
+      {
+        "type": "image",
+        "src": "corluspor-1947-04.jpg"
+      },
+      {
+        "type": "image",
+        "src": "corluspor-1947-05.jpg"
+      },
+      {
+        "type": "image",
+        "src": "corluspor-1947-06.jpg"
+      },
+      {
+        "type": "image",
+        "src": "corluspor-1947-07.jpg"
+      },
+      {
+        "type": "image",
+        "src": "corluspor-1947-08.jpg"
+      },
+      {
+        "type": "image",
+        "src": "corluspor-1947-09.jpg"
+      },
+      {
+        "type": "image",
+        "src": "corluspor-1947-10.jpg"
+      }
+    ]
+  },
+  {
+    "id": "kepez",
+    "title": "Kepezspor",
+    "kind": "Maç günü tasarımları",
+    "client": "Kepezspor",
+    "cover": "kepezspor-matchday-01.jpg",
+    "media": [
+      {
+        "type": "image",
+        "src": "kepezspor-matchday-01.jpg"
+      },
+      {
+        "type": "image",
+        "src": "kepezspor-matchday-02.jpg"
+      },
+      {
+        "type": "image",
+        "src": "kepezspor-matchday-03.jpg"
+      },
+      {
+        "type": "image",
+        "src": "kepezspor-matchday-04.jpg"
+      },
+      {
+        "type": "image",
+        "src": "kepezspor-matchday-05.jpg"
+      },
+      {
+        "type": "image",
+        "src": "kepezspor-matchday-06.jpg"
+      },
+      {
+        "type": "image",
+        "src": "kepezspor-matchday-07.jpg"
+      },
+      {
+        "type": "image",
+        "src": "kepezspor-matchday-08.jpg"
+      },
+      {
+        "type": "image",
+        "src": "kepezspor-matchday-09.jpg"
+      },
+      {
+        "type": "image",
+        "src": "kepezspor-matchday-10.jpg"
+      }
+    ]
+  },
+  {
+    "id": "hakan-film",
+    "title": "Hakan Peker",
+    "kind": "Konser filmi",
+    "client": "Hakan Peker",
+    "cover": "concert-hakan-peker-poster.jpg",
+    "media": [
+      {
+        "type": "video",
+        "src": "concert-hakan-peker.mp4",
+        "poster": "concert-hakan-peker-poster.jpg",
+        "duration": 47
+      }
+    ]
+  },
+  {
+    "id": "sefo-photo",
+    "title": "SEFO",
+    "kind": "Konser fotoğrafları",
+    "client": "SEFO",
+    "cover": "concert-sefo-01.jpg",
+    "media": [
+      {
+        "type": "image",
+        "src": "concert-sefo-01.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-sefo-02.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-sefo-03.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-sefo-04.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-sefo-05.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-sefo-06.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-sefo-07.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-sefo-08.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-sefo-09.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-sefo-10.jpg"
+      }
+    ]
+  },
+  {
+    "id": "hakan-photo",
+    "title": "Hakan Peker",
+    "kind": "Konser fotoğrafları",
+    "client": "Hakan Peker",
+    "cover": "concert-hakan-peker-01.jpg",
+    "media": [
+      {
+        "type": "image",
+        "src": "concert-hakan-peker-01.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-hakan-peker-02.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-hakan-peker-03.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-hakan-peker-04.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-hakan-peker-05.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-hakan-peker-06.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-hakan-peker-07.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-hakan-peker-08.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-hakan-peker-09.jpg"
+      },
+      {
+        "type": "image",
+        "src": "concert-hakan-peker-10.jpg"
+      }
+    ]
+  },
+  {
+    "id": "dedub-film",
+    "title": "Dedublüman",
+    "kind": "Konser filmi",
+    "client": "Dedublüman",
+    "cover": "concert-dedubluman-poster.jpg",
+    "media": [
+      {
+        "type": "video",
+        "src": "concert-dedubluman.mp4",
+        "poster": "concert-dedubluman-poster.jpg",
+        "duration": 89
+      }
+    ]
+  },
+  {
+    "id": "bus",
+    "title": "Karabük İdman Yurdu",
+    "kind": "Otobüs tasarımı",
+    "client": "Karabük İdman Yurdu",
+    "cover": "karabuk-otobus-01.jpg",
+    "media": [
+      {
+        "type": "image",
+        "src": "karabuk-otobus-01.jpg"
+      },
+      {
+        "type": "image",
+        "src": "karabuk-otobus-02.jpg"
+      },
+      {
+        "type": "image",
+        "src": "karabuk-otobus-03.jpg"
+      },
+      {
+        "type": "image",
+        "src": "karabuk-otobus-04.jpg"
+      },
+      {
+        "type": "image",
+        "src": "karabuk-otobus-05.jpg"
+      }
+    ]
+  },
+  {
+    "id": "design",
+    "title": "Grafik tasarım",
+    "kind": "Kampanya ve kurumsal iletişim",
+    "client": "Yılmaz Beton · Gökhan Türkmen · Safranbolu",
+    "cover": "design-yilmaz-gucumuz-ekibimiz.jpg",
+    "media": [
+      {
+        "type": "image",
+        "src": "design-gokhan-turkmen-billboard.jpg"
+      },
+      {
+        "type": "image",
+        "src": "design-gokhan-turkmen-konser.jpg"
+      },
+      {
+        "type": "image",
+        "src": "design-safranbolu-unesco-31.jpg"
+      },
+      {
+        "type": "image",
+        "src": "design-urun-canta.jpg"
+      },
+      {
+        "type": "image",
+        "src": "design-yilmaz-arac-filomuz.jpg"
+      },
+      {
+        "type": "image",
+        "src": "design-yilmaz-gucumuz-ekibimiz.jpg"
+      },
+      {
+        "type": "image",
+        "src": "design-yilmaz-noktadayiz.jpg"
+      }
+    ]
+  },
+  {
+    "id": "poizi-film",
+    "title": "Poizi",
+    "kind": "Konser filmi",
+    "client": "Poizi",
+    "cover": "concert-poizi-poster.jpg",
+    "media": [
+      {
+        "type": "video",
+        "src": "concert-poizi.mp4",
+        "poster": "concert-poizi-poster.jpg",
+        "duration": 63
+      }
+    ]
+  }
+]
