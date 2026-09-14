@@ -127,5 +127,6 @@
   viewport.addEventListener('pointermove',e=>{if(e.pointerType==='mouse'){const r=viewport.getBoundingClientRect(), x=(e.clientX-r.left)/r.width; layer.style.setProperty('--px',`${(x-.5)*18}px`); layer.style.setProperty('--py',`${((e.clientY-r.top)/r.height-.5)*10}px`)}});
   document.addEventListener('visibilitychange',()=>{if(document.hidden&&state.opened){stopReels();closeProject()}});
   window.addEventListener('paroglu-mode-change',e=>{if(e.detail&&e.detail.source==='mode')return; e.detail&&e.detail.on?open():close()});
+  window.ParogluMode={open,close,toggle:()=>state.opened?close():open,get opened(){return state.opened}};
   window.dispatchEvent(new CustomEvent('paroglu-mode-ready'));
 })();
