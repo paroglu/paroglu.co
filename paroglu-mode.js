@@ -1,6 +1,6 @@
 (() => {
-  if (window.__parogluModeLoaded) return;
-  window.__parogluModeLoaded = true;
+  if (window.ParogluMode) return;
+  window.__parogluModeLoaded = '10.2';
 
   const reels=['DXoHQSrCNvx','DIBMYMBMxnh','DRPi3SPCExr','DI_meJjsVr-','DKtgLKoo0wK','DcdiUdLsL0n','DcBj3tZtcLP','DQ3Xw3fDGqB','DKZBmjHoR9u','DRBwJYZAsZk','Dc28-L-u1OV','DcBqnqNsfzw','DbyLBaKM7bd'];
 

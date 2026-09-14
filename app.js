@@ -558,7 +558,7 @@
 })();
 
 /* ---------------------------------------------------------
-   PAROĞLU MODE — lazy, isolated pixel portfolio layer
+   PAROĞLU MODE — robust lazy loader (v10.2)
 --------------------------------------------------------- */
 (() => {
   const nav = document.querySelector('.nav-inner');
@@ -576,35 +576,71 @@
   const setState = on => {
     toggle.setAttribute('aria-pressed', on ? 'true':'false');
     toggle.setAttribute('aria-label', on ? 'Paroğlu Mode kapat':'Paroğlu Mode aç');
+    toggle.classList.toggle('is-on', !!on);
     const state = toggle.querySelector('.pm-mode-toggle-state');
     if (state) state.textContent = on ? 'ON':'OFF';
   };
   window.addEventListener('paroglu-mode-change', e => setState(Boolean(e.detail && e.detail.on)));
 
-  const loadMode = () => new Promise((resolve,reject) => {
-    if (window.ParogluMode) return resolve(window.ParogluMode);
-    const done = () => window.ParogluMode ? resolve(window.ParogluMode) : reject(new Error('Mode yüklenemedi'));
-    window.addEventListener('paroglu-mode-ready', done, {once:true});
-    if (!document.querySelector('link[data-pm-mode-css]')) {
-      const css = document.createElement('link');
-      css.rel='stylesheet'; css.href='paroglu-mode.css'; css.dataset.pmModeCss='1';
-      document.head.appendChild(css);
-    }
-    if (!document.querySelector('script[data-pm-mode-js]')) {
-      const s = document.createElement('script');
-      s.src='paroglu-mode.js'; s.defer=true; s.dataset.pmModeJs='1';
-      s.onerror=()=>reject(new Error('Mode script yüklenemedi'));
-      document.body.appendChild(s);
-    }
+  const waitForApi = (tries=40) => new Promise((resolve,reject) => {
+    const tick = () => {
+      if (window.ParogluMode && typeof window.ParogluMode.open === 'function') return resolve(window.ParogluMode);
+      if (--tries <= 0) return reject(new Error('Paroğlu Mode API hazır olmadı'));
+      setTimeout(tick, 50);
+    };
+    tick();
   });
 
+  const ensureMode = async () => {
+    if (window.ParogluMode) return window.ParogluMode;
+
+    if (!document.querySelector('link[data-pm-mode-css]')) {
+      const css = document.createElement('link');
+      css.rel='stylesheet';
+      css.href='paroglu-mode.css?v=10.2';
+      css.dataset.pmModeCss='1';
+      document.head.appendChild(css);
+    }
+
+    let old = document.querySelector('script[data-pm-mode-js]');
+    if (old && !window.ParogluMode) old.remove();
+
+    const s = document.createElement('script');
+    s.src='paroglu-mode.js?v=10.2';
+    s.async=true;
+    s.dataset.pmModeJs='1';
+    const loaded = new Promise((resolve,reject)=>{
+      s.onload=resolve;
+      s.onerror=()=>reject(new Error('Paroğlu Mode script yüklenemedi'));
+    });
+    document.body.appendChild(s);
+    await loaded;
+    return waitForApi();
+  };
+
   toggle.addEventListener('click', async () => {
-    if (window.ParogluMode) return window.ParogluMode.toggle();
     if (loading) return;
+
+    if (window.ParogluMode) {
+      const willOpen = !window.ParogluMode.opened;
+      setState(willOpen);
+      window.ParogluMode.toggle();
+      return;
+    }
+
     loading = true;
     toggle.classList.add('is-loading');
-    try { const mode = await loadMode(); mode.open(); }
-    catch (err) { console.warn('[Paroğlu Mode]', err); }
-    finally { loading=false; toggle.classList.remove('is-loading'); }
+    setState(true); // dokunur dokunmaz kullanıcıya geri bildirim ver
+    try {
+      const mode = await ensureMode();
+      mode.open();
+      setState(true);
+    } catch (err) {
+      setState(false);
+      console.error('[Paroğlu Mode v10.2]', err);
+    } finally {
+      loading=false;
+      toggle.classList.remove('is-loading');
+    }
   });
 })();
