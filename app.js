@@ -556,3 +556,55 @@
   Promise.resolve(loadContent()).then(()=>loadBrands());
   loadProjects();loadFeatured();loadAssistantKnowledge();
 })();
+
+/* ---------------------------------------------------------
+   PAROĞLU MODE — lazy, isolated pixel portfolio layer
+--------------------------------------------------------- */
+(() => {
+  const nav = document.querySelector('.nav-inner');
+  if (!nav || document.querySelector('.pm-mode-toggle')) return;
+  const menu = nav.querySelector('.menu-toggle');
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'pm-mode-toggle';
+  toggle.setAttribute('aria-pressed','false');
+  toggle.setAttribute('aria-label','Paroğlu Mode aç');
+  toggle.innerHTML = '<i class="pm-mode-toggle-dot" aria-hidden="true"></i><span class="pm-mode-toggle-label">PAROĞLU MODE</span><span class="pm-mode-toggle-state">OFF</span>';
+  nav.insertBefore(toggle, menu || null);
+
+  let loading = false;
+  const setState = on => {
+    toggle.setAttribute('aria-pressed', on ? 'true':'false');
+    toggle.setAttribute('aria-label', on ? 'Paroğlu Mode kapat':'Paroğlu Mode aç');
+    const state = toggle.querySelector('.pm-mode-toggle-state');
+    if (state) state.textContent = on ? 'ON':'OFF';
+  };
+  window.addEventListener('paroglu-mode-change', e => setState(Boolean(e.detail && e.detail.on)));
+
+  const loadMode = () => new Promise((resolve,reject) => {
+    if (window.ParogluMode) return resolve(window.ParogluMode);
+    const done = () => window.ParogluMode ? resolve(window.ParogluMode) : reject(new Error('Mode yüklenemedi'));
+    window.addEventListener('paroglu-mode-ready', done, {once:true});
+    if (!document.querySelector('link[data-pm-mode-css]')) {
+      const css = document.createElement('link');
+      css.rel='stylesheet'; css.href='paroglu-mode.css'; css.dataset.pmModeCss='1';
+      document.head.appendChild(css);
+    }
+    if (!document.querySelector('script[data-pm-mode-js]')) {
+      const s = document.createElement('script');
+      s.src='paroglu-mode.js'; s.defer=true; s.dataset.pmModeJs='1';
+      s.onerror=()=>reject(new Error('Mode script yüklenemedi'));
+      document.body.appendChild(s);
+    }
+  });
+
+  toggle.addEventListener('click', async () => {
+    if (window.ParogluMode) return window.ParogluMode.toggle();
+    if (loading) return;
+    loading = true;
+    toggle.classList.add('is-loading');
+    try { const mode = await loadMode(); mode.open(); }
+    catch (err) { console.warn('[Paroğlu Mode]', err); }
+    finally { loading=false; toggle.classList.remove('is-loading'); }
+  });
+})();
